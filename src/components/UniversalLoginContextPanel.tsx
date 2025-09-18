@@ -9,12 +9,31 @@ import "../lib/tailwind.css";
 import "../lib/styles.css";
 import "prismjs/themes/prism-tomorrow.css"; // theme (can swap or override)
 import { useWindowJsonContext } from '../hooks/useWindowJsonContext';
+import { useUlManifest } from '../hooks/useUlManifest';
 import { JsonCodeEditor } from './JsonCodeEditor';
 
 /**
- * State 1: Connected to tenant.
- * Sliding full-height panel from the left that edits window.universal_login_context.
+ * UniversalLoginContextPanel
+ * -------------------------------------------------------------
+ * Primary developer tool surface for inspecting / editing a JSON blob
+ * exposed as `window.universal_login_context` (or overridden via `root`).
+ *
+ * Two conceptual modes:
+ * 1. Connected: A context object already existed at mount. Edits persist
+ *    (debounced) back to the global object.
+ * 2. Disconnected Preview: No context existed initially. A manifest can be
+ *    loaded (local or CDN) to preview screen + variant JSON. This does NOT
+ *    mutate global state unless the data source is explicitly Local (opt‑in
+ *    promotion) or a future explicit action is added.
+ *
+ * Key design choices:
+ * - "Connected" status is sticky based solely on initial presence; we avoid
+ *   accidentally declaring connection after loading a preview.
+ * - Manifest logic is encapsulated in `useUlManifest` to keep this component
+ *   focused on orchestration & presentation.
+ * - JSON state management & debounced write handled by `useWindowJsonContext`.
  */
+
 
 export interface UniversalLoginContextPanelProps {
   defaultOpen?: boolean;
@@ -45,7 +64,7 @@ export const UniversalLoginContextPanel: React.FC<UniversalLoginContextPanelProp
     : ({} as WindowLike),
   screenLabel = "Current Screen",
   variants = ["default"],
-  dataSources = ["Auth0 CDN", "Local"],
+  dataSources = ["Auth0 CDN", "Local development"],
   versions = ["1.0.0"],
   defaultVariant,
   defaultDataSource,
@@ -55,132 +74,71 @@ export const UniversalLoginContextPanel: React.FC<UniversalLoginContextPanelProp
   onVersionChange
 }) => {
   const [open, setOpen] = useState(defaultOpen);
-  // Track whether a tenant context existed at mount time; this defines true connectivity.
+  // Immutable flag: did a context exist when we mounted? Defines true connectivity.
   const initialHadContextRef = useRef<boolean>(
     Object.prototype.hasOwnProperty.call(root, 'universal_login_context') &&
     (root as Record<string, unknown>).universal_login_context != null
   );
+  // Selection state for disconnected preview UX.
+  const [selectedScreen, setSelectedScreen] = useState<string | undefined>(undefined);
+  const [variant, setVariant] = useState(() => defaultVariant || variants[0]);
+  const [dataSource, setDataSource] = useState(() => defaultDataSource || dataSources[0]);
+  const [version, setVersion] = useState(() => defaultVersion || versions[0]);
+
   const { raw, setRaw, isValid, contextObj } = useWindowJsonContext({
     root,
     key: 'universal_login_context',
     active: open,
     debounceMs: 400,
     autoSyncOnActive: true,
-    // Only allow applying edits back to window if we started already connected
-    applyEnabled: initialHadContextRef.current
+    // Allow writes only if we started connected OR explicitly in local mode.
+    applyEnabled: initialHadContextRef.current || dataSource.toLowerCase() === 'local'
   });
   const [searchVisible, setSearchVisible] = useState(false);
   const [search, setSearch] = useState("");
-  // Connectivity is defined exclusively by initial presence, not by later local preview loads.
+  // True connectivity defined exclusively by initial presence (prevents accidental promotion).
   const isConnected = initialHadContextRef.current && !!contextObj;
-  const manifest = (root as Record<string, unknown>).__ul_manifest as unknown;
-
-  // Build screen options from manifest when available
-  interface ULManifest { screens: unknown[] }
-  const isManifest = (m: unknown): m is ULManifest => {
-    if (!m || typeof m !== 'object') return false;
-    const rec = m as Record<string, unknown>;
-    return Array.isArray((rec as { screens?: unknown }).screens);
-  };
-  const screenOptions = useMemo(() => {
-    if (!isManifest(manifest)) return [] as { value: string; label: string }[];
-    const opts: { value: string; label: string }[] = [];
-    for (const entry of manifest.screens) {
-      if (entry && typeof entry === 'object' && !Array.isArray(entry)) {
-        const topKeys = Object.keys(entry as Record<string, unknown>);
-        if (topKeys.length === 1) {
-          const topKey = topKeys[0];
-          const container = (entry as Record<string, unknown>)[topKey];
-          if (container && typeof container === 'object' && !Array.isArray(container)) {
-            const childKeys = Object.keys(container as Record<string, unknown>);
-            if (childKeys.length === 1) {
-              const childKey = childKeys[0];
-              opts.push({ value: `${topKey}:${childKey}`, label: `${topKey} / ${childKey}` });
-            }
-          }
-        }
-      }
-    }
-    return opts;
-  }, [manifest]);
-  // Selection state (screen + variant/dataSource/version)
-  const [selectedScreen, setSelectedScreen] = useState<string | undefined>(undefined);
-  const [variant, setVariant] = useState(() => defaultVariant || variants[0]);
-  const [dataSource, setDataSource] = useState(() => defaultDataSource || dataSources[0]);
-  const [version, setVersion] = useState(() => defaultVersion || versions[0]);
+  // Manifest (only loaded while disconnected & panel open)
+  const { screenOptions, getVariantInfo, loadVariantJson, loading: manifestLoading, error: manifestError } = useUlManifest({
+    root: root as Record<string, unknown>,
+    dataSource,
+    version,
+    enabled: open && !isConnected
+  });
+  // Auto-select first screen once manifest arrives.
   useEffect(() => {
     if (!selectedScreen && screenOptions.length) setSelectedScreen(screenOptions[0].value);
   }, [screenOptions, selectedScreen]);
 
-  // Variant options derived from selected screen & manifest
+  // Derive variant options from manifest (fallback to provided variants prop).
   const variantOptions = useMemo(() => {
-    if (!selectedScreen || !isManifest(manifest)) return variants;
-    const [topKey, childKey] = selectedScreen.split(':');
-    for (const entry of manifest.screens) {
-      if (entry && typeof entry === 'object' && !Array.isArray(entry) && Object.prototype.hasOwnProperty.call(entry, topKey)) {
-        const container = (entry as Record<string, unknown>)[topKey];
-        if (container && typeof container === 'object' && !Array.isArray(container)) {
-          const inner = (container as Record<string, unknown>)[childKey];
-          if (inner && typeof inner === 'object' && !Array.isArray(inner)) {
-            const list = (inner as Record<string, unknown>).variants;
-            if (Array.isArray(list)) {
-              const cleaned = list.filter(v => typeof v === 'string') as string[];
-              if (cleaned.length) return cleaned;
-            }
-          }
-        }
-      }
-    }
-    return variants;
-  }, [selectedScreen, manifest, variants]);
+    if (!selectedScreen) return variants;
+    const info = getVariantInfo(selectedScreen);
+    return info ? info.variants : variants;
+  }, [selectedScreen, getVariantInfo, variants]);
 
-  // Ensure current variant exists in new derived list
+  // Ensure selected variant remains valid when options change.
   useEffect(() => {
     if (!variantOptions.includes(variant)) {
       setVariant(variantOptions[0]);
     }
   }, [variantOptions, variant]);
 
-  // Load variant JSON when disconnected (simulate context initialization)
+  // Load variant JSON while disconnected to populate preview buffer only.
   useEffect(() => {
-  if (!open || isConnected) return; // only when disconnected (preview mode)
+    if (!open || isConnected) return;
     if (!selectedScreen || !variant) return;
-    if (!isManifest(manifest)) return;
-    const [topKey, childKey] = selectedScreen.split(':');
-    let basePath: string | undefined;
-    for (const entry of manifest.screens) {
-      if (entry && typeof entry === 'object' && !Array.isArray(entry) && Object.prototype.hasOwnProperty.call(entry, topKey)) {
-        const container = (entry as Record<string, unknown>)[topKey];
-        if (container && typeof container === 'object' && !Array.isArray(container)) {
-          const inner = (container as Record<string, unknown>)[childKey];
-          if (inner && typeof inner === 'object' && !Array.isArray(inner)) {
-            const p = (inner as Record<string, unknown>).path;
-            if (typeof p === 'string') basePath = p;
-          }
-        }
-      }
-    }
-    if (!basePath) basePath = `/screens/${topKey}/${childKey}`;
-    basePath = basePath.replace(/\/$/, '');
-    const filePath = `${basePath}/${variant}.json`;
-    const url = dataSource.toLowerCase() === 'local'
-      ? (filePath.startsWith('/') ? filePath : '/' + filePath)
-      : `https://cdn.auth0.com/universal-login${filePath.startsWith('/') ? filePath : '/' + filePath}`;
     let cancelled = false;
     (async () => {
       try {
-        const res = await fetch(url, { cache: 'no-store' });
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        const json = await res.json();
-        if (cancelled) return;
-  // Populate preview buffer only; do NOT create global context while disconnected.
-  setRaw(JSON.stringify(json, null, 2));
+        const json = await loadVariantJson(selectedScreen, variant);
+        if (!cancelled && json) setRaw(JSON.stringify(json, null, 2));
       } catch {
-        // ignore silently for now
+        /* silent */
       }
     })();
     return () => { cancelled = true; };
-  }, [open, isConnected, selectedScreen, variant, manifest, dataSource, setRaw, root]);
+  }, [open, isConnected, selectedScreen, variant, loadVariantJson, setRaw]);
 
 
   const handleVariant = useCallback((v: string) => {
@@ -193,35 +151,7 @@ export const UniversalLoginContextPanel: React.FC<UniversalLoginContextPanelProp
     setVersion(v); onVersionChange?.(v);
   }, [onVersionChange]);
 
-  // Manifest loading when disconnected (local or CDN)
-  const [manifestLoading, setManifestLoading] = useState(false);
-  const [manifestError, setManifestError] = useState<string | null>(null);
-
-  useEffect(() => {
-    if (!open || isConnected) return; // only when panel open and disconnected
-    let cancelled = false;
-    const load = async () => {
-      setManifestLoading(true);
-      setManifestError(null);
-      try {
-        const url = dataSource.toLowerCase().startsWith('auth0')
-          ? `https://cdn.auth0.com/universal-login/manifest.json` // placeholder CDN path
-          : `/manifest.json`;
-        const res = await fetch(url, { cache: 'no-store' });
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        const json = await res.json();
-        // Stash into root under a symbol key (augmenting type minimally)
-        (root as Record<string, unknown>).__ul_manifest = json;
-      } catch (e: unknown) {
-        const msg = e instanceof Error ? e.message : 'Failed to load manifest';
-        if (!cancelled) setManifestError(msg);
-      } finally {
-        if (!cancelled) setManifestLoading(false);
-      }
-    };
-    load();
-    return () => { cancelled = true; };
-  }, [open, isConnected, dataSource, version, root]);
+  // (Manifest fetch handled by useUlManifest)
 
   const onCopy = useCallback(async () => {
     try {
@@ -233,18 +163,23 @@ export const UniversalLoginContextPanel: React.FC<UniversalLoginContextPanelProp
 
   const onDownload = useCallback(() => {
     try {
-      const blob = new Blob([raw], { type: "application/json" });
+      // Interpret current variant as the requested "prompt" identifier for naming.
+      const screenPart = (selectedScreen || 'screen').replace(/:/g, '-');
+      const safe = (s: string) => s.toLowerCase().replace(/[^a-z0-9-_]+/g, '-').replace(/^-+|-+$/g, '') || 'context';
+      const fileName = `${safe(screenPart)}-context.json`;
+      const blob = new Blob([raw], { type: 'application/json' });
       const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
+      const a = document.createElement('a');
       a.href = url;
-      a.download = "tenant-context.json";
+      a.download = fileName;
       a.click();
       URL.revokeObjectURL(url);
     } catch {
       /* ignore */
     }
-  }, [raw]);
+  }, [raw, variant, selectedScreen]);
 
+  // Line-level filtering for lightweight search UX (non-destructive view layer only).
   const filteredDisplay = useMemo(() => {
     if (!search) return raw;
     const lower = search.toLowerCase();
@@ -273,7 +208,7 @@ export const UniversalLoginContextPanel: React.FC<UniversalLoginContextPanelProp
   className="uci-fixed uci-top-0 uci-left-0 uci-h-screen uci-bg-gray-900 uci-text-white uci-shadow-xl uci-border-r uci-border-gray-700 uci-flex uci-flex-col uci-z-[99998] uci-transition-transform uci-duration-300 uci-ease-out uci-overflow-hidden uci-box-border"
       style={{ width, transform: open ? "translateX(0)" : "translateX(-100%)" }}
     >
-      {/* Header with title + close */}
+  {/* Header / status */}
       <div className="uci-flex uci-items-center uci-justify-between uci-px-5 uci-py-3 uci-border-b uci-border-gray-700">
         <div className="uci-flex uci-items-center uci-gap-2">
           <h2 className="uci-text-sm uci-font-semibold uci-tracking-wide">
@@ -294,7 +229,7 @@ export const UniversalLoginContextPanel: React.FC<UniversalLoginContextPanelProp
         </IconButton>
       </div>
 
-      {/* Screen selection (from manifest when available) */}
+  {/* Screen selection (populated via manifest) */}
       <div className="uci-px-5 uci-py-3 uci-border-b uci-border-gray-800">
         <select
           className="uci-w-full uci-bg-gray-800 uci-border uci-border-gray-600 uci-rounded uci-text-xs uci-px-2 uci-py-1 disabled:uci-opacity-60"
@@ -309,7 +244,7 @@ export const UniversalLoginContextPanel: React.FC<UniversalLoginContextPanelProp
 
       {!isConnected && (
         <>
-          {/* Variant (full width row, manifest-driven) */}
+          {/* Variant selection */}
           <div className="uci-px-5 uci-py-3 uci-border-b uci-border-gray-800">
             <select
               className="uci-w-full uci-bg-gray-800 uci-border uci-border-gray-600 uci-rounded uci-text-xs uci-px-2 uci-py-1"
@@ -320,7 +255,7 @@ export const UniversalLoginContextPanel: React.FC<UniversalLoginContextPanelProp
               {variantOptions.map(v => <option key={v} value={v}>{v}</option>)}
             </select>
           </div>
-          {/* Data Source + Version (split row) */}
+          {/* Data Source + Version (version hidden in local mode) */}
             <div className="uci-px-5 uci-py-3 uci-border-b uci-border-gray-800">
               {dataSource.toLowerCase() === 'local' ? (
                 <select
@@ -358,7 +293,7 @@ export const UniversalLoginContextPanel: React.FC<UniversalLoginContextPanelProp
         </>
       )}
 
-      {/* Action icons row (right-aligned): search, download, copy */}
+  {/* Toolbar: search toggle, download, copy */}
       <div className="uci-flex uci-items-center uci-justify-end uci-gap-2 uci-px-5 uci-py-2.5 uci-border-b uci-border-gray-800">
         <IconButton
           label="Search"

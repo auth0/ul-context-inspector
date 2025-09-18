@@ -3,6 +3,7 @@ import Editor from 'react-simple-code-editor';
 import Prism from 'prismjs';
 import 'prismjs/components/prism-json';
 
+// Lightweight JSON editor wrapper with Prism highlighting and a fixed line number gutter.
 export interface JsonCodeEditorProps {
   value: string;
   onChange: (v: string) => void;
@@ -20,6 +21,7 @@ export const JsonCodeEditor: React.FC<JsonCodeEditorProps> = ({
   filtered = false,
   textareaId = 'json-editor'
 }) => {
+  // Derive line count for gutter; simple split is fine (no perf issues at our expected sizes).
   const lineCount = useMemo(() => value.split('\n').length, [value]);
   return (
     <div

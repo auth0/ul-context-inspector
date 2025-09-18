@@ -1,12 +1,22 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
+/**
+ * Hook: useWindowJsonContext
+ * ---------------------------------------------
+ * Provides a controlled JSON text buffer for a property on a root object
+ * (typically `window`). Handles:
+ *  - Serialization on activation
+ *  - Debounced parse + apply (with validity state)
+ *  - Optional suppression of writes (preview mode)
+ */
+
 export interface UseWindowJsonContextOptions<Root extends Record<string, unknown>> {
   root: Root;
   key: keyof Root & string;
   active: boolean; // whether panel is open / applying changes
   debounceMs?: number;
   autoSyncOnActive?: boolean; // pull latest window object into raw when (re)activated
-  applyEnabled?: boolean; // if false, edits won't be applied back to root
+  applyEnabled?: boolean; // when false, JSON edits remain local only (no mutation)
 }
 
 export interface WindowJsonContextState {
@@ -14,8 +24,8 @@ export interface WindowJsonContextState {
   setRaw: (v: string) => void;
   isValid: boolean;
   contextObj: unknown;
-  refreshFromSource: () => void; // force pull from window
-  applyNow: () => void; // force parse/apply current raw immediately
+  refreshFromSource: () => void; // force re-serialize current object into raw
+  applyNow: () => void; // force immediate parse/apply (bypassing debounce)
 }
 
 /**

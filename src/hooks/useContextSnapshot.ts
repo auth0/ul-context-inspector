@@ -1,5 +1,14 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
+/**
+ * Hook: useContextSnapshot
+ * ----------------------------------------------
+ * Produces a flattened snapshot of an object's nested keys up to a max depth.
+ * Useful for quick visual inspection without deep drilling.
+ * - Ignores errors from exotic getters.
+ * - Safe against cycles by not revisiting already traversed object paths.
+ */
+
 export interface SnapshotEntry {
   path: string;
   value: unknown;
@@ -18,6 +27,7 @@ export interface UseContextSnapshotResult {
   refresh: () => void;
 }
 
+// Internal DFS snapshot helper (depth-limited)
 const snapshotObject = (
   obj: unknown,
   basePath = '',
