@@ -34,7 +34,7 @@ export function App() {
 ### Component Props (selected)
 | Prop | Type | Default | Notes |
 | ---- | ---- | ------- | ----- |
-| `defaultOpen` | boolean | false | Open panel on mount. |
+| `defaultOpen` | boolean | true | Open panel on mount. |
 | `width` | number \| string | 560 | Width of sliding panel. |
 | `screenLabel` | string | "Current Screen" | Placeholder label if no manifest. |
 | `dataSources` | string[] | ["Auth0 CDN","Local development"] | Populates data source select. Any value containing "local" enables local mode (no version select, writes allowed). |

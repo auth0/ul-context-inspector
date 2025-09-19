@@ -57,7 +57,7 @@ interface WindowLike {
 }
 
 export const UniversalLoginContextPanel: React.FC<UniversalLoginContextPanelProps> = ({
-  defaultOpen = false,
+  defaultOpen = true,
   width = 560,
   root = typeof window !== "undefined"
     ? (window as unknown as WindowLike)
