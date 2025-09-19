@@ -22,6 +22,12 @@ npm install ul-context-inspector
 yarn add ul-context-inspector
 ```
 
+### Run App
+```
+npm i
+npm run dev -- --port 5181
+```
+
 ### Basic Usage
 ```tsx
 import { UniversalLoginContextPanel } from 'ul-context-inspector';
