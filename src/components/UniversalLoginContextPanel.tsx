@@ -84,6 +84,10 @@ export const UniversalLoginContextPanel: React.FC<UniversalLoginContextPanelProp
   const [variant, setVariant] = useState(() => defaultVariant || variants[0]);
   const [dataSource, setDataSource] = useState(() => defaultDataSource || dataSources[0]);
   const [version, setVersion] = useState(() => defaultVersion || versions[0]);
+  // Tracks if the user has manually edited the JSON buffer while disconnected.
+  // If true we avoid clobbering their edits when selection changes trigger
+  // manifest fetches. Selecting a new variant/data source/version resets it.
+  const [userEdited, setUserEdited] = useState(false);
 
   const { raw, setRaw, isValid, contextObj } = useWindowJsonContext({
     root,
@@ -91,8 +95,10 @@ export const UniversalLoginContextPanel: React.FC<UniversalLoginContextPanelProp
     active: open,
     debounceMs: 400,
     autoSyncOnActive: true,
-    // Allow writes only if we started connected OR explicitly in local mode.
-  applyEnabled: initialHadContextRef.current || dataSource.toLowerCase().includes('local')
+    // Always allow writes (edit in any mode requested).
+  applyEnabled: true,
+  // Emit a CustomEvent so host apps using the subscription hook re-render.
+  broadcastEventName: 'universal-login-context:updated'
   });
   const [searchVisible, setSearchVisible] = useState(false);
   const [search, setSearch] = useState("");
@@ -126,8 +132,9 @@ export const UniversalLoginContextPanel: React.FC<UniversalLoginContextPanelProp
 
   // Load variant JSON while disconnected to populate preview buffer only.
   useEffect(() => {
-    if (!open || isConnected) return;
-    if (!selectedScreen || !variant) return;
+    if (!open || isConnected) return;            // only for disconnected preview
+    if (!selectedScreen || !variant) return;     // need selection
+    if (userEdited) return;                      // preserve manual edits
     let cancelled = false;
     (async () => {
       try {
@@ -138,17 +145,23 @@ export const UniversalLoginContextPanel: React.FC<UniversalLoginContextPanelProp
       }
     })();
     return () => { cancelled = true; };
-  }, [open, isConnected, selectedScreen, variant, loadVariantJson, setRaw]);
+  }, [open, isConnected, selectedScreen, variant, loadVariantJson, setRaw, userEdited]);
 
 
   const handleVariant = useCallback((v: string) => {
-    setVariant(v); onVariantChange?.(v);
+    setVariant(v);
+    setUserEdited(false); // new selection should allow fresh manifest load
+    onVariantChange?.(v);
   }, [onVariantChange]);
   const handleDataSource = useCallback((v: string) => {
-    setDataSource(v); onDataSourceChange?.(v);
+    setDataSource(v);
+    setUserEdited(false);
+    onDataSourceChange?.(v);
   }, [onDataSourceChange]);
   const handleVersion = useCallback((v: string) => {
-    setVersion(v); onVersionChange?.(v);
+    setVersion(v);
+    setUserEdited(false);
+    onVersionChange?.(v);
   }, [onVersionChange]);
 
   // (Manifest fetch handled by useUlManifest)
@@ -327,8 +340,15 @@ export const UniversalLoginContextPanel: React.FC<UniversalLoginContextPanelProp
         <div className="uci-flex-1 uci-overflow-auto uci-px-5 uci-pt-4 uci-pb-8">
           <JsonCodeEditor
             value={search ? filteredDisplay : raw}
-            onChange={setRaw}
-            readOnly={Boolean(search || !isConnected)}
+            onChange={(val) => {
+              // If user begins editing while a filter is active we clear the filter
+              // so they are always editing the canonical full buffer, avoiding
+              // accidental truncation of hidden lines.
+              if (search) setSearch("");
+              setUserEdited(true);
+              setRaw(val);
+            }}
+            readOnly={false} // Always editable per requirements.
             isValid={isValid}
             filtered={Boolean(search)}
             textareaId="tenant-context-json-editor"

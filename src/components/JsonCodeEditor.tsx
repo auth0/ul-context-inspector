@@ -46,8 +46,8 @@ export const JsonCodeEditor: React.FC<JsonCodeEditorProps> = ({
         />
       </div>
       {filtered && (
-        <div className="uci-absolute uci-inset-0 uci-bg-black/40 uci-text-[11px] uci-text-gray-300 uci-flex uci-items-center uci-justify-center uci-pointer-events-none">
-          <span>Filtered view (editing disabled)</span>
+        <div className="uci-absolute uci-inset-0 uci-bg-black/30 uci-text-[11px] uci-text-gray-300 uci-flex uci-items-center uci-justify-center uci-pointer-events-none">
+          <span>Filtered view (hidden lines not shown)</span>
         </div>
       )}
     </div>

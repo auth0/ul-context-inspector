@@ -16,21 +16,31 @@
   "type": "module",
   "main": "dist/ul-context-inspector.cjs.js",
   "module": "dist/ul-context-inspector.es.js",
-  "types": "dist/types/index.d.ts",
+  "types": "dist/index.d.ts",
+  "style": "dist/style.css",
   "files": [
     "dist"
   ],
+  "sideEffects": [
+    "**/*.css",
+    "dist/style.css",
+    "dist/assets/*.css"
+  ],
   "exports": {
     ".": {
+      "types": "./dist/index.d.ts",
       "import": "./dist/ul-context-inspector.es.js",
-      "require": "./dist/ul-context-inspector.cjs.js",
-      "types": "./dist/types/index.d.ts"
+      "require": "./dist/ul-context-inspector.cjs.js"
+    },
+    "./style.css": {
+      "default": "./dist/style.css"
     }
   },
   "scripts": {
     "dev": "vite",
     "build": "vite build && ls -1 dist",
     "watch": "vite build --watch",
+  "prepare": "npm run build",
     "lint": "eslint 'src/**/*.{ts,tsx}'",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
@@ -69,6 +79,11 @@
     },
     "react-dom": {
       "optional": false
+    }
+  },
+  "typesVersions": {
+    "*": {
+      "*": ["dist/index.d.ts"]
     }
   },
   "dependencies": {

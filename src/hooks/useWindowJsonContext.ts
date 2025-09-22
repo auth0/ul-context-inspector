@@ -17,6 +17,7 @@ export interface UseWindowJsonContextOptions<Root extends Record<string, unknown
   debounceMs?: number;
   autoSyncOnActive?: boolean; // pull latest window object into raw when (re)activated
   applyEnabled?: boolean; // when false, JSON edits remain local only (no mutation)
+  broadcastEventName?: string; // optional CustomEvent name to dispatch after successful apply
 }
 
 export interface WindowJsonContextState {
@@ -38,7 +39,8 @@ export function useWindowJsonContext<Root extends Record<string, unknown>>({
   active,
   debounceMs = 400,
   autoSyncOnActive = true,
-  applyEnabled = true
+  applyEnabled = true,
+  broadcastEventName
 }: UseWindowJsonContextOptions<Root>): WindowJsonContextState {
   const [raw, setRaw] = useState('');
   const [isValid, setIsValid] = useState(true);
@@ -74,18 +76,35 @@ export function useWindowJsonContext<Root extends Record<string, unknown>>({
   (root as Record<string, unknown>)[key] = parsed as unknown;
       setIsValid(true);
       lastAppliedRef.current = raw;
+      // Fire a global event so external apps can subscribe & re-render.
+      // We deliberately dispatch on window (if present) even if root is a custom object.
     } catch {
       setIsValid(false);
     }
   }, [raw, root, key, applyEnabled]);
 
+  // Keep broadcast event name in a ref to avoid recreating applyNow when only the name changes.
+  const broadcastNameRef = useRef<string | undefined>();
+  broadcastNameRef.current = broadcastEventName;
+
+  // Wrap applyNow to dispatch after apply (cannot easily inject into existing callback without re-run dependencies).
+  const applyWithBroadcast = useCallback(() => {
+    applyNow();
+    const name = broadcastNameRef.current;
+    if (name && typeof window !== 'undefined') {
+      try {
+        const detail = { key, value: (root as Record<string, unknown>)[key] };
+        window.dispatchEvent(new CustomEvent(name, { detail }));
+      } catch { /* ignore */ }
+    }
+  }, [applyNow, key, root]);
+
   // Debounced apply
   useEffect(() => {
     if (!active) return; // don't apply while inactive
     if (debounceRef.current) window.clearTimeout(debounceRef.current);
-    debounceRef.current = window.setTimeout(applyNow, debounceMs);
+    debounceRef.current = window.setTimeout(applyWithBroadcast, debounceMs);
     return () => { if (debounceRef.current) window.clearTimeout(debounceRef.current); };
-  }, [raw, active, applyNow, debounceMs, applyEnabled]);
-
-  return { raw, setRaw, isValid, contextObj, refreshFromSource, applyNow };
+  }, [raw, active, applyWithBroadcast, debounceMs, applyEnabled]);
+  return { raw, setRaw, isValid, contextObj, refreshFromSource, applyNow: applyWithBroadcast };
 }
