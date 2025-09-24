@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import type { ISelectProps } from "@auth0/quantum-product";
+
 export interface PanelHeaderProps {
   isConnected: boolean;
   isConnectedText: string;
@@ -11,3 +14,27 @@ export interface PanelContainerProps {
   width: number | string;
   open: boolean;
 }
+
+export interface PanelSelectContextProps {
+  dataSourceOptions: ISelectOption<any>[];
+  dataVersionOptions: ISelectOption<any>[];
+  isConnected: boolean;
+  onChangeSelectDataSource: ISelectProps["onChange"];
+  onChangeSelectDataVersion: ISelectProps["onChange"];
+  onChangeSelectScreen: ISelectProps["onChange"];
+  onChangeSelectVariant: ISelectProps["onChange"];
+  screenOptions: ISelectOption<any>[];
+  selectedDataSource: string;
+  selectedDataVersion: string;
+  selectedScreen: string | undefined;
+  selectedVariant: string;
+  setSelectedScreen: (screen: string) => void;
+  variantOptions: ISelectOption<any>[];
+}
+
+export interface Option {
+  value: string;
+  label: string;
+}
+
+export type OptionInput = Option | string;

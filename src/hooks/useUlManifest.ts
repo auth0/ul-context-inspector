@@ -93,6 +93,7 @@ export function useUlManifest({ root, dataSource, version, enabled }: UseUlManif
           const container = (entry as Record<string, Record<string, UlManifestVariantNode>>)[topKey];
           if (container && typeof container === 'object') {
             for (const childKey of Object.keys(container)) {
+              // TODO: Can the label be changed to 'text' here or transofrm later?
               opts.push({ value: `${topKey}:${childKey}`, label: `${topKey} / ${childKey}` });
             }
           }

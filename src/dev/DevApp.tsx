@@ -1,4 +1,5 @@
-import React, { useEffect } from "react";
+import * as React from 'react';
+import { QuantumProvider, CssBaseline } from '@auth0/quantum-product';
 import { UniversalLoginContextPanel } from "../index";
 
 // Universal login context (State 1 panel target)
@@ -42,14 +43,18 @@ import { UniversalLoginContextPanel } from "../index";
 
 export const DevApp: React.FC = () => {
   return (
-    <div style={{ padding: 40 }}>
-      <h1>ul-context-inspector Dev Sandbox</h1>
-      <p>
-        Edit <code>window.universal_login_context</code> JSON via the left
-        panel.
-      </p>
-      {/* Left-side panel for universal_login_context (State 1) */}
-      <UniversalLoginContextPanel />
-    </div>
+    <QuantumProvider>
+    <CssBaseline />
+      <div style={{ padding: 40 }}>
+        <h1 className="uci-text-white">
+          ul-context-inspector Dev Sandbox</h1>
+        <p className="uci-text-[#ABABAB]">
+          Edit <code>window.universal_login_context</code> JSON via the left
+          panel.
+        </p>
+        {/* Left-side panel for universal_login_context (State 1) */}
+        <UniversalLoginContextPanel />
+      </div>
+    </QuantumProvider>
   );
 };

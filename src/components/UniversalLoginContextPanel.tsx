@@ -12,9 +12,13 @@ import "prismjs/themes/prism-tomorrow.css"; // theme (can swap or override)
 
 import { useWindowJsonContext } from '../hooks/useWindowJsonContext';
 import { useUlManifest } from '../hooks/useUlManifest';
+
 import { JsonCodeEditor } from './JsonCodeEditor';
 import PanelHeader from './PanelHeader';
-import { IconButton, SearchIcon, CopyIcon, DownloadIcon, CloseIcon } from '../assets/icons';
+import PanelContainer from './PanelContainer';
+import PanelSelectContext from './PanelSelectContext';
+
+import { IconButton, SearchIcon, CopyIcon, DownloadIcon } from '../assets/icons';
 
 import type { UniversalLoginContextPanelProps, WindowLike } from '../types/universal-login-context-panel';
 
@@ -185,90 +189,48 @@ export const UniversalLoginContextPanel: React.FC<UniversalLoginContextPanelProp
     return (
       <button
         type="button"
-        aria-label="Open tenant context panel"
+        aria-label="Open UL context data panel"
         onClick={() => setOpen(true)}
-        className="uci-fixed uci-top-1/2 uci--translate-y-1/2 uci-left-4 uci-bg-indigo-600 hover:uci-bg-indigo-500 uci-text-white uci-font-medium uci-text-xs uci-px-3 uci-py-2 uci-rounded uci-shadow uci-z-[99998]"
+        className="uci-fixed uci-top-1/4 uci-left-10 uci-bg-indigo-600 hover:uci-bg-indigo-800 uci-text-white uci-font-medium uci-px-3 uci-py-2 uci-rounded uci-z-[99998]"
       >
-        Tenant Context Data
+        Open UL Context Data Panel
       </button>
     );
   }
 
   return (
-    <div
-      className="uci-fixed uci-top-0 uci-left-0 uci-h-screen uci-bg-gray-900 uci-text-white uci-shadow-xl uci-border-r uci-border-gray-700 uci-flex uci-flex-col uci-z-[99998] uci-transition-transform uci-duration-300 uci-ease-out uci-overflow-hidden uci-box-border"
-      style={{ width, transform: open ? "translateX(0)" : "translateX(-100%)" }}
-    >
+    <PanelContainer width={width} open={open}>
       <PanelHeader
         isConnected={isConnected}
         isConnectedText="Connected to Tenant"
-        isNotConnectedText="Not connected"
+        isNotConnectedText="Not connected to tenant"
         setOpen={setOpen}
         title="Tenant context data"
       />
 
-  {/* Screen selection (populated via manifest) */}
-      <div className="uci-px-5 uci-py-3 uci-border-b uci-border-gray-800">
-        <select
-          className="uci-w-full uci-bg-gray-800 uci-border uci-border-gray-600 uci-rounded uci-text-xs uci-text-gray-100 uci-px-2 uci-py-1 disabled:uci-opacity-60"
-          disabled={!screenOptions.length}
-          value={selectedScreen || ''}
-          onChange={e => setSelectedScreen(e.target.value)}
-        >
-          {screenOptions.length === 0 && <option value="">{screenLabel}</option>}
-          {screenOptions.map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
-        </select>
-      </div>
+      <PanelSelectContext
+        dataSourceOptions={dataSources}
+        dataVersionOptions={versions}
+        isConnected={isConnected}
+        onChangeSelectDataSource={(event) => handleDataSource(event.target.value as string)}
+        onChangeSelectDataVersion={(event) => handleVersion(event.target.value as string)}
+        onChangeSelectScreen={(event) => setSelectedScreen(event.target.value as string)}
+        onChangeSelectVariant={(event) => handleVariant(event.target.value as string)}
+        screenOptions={screenOptions}
+        selectedDataSource={dataSource}
+        selectedDataVersion={version}
+        selectedScreen={selectedScreen}
+        selectedVariant={variant}
+        setSelectedScreen={setSelectedScreen}
+        variantOptions={variantOptions}
+      />
 
-      {!isConnected && (
-        <>
-          {/* Variant selection */}
-          <div className="uci-px-5 uci-py-3 uci-border-b uci-border-gray-800">
-            <select
-              className="uci-w-full uci-bg-gray-800 uci-border uci-border-gray-600 uci-rounded uci-text-xs uci-text-gray-100 uci-px-2 uci-py-1"
-              value={variant}
-              onChange={e => handleVariant(e.target.value)}
-              disabled={!variantOptions.length}
-            >
-              {variantOptions.map(v => <option key={v} value={v}>{v}</option>)}
-            </select>
-          </div>
-          {/* Data Source + Version (version hidden in local mode) */}
-            <div className="uci-px-5 uci-py-3 uci-border-b uci-border-gray-800">
-              {dataSource.toLowerCase().includes('local') ? (
-                <select
-                  className="uci-w-full uci-bg-gray-800 uci-border uci-border-gray-600 uci-rounded uci-text-xs uci-text-gray-100 uci-px-2 uci-py-1"
-                  value={dataSource}
-                  onChange={e => handleDataSource(e.target.value)}
-                >
-                  {dataSources.map(d => <option key={d} value={d}>{d}</option>)}
-                </select>
-              ) : (
-                <div className="uci-flex uci-gap-3">
-                  <select
-                    className="uci-w-1/2 uci-bg-gray-800 uci-border uci-border-gray-600 uci-rounded uci-text-xs uci-text-gray-100 uci-px-2 uci-py-1"
-                    value={dataSource}
-                    onChange={e => handleDataSource(e.target.value)}
-                  >
-                    {dataSources.map(d => <option key={d} value={d}>{d}</option>)}
-                  </select>
-                  <select
-                    className="uci-w-1/2 uci-bg-gray-800 uci-border uci-border-gray-600 uci-rounded uci-text-xs uci-text-gray-100 uci-px-2 uci-py-1"
-                    value={version}
-                    onChange={e => handleVersion(e.target.value)}
-                  >
-                    {versions.map(ver => <option key={ver} value={ver}>{ver}</option>)}
-                  </select>
-                </div>
-              )}
-            </div>
-            {manifestLoading && (
-              <div className="uci-px-5 uci-py-2 uci-text-[11px] uci-text-gray-400 uci-border-b uci-border-gray-800">Loading manifest…</div>
-            )}
-            {manifestError && (
-              <div className="uci-px-5 uci-py-2 uci-text-[11px] uci-text-red-400 uci-border-b uci-border-gray-800">{manifestError}</div>
-            )}
-        </>
+      {/* TODO: Test manifestLoading/error */}
+      {manifestLoading && (
+        <div className="uci-px-5 uci-py-2 uci-text-[11px] uci-text-gray-400 uci-border-b uci-border-gray-800">Loading manifest…</div>
+      )}
+      {manifestError && (
+        <div className="uci-px-5 uci-py-2 uci-text-[11px] uci-text-red-400 uci-border-b uci-border-gray-800">{manifestError}</div>
       )}
 
   {/* Toolbar: search toggle, download, copy */}
@@ -314,6 +276,6 @@ export const UniversalLoginContextPanel: React.FC<UniversalLoginContextPanelProp
           />
         </div>
       </div>
-    </div>
+    </PanelContainer>
   );
 };

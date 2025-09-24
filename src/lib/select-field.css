@@ -1,0 +1,75 @@
+/* MAIN */
+.uci-select-field {
+  padding-bottom: 8px !important;
+}
+
+/* SUB */
+.uci-select-field div {
+  color: #FBFBFB;
+  background: #111111;
+  /* color: color_fg_bold; */
+  /* Body/100 Emphasis */
+  font-family: var(--Body-100-Emphasis-Font-Family, Inter);
+  font-size: var(--Body-100-Emphasis-Font-Size, 14px);
+  font-style: normal;
+  font-weight: var(--Body-100-Emphasis-Font-Weight, 500);
+  line-height: var(--Body-100-Emphasis-Line-Height, 22px);
+  letter-spacing: var(--Body-100-Emphasis-Letter-Spacing, 0);
+}
+
+/* DISABLED field */
+.uci-select-field .Mui-disabled.base-QuantumSelect-root {
+  background: #242424;
+}
+
+/* BORDER */
+.uci-select-field .MuiOutlinedInput-notchedOutline {
+  border-color: #383838 !important;
+}
+
+/* BORDER DISABLED */
+.uci-select-field .Mui-disabled .MuiOutlinedInput-notchedOutline {
+  border-color: #808080 !important;
+  /* border-color: red !important; */
+}
+
+/* TEXT COLOR */
+.Mui-disabled .MuiNativeSelect-select {
+  -webkit-text-fill-color: #FBFBFB !important;
+}
+
+/* PREFIX */
+.uci-select-field .base-QuantumSelect-prefixText {
+  color: #ABABAB;
+  text-decoration: none;
+}
+
+/* PREFIX DISABLED */
+.uci-select-field .Mui-disabled .base-QuantumSelect-prefixText {
+  color: #ABABAB; /* color_fg_default; */
+  background: #242424;
+  text-decoration: none;
+}
+
+/* DROPDOWN ICON STYLING */
+/* hide default MUI dropdown icon and replace with custom SVG */
+.MuiNativeSelect-icon,
+.MuiSvgIcon-root.MuiSvgIcon-fontSizeMedium.MuiNativeSelect-icon {
+  display: none !important;
+}
+
+/* add custom dropdown icon as bg */
+.uci-select-field .MuiNativeSelect-select,
+.uci-select-field .base-QuantumFormField-root .MuiOutlinedInput-root .MuiNativeSelect-select {
+  background-image: url("data:image/svg+xml,%3csvg width='16' height='16' viewBox='0 0 16 16' fill='none' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M12.8047 6.47168L8.75391 10.5225C8.33744 10.9384 7.66254 10.9385 7.24609 10.5225L3.19531 6.47168L4.1377 5.52832L8 9.39062L11.8623 5.52832L12.8047 6.47168Z' fill='%23FBFBFB'/%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 16px 16px;
+  padding-right: 40px !important;
+}
+
+/* DISABLED - hide drown down icon */
+.uci-select-field .Mui-disabled .MuiNativeSelect-select,
+.uci-select-field .Mui-disabled .base-QuantumFormField-root .MuiOutlinedInput-root .MuiNativeSelect-select {
+  background-image: none;
+}

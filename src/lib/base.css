@@ -1,0 +1,25 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+body {
+  background-color: black !important;
+}
+
+h1 {
+  color: color_fg_bold;
+  font-variant-numeric: slashed-zero;
+  /* Heading/100 */
+  font-family: var(--Heading-100-Font-Family, Aeonik) !important;
+  font-size: var(--Heading-100-Font-Size, 20px) !important;
+  font-style: normal;
+  font-weight: var(--Heading-100-Font-Weight, 500) !important;
+  /* line-height: var(--Heading-100-Line-Height, 28px); 140% */
+  letter-spacing: var(--Heading-100-Letter-Spacing, 0.4px) !important;
+}
+
+button {
+  background-color: transparent;
+}
+
+button:hover {
+  cursor: pointer;
+}

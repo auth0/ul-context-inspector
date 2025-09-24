@@ -7,7 +7,7 @@ import type { PanelHeaderProps } from '../types/components';
 const PanelHeader: React.FC<PanelHeaderProps> = ({ title, isConnected, isConnectedText, isNotConnectedText, setOpen }) => {
 
   return (
-    <div className="uci-flex uci-items-center uci-justify-between uci-px-4 uxi-py-6">
+    <div className="uci-flex uci-items-center uci-justify-between uci-mb-4">
         <div className="uci-flex uci-items-center uci-gap-2">
           <h1 className="uci-tracking-wide">
             {title}
@@ -16,7 +16,7 @@ const PanelHeader: React.FC<PanelHeaderProps> = ({ title, isConnected, isConnect
             sx={{
               backgroundColor: isConnected ?
                 theme.auth0.dark.color_bg_state_success_subtle :
-                "#292406",
+                theme.auth0.dark.color_bg_state_caution_subtle,
               height: "20px",
               display: "flex",
               alignItems: "center",
@@ -24,13 +24,13 @@ const PanelHeader: React.FC<PanelHeaderProps> = ({ title, isConnected, isConnect
             >
             <StatusDot
               label=""
-              color={isConnected ? "success" : "warning"}
+              color={isConnected ? 'success' : 'warning'}
               textVariant="overline"
               />
             <Text
               color={isConnected ?
                 theme.auth0.dark.color_fg_on_state_success_subtle :
-                "#E3C423"
+                theme.auth0.dark.color_fg_on_state_caution_subtle
               }
               variant="overline"
               sx={{ fontSize: '11px' }}
