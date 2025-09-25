@@ -44,12 +44,12 @@ import { UniversalLoginContextPanel } from "../index";
 export const DevApp: React.FC = () => {
   return (
     <QuantumProvider>
-    <CssBaseline />
+      <CssBaseline />
+      <UniversalLoginContextPanel />
       <div style={{ padding: 40 }}>
-        {/* Left-side panel for universal_login_context (State 1) */}
-        <UniversalLoginContextPanel />
         <h1 className="uci-text-white uci-pt-10">
-          Universal Login Context Inspector</h1>
+          Universal Login Context Inspector
+        </h1>
         <p className="uci-text-[#ABABAB]">
           Dev Sandbox: Edit <Code sx={{backgroundColor: "#b7b2ff"}}>window.universal_login_context</Code> JSON via the left
           panel.

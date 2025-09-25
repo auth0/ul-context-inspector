@@ -25,12 +25,13 @@ export const JsonCodeEditor: React.FC<JsonCodeEditorProps> = ({
   const lineCount = useMemo(() => value.split('\n').length, [value]);
   return (
     <div
-      className={`uci-relative uci-h-full uci-w-full uci-rounded uci-border ${
+      className={`uci- uci-min-h-full uci-h-fit uci-w-full uci-rounded uci-border ${
         isValid ? 'uci-border-gray-700' : 'uci-border-red-500'
-      } uci-bg-[#171717] uci-flex`}
+      } uci-bg-[#171717]`}
     >
       {/* line digits */}
-      <div className="uci-select-none uci-bg-[#171717] uci-text-gray-500 uci-text-[11px] uci-leading-4 uci-font-mono uci-py-2 uci-pl-2 uci-pr-3 uci-border-r uci-border-gray-700 uci-overflow-hidden">
+      <div className="uci-select-none uci-bg-[#171717] uci-text-gray-500 uci-text-[11px] uci-leading-4 uci-font-mono
+        uci-py-2 uci-pl-2 uci-pr-3 uci-border-r uci-border-gray-700 uci-min-w-[34px]">
         {Array.from({ length: lineCount }).map((_, i) => (
           <div key={i} className="uci-h-4 uci-flex uci-justify-end">{i + 1}</div>
         ))}
