@@ -5,10 +5,11 @@ export const IconButton: React.FC<
     label: string;
     onClick: () => void;
     active?: boolean;
+    classNames?: string;
   }>
-> = ({ label, onClick, children, active }) => (
+> = ({ label, onClick, children, active, classNames }) => (
   <button
-    className="uci-border-none uci-flex"
+    className={`uci-border-none uci-flex uci-p-2 uci-mx-1 ${classNames || ''}`}
     title={label}
     onClick={onClick}
     type="button"
@@ -23,7 +24,7 @@ export const SearchIcon = () => (
     height="16"
     viewBox="0 0 24 24"
     fill="none"
-    stroke="currentColor"
+    stroke="white"
     strokeWidth="2"
     strokeLinecap="round"
     strokeLinejoin="round"
@@ -39,7 +40,7 @@ export const CopyIcon = () => (
     height="16"
     viewBox="0 0 24 24"
     fill="none"
-    stroke="currentColor"
+    stroke="white"
     strokeWidth="2"
     strokeLinecap="round"
     strokeLinejoin="round"
@@ -55,7 +56,7 @@ export const DownloadIcon = () => (
     height="16"
     viewBox="0 0 24 24"
     fill="none"
-    stroke="currentColor"
+    stroke="white"
     strokeWidth="2"
     strokeLinecap="round"
     strokeLinejoin="round"
@@ -75,13 +76,19 @@ export const CollapseIcon = () => (
   </svg>
 );
 
+export const OpenIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="15" height="14" viewBox="0 0 15 14" fill="none">
+    <path d="M14.667 13.667H13.333V0.333008H14.667V13.667ZM11.8047 6.52832C12.065 6.78867 12.065 7.21133 11.8047 7.47168L7.1377 12.1377L6.19531 11.1953L9.72363 7.66699H0.666992V6.33301H9.72363L6.19531 2.80469L7.1377 1.8623L11.8047 6.52832Z" fill="white"/>
+  </svg>
+);
+
 export const CloseIcon = () => (
   <svg
     width="16"
     height="16"
     viewBox="0 0 24 24"
     fill="none"
-    stroke="currentColor"
+    stroke="white"
     strokeWidth="2"
     strokeLinecap="round"
     strokeLinejoin="round"

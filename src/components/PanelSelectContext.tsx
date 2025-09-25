@@ -38,6 +38,7 @@ const PanelSelectContext: React.FC<PanelSelectContextProps> = ({
   return (
     <div className="uci-flex uci-flex-col">
       {/* TODO NICE TO HAVE (task size +++): build searchable select to replace base select */}
+      {/* TODO: fix dropdown display to match design */}
       <SelectField
         name="panel-select-screen"
         options={mapOptions(screenOptions)}
@@ -91,7 +92,6 @@ const PanelSelectContext: React.FC<PanelSelectContextProps> = ({
               />
             )}
           </div>
-
         </div>
       )}
     </div>

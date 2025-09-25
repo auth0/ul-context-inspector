@@ -17,8 +17,8 @@ import { JsonCodeEditor } from './JsonCodeEditor';
 import PanelHeader from './PanelHeader';
 import PanelContainer from './PanelContainer';
 import PanelSelectContext from './PanelSelectContext';
-
-import { IconButton, SearchIcon, CopyIcon, DownloadIcon } from '../assets/icons';
+import PanelCodeEditorContainer from './PanelCodeEditorContainer';
+import PanelToggleButton from './PanelToggleButton';
 
 import type { UniversalLoginContextPanelProps, WindowLike } from '../types/universal-login-context-panel';
 
@@ -85,11 +85,13 @@ export const UniversalLoginContextPanel: React.FC<UniversalLoginContextPanelProp
     applyEnabled: initialHadContextRef.current || dataSource.toLowerCase().includes('local')
   });
 
-  const [searchVisible, setSearchVisible] = useState(false);
+  const [isSearchVisible, setIsSearchVisible] = useState(false);
   const [search, setSearch] = useState("");
 
   // True connectivity defined exclusively by initial presence (prevents accidental promotion).
   const isConnected = initialHadContextRef.current && !!contextObj;
+
+  const panelTitle = isConnected ? "Tenant context data" : "Mock context data";
 
   // Manifest (only loaded while disconnected & panel open)
   const { screenOptions, getVariantInfo, loadVariantJson, loading: manifestLoading, error: manifestError } = useUlManifest({
@@ -187,95 +189,68 @@ export const UniversalLoginContextPanel: React.FC<UniversalLoginContextPanelProp
   // Panel fully hidden when closed (no persistent handle)
   if (!open) {
     return (
-      <button
-        type="button"
-        aria-label="Open UL context data panel"
+      <PanelToggleButton
         onClick={() => setOpen(true)}
-        className="uci-fixed uci-top-1/4 uci-left-10 uci-bg-indigo-600 hover:uci-bg-indigo-800 uci-text-white uci-font-medium uci-px-3 uci-py-2 uci-rounded uci-z-[99998]"
-      >
-        Open UL Context Data Panel
-      </button>
+        panelTitle={panelTitle}
+      />
     );
   }
 
   return (
     <PanelContainer width={width} open={open}>
-      <PanelHeader
-        isConnected={isConnected}
-        isConnectedText="Connected to Tenant"
-        isNotConnectedText="Not connected to tenant"
-        setOpen={setOpen}
-        title="Tenant context data"
-      />
+      <div>
+        <PanelHeader
+          isConnected={isConnected}
+          isConnectedText="Connected to Tenant"
+          isNotConnectedText="Not connected to tenant"
+          setOpen={setOpen}
+          title={panelTitle}
+        />
 
-      <PanelSelectContext
-        dataSourceOptions={dataSources}
-        dataVersionOptions={versions}
-        isConnected={isConnected}
-        onChangeSelectDataSource={(event) => handleDataSource(event.target.value as string)}
-        onChangeSelectDataVersion={(event) => handleVersion(event.target.value as string)}
-        onChangeSelectScreen={(event) => setSelectedScreen(event.target.value as string)}
-        onChangeSelectVariant={(event) => handleVariant(event.target.value as string)}
-        screenOptions={screenOptions}
-        selectedDataSource={dataSource}
-        selectedDataVersion={version}
-        selectedScreen={selectedScreen}
-        selectedVariant={variant}
-        setSelectedScreen={setSelectedScreen}
-        variantOptions={variantOptions}
-      />
+        <PanelSelectContext
+          dataSourceOptions={dataSources}
+          dataVersionOptions={versions}
+          isConnected={isConnected}
+          onChangeSelectDataSource={(event) => handleDataSource(event.target.value as string)}
+          onChangeSelectDataVersion={(event) => handleVersion(event.target.value as string)}
+          onChangeSelectScreen={(event) => setSelectedScreen(event.target.value as string)}
+          onChangeSelectVariant={(event) => handleVariant(event.target.value as string)}
+          screenOptions={screenOptions}
+          selectedDataSource={dataSource}
+          selectedDataVersion={version}
+          selectedScreen={selectedScreen}
+          selectedVariant={variant}
+          setSelectedScreen={setSelectedScreen}
+          variantOptions={variantOptions}
+        />
 
-      {/* TODO: Test manifestLoading/error */}
-      {manifestLoading && (
-        <div className="uci-px-5 uci-py-2 uci-text-[11px] uci-text-gray-400 uci-border-b uci-border-gray-800">Loading manifest…</div>
-      )}
-      {manifestError && (
-        <div className="uci-px-5 uci-py-2 uci-text-[11px] uci-text-red-400 uci-border-b uci-border-gray-800">{manifestError}</div>
-      )}
-
-  {/* Toolbar: search toggle, download, copy */}
-      <div className="uci-flex uci-items-center uci-justify-end uci-gap-2 uci-px-5 uci-py-2.5 uci-border-b uci-border-gray-800">
-        <IconButton
-          label="Search"
-          onClick={() => setSearchVisible((v) => !v)}
-          active={searchVisible}
-        >
-          <SearchIcon />
-        </IconButton>
-        <IconButton label="Download JSON" onClick={onDownload}>
-          <DownloadIcon />
-        </IconButton>
-        <IconButton label="Copy JSON" onClick={onCopy}>
-          <CopyIcon />
-        </IconButton>
+        {/* TODO: Test manifestLoading/error - should be displayed? in console or elsewhere? */}
+        {manifestLoading && (
+          <div className="uci-px-5 uci-py-2 uci-text-[11px] uci-text-gray-400 uci-border-b uci-border-gray-800">Loading manifest…</div>
+        )}
+        {manifestError && (
+          <div className="uci-px-5 uci-py-2 uci-text-[11px] uci-text-red-400 uci-border-b uci-border-gray-800">{manifestError}</div>
+        )}
       </div>
 
-      {searchVisible && (
-        <div className="uci-px-5 uci-py-2.5 uci-border-b uci-border-gray-800 uci-min-w-0">
-          <div className="uci-min-w-0">
-            <input
-              type="text"
-              className="uci-w-full uci-bg-gray-800 uci-border uci-border-gray-600 focus:uci-ring-2 focus:uci-ring-indigo-500 uci-rounded uci-text-xs uci-px-2 uci-py-1"
-              placeholder="Search (filters lines)"
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-            />
-          </div>
-        </div>
-      )}
-
-      <div className="uci-flex-1 uci-overflow-hidden uci-flex uci-flex-col">
-        <div className="uci-flex-1 uci-overflow-auto uci-px-5 uci-pt-4 uci-pb-8">
-          <JsonCodeEditor
-            value={search ? filteredDisplay : raw}
-            onChange={setRaw}
-            readOnly={Boolean(search || !isConnected)}
-            isValid={isValid}
-            filtered={Boolean(search)}
-            textareaId="tenant-context-json-editor"
-          />
-        </div>
-      </div>
+      <PanelCodeEditorContainer
+        onSearchButtonClick={() => setIsSearchVisible((v) => !v)}
+        onDownloadButtonClick={onDownload}
+        onCopyButtonClick={onCopy}
+        isSearchVisible={isSearchVisible}
+        onChangeSearch={(event: { target: { value: string; }; }) => setSearch(event.target.value as string)}
+        onCloseButtonClick={() => { setIsSearchVisible(false); setSearch(''); }}
+        searchValue={search}
+      >
+        <JsonCodeEditor
+          value={search ? filteredDisplay : raw}
+          onChange={setRaw}
+          readOnly={Boolean(search || !isConnected)}
+          isValid={isValid}
+          filtered={Boolean(search)}
+          textareaId="tenant-context-json-editor"
+        />
+      </PanelCodeEditorContainer>
     </PanelContainer>
   );
 };

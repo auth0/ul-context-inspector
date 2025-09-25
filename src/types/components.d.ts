@@ -38,3 +38,20 @@ export interface Option {
 }
 
 export type OptionInput = Option | string;
+
+export interface PanelCodeEditorContainerProps {
+  onSearchButtonClick: () => void;
+  onCloseButtonClick: () => void;
+  onDownloadButtonClick: () => void;
+  // isSearchActive: boolean;
+  onCopyButtonClick: () => void;
+  isSearchVisible: boolean;
+  onChangeSearch?: IFieldProps["onChange"];
+  searchValue?: string;
+  children: React.ReactNode;
+}
+
+export interface PanelToggleButtonProps {
+  panelTitle: string;
+  onClick: () => void;
+}
