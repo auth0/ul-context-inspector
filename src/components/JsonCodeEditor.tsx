@@ -25,7 +25,7 @@ export const JsonCodeEditor: React.FC<JsonCodeEditorProps> = ({
   const lineCount = useMemo(() => value.split('\n').length, [value]);
   return (
     <div
-      className={`uci- uci-min-h-full uci-h-fit uci-w-full uci-rounded uci-border ${
+      className={`uci-flex uci-min-h-full uci-h-fit uci-w-full uci-rounded uci-border ${
         isValid ? 'uci-border-gray-700' : 'uci-border-red-500'
       } uci-bg-[#171717]`}
     >
@@ -50,8 +50,8 @@ export const JsonCodeEditor: React.FC<JsonCodeEditorProps> = ({
       />
 
       {filtered && (
-        <div className="uci-absolute uci-inset-0 uci-bg-black/30 uci-text-[11px] uci-text-gray-300 uci-flex uci-items-center uci-justify-center uci-pointer-events-none">
-          <span>Filtered view (hidden lines not shown)</span>
+        <div className="uci-absolute uci-inset-0 uci-bg-black/40 uci-text-[11px] uci-text-gray-300 uci-flex uci-items-center uci-justify-center uci-pointer-events-none">
+          <span>Filtered view (editing disabled)</span>
         </div>
       )}
     </div>
