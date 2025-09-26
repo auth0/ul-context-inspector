@@ -9,7 +9,8 @@ export const IconButton: React.FC<
   }>
 > = ({ label, onClick, children, active, classNames }) => (
   <button
-    className={`uci-border-none uci-flex uci-p-2 uci-mx-1 ${classNames || ''}`}
+    className={`uci-border-none uci-flex uci-p-2 uci-mx-1 ${classNames || ''}
+      hover:uci-bg-[#7787e0] uci-pointer-events-auto uci-rounded`}
     title={label}
     onClick={onClick}
     type="button"
