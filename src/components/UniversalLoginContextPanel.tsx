@@ -8,7 +8,7 @@ import React, {
 
 import "../lib/tailwind.css";
 import "../lib/styles.css";
-import "prismjs/themes/prism-tomorrow.css"; // theme (can swap or override)
+import "prismjs/themes/prism-tomorrow.css";
 
 import { useWindowJsonContext } from '../hooks/useWindowJsonContext';
 import { useUlManifest } from '../hooks/useUlManifest';

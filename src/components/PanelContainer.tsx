@@ -11,7 +11,8 @@ const PanelContainer: React.FC<PanelContainerProps> = ({ children, width, open }
     style={{
       width,
       minHeight: '100vh',
-      height: '-webkit-fill-available',
+      height: '100vh',
+      maxHeight: '100vh',
       transform: open ? "translateX(0)" : "translateX(-100%)"
     }}
   >

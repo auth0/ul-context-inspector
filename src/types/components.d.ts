@@ -49,6 +49,7 @@ export interface PanelCodeEditorContainerProps {
   onChangeSearch?: IFieldProps["onChange"];
   searchValue?: string;
   children: React.ReactNode;
+  codeWrap?: boolean;
 }
 
 export interface PanelToggleButtonProps {

@@ -20,10 +20,9 @@ const PanelCodeEditorContainer: React.FC<PanelCodeEditorContainerProps> = ({
   onChangeSearch,
   searchValue,
   children,
+  codeWrap: initialCodeWrap = false,
 }) => {
-  // TODO nice to have: Implement code wrap feature - find component?
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [codeWrap, setCodeWrap] = useState(false);
+  const [codeWrap, setCodeWrap] = useState(initialCodeWrap);
 
   return (
     <div className="uci-code-editor-container">
@@ -82,7 +81,14 @@ const PanelCodeEditorContainer: React.FC<PanelCodeEditorContainerProps> = ({
       )}
 
       <div className="uci-code-editor-area">
-        {children}
+        {React.Children.map(children, (child) => {
+          if (React.isValidElement(child)) {
+            return React.cloneElement(child as React.ReactElement<Record<string, unknown>>, {
+              codeWrap
+            });
+          }
+          return child;
+        })}
       </div>
     </div>
   );

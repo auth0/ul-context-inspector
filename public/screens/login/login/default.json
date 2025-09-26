@@ -30,6 +30,1269 @@
   },
   "transaction": {
     "locale": "en",
-    "state": "LJ47LrwjYHjCx9tBWqOCdkweUFzYmFQ5"
+    "state": "LJ47LrwjYHjCx9tBWqOCdkweUFzYmFQ5",
+    "ip_address": "192.168.1.45",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "session_id": "sess_9f8e7d6c5b4a3e2d1c9b8a7f6e5d4c3b2a1",
+    "timestamp": "2025-09-25T14:30:22.123Z"
+  },
+  "user": {
+    "id": "user_abc123def456ghi789jkl012mno345pqr678",
+    "email": "john.doe@example.com",
+    "username": "johndoe123",
+    "first_name": "John",
+    "last_name": "Doe",
+    "display_name": "John D.",
+    "avatar_url": "https://randomuser.me/api/portraits/men/32.jpg",
+    "phone": "+1-555-123-4567",
+    "verified": true,
+    "created_at": "2023-03-15T10:20:30.456Z",
+    "last_login": "2025-09-24T16:45:12.789Z",
+    "login_count": 342,
+    "blocked": false,
+    "email_verified": true,
+    "phone_verified": false
+  },
+  "company": {
+    "name": "Acme Corporation Ltd.",
+    "domain": "acme-corp.com",
+    "industry": "Technology",
+    "size": "501-1000",
+    "founded": 1995,
+    "headquarters": "San Francisco, CA",
+    "website": "https://www.acme-corp.com",
+    "logo_url": "https://logo.clearbit.com/acme-corp.com",
+    "description": "Leading provider of innovative software solutions for enterprise customers worldwide"
+  },
+  "device": {
+    "type": "desktop",
+    "os": "Windows 10",
+    "browser": "Chrome",
+    "browser_version": "117.0.5938.132",
+    "screen_resolution": "1920x1080",
+    "timezone": "America/New_York",
+    "language": "en-US",
+    "is_mobile": false,
+    "is_trusted": true,
+    "fingerprint": "fp_a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6"
+  },
+  "location": {
+    "country": "United States",
+    "country_code": "US",
+    "region": "California",
+    "city": "San Francisco",
+    "zip_code": "94105",
+    "coordinates": {
+      "latitude": 37.7749,
+      "longitude": -122.4194
+    },
+    "isp": "Comcast Cable Communications"
+  },
+  "metadata": {
+    "environment": "production",
+    "version": "2.4.1",
+    "build": "20250925.143022",
+    "feature_flags": {
+      "new_login_flow": true,
+      "social_login": true,
+      "password_strength": false,
+      "two_factor_auth": true,
+      "biometric_auth": false
+    },
+    "experiments": {
+      "login_button_color": "blue",
+      "form_layout": "compact",
+      "error_handling": "inline"
+    }
+  },
+  "preferences": {
+    "theme": "light",
+    "language": "en",
+    "notifications": {
+      "email": true,
+      "push": false,
+      "sms": true
+    },
+    "privacy": {
+      "analytics": true,
+      "marketing": false,
+      "third_party": true
+    }
+  },
+  "authentication": {
+    "methods": ["password", "google", "facebook", "apple"],
+    "last_method": "password",
+    "password_last_changed": "2025-08-15T09:30:00.000Z",
+    "failed_attempts": 0,
+    "locked_until": null,
+    "require_mfa": false,
+    "backup_codes_generated": false
+  },
+  "subscription": {
+    "plan": "premium",
+    "status": "active",
+    "started_at": "2024-01-15T00:00:00.000Z",
+    "expires_at": "2025-01-15T23:59:59.999Z",
+    "trial_used": true,
+    "billing_cycle": "annual",
+    "auto_renew": true
+  },
+  "analytics": {
+    "page_views": 1247,
+    "session_duration": 1800,
+    "bounce_rate": 0.23,
+    "conversion_rate": 0.045,
+    "referrer": "https://google.com/search",
+    "utm_source": "google",
+    "utm_medium": "cpc",
+    "utm_campaign": "login_campaign_q3_2025"
+  },
+  "support": {
+    "tickets": 3,
+    "last_contact": "2025-09-20T11:15:30.000Z",
+    "satisfaction_score": 4.8,
+    "preferred_contact": "email",
+    "timezone_support": "America/New_York"
+  },
+  "security": {
+    "session": {
+      "max_idle_time": 1800,
+      "absolute_timeout": 28800,
+      "concurrent_sessions": 5,
+      "require_fresh_login": false,
+      "secure_cookies": true,
+      "same_site": "strict"
+    },
+    "password_policy": {
+      "min_length": 8,
+      "max_length": 128,
+      "require_uppercase": true,
+      "require_lowercase": true,
+      "require_digits": true,
+      "require_symbols": true,
+      "forbidden_passwords": ["password", "123456", "qwerty"],
+      "password_history": 12,
+      "max_failed_attempts": 5,
+      "lockout_duration": 900
+    },
+    "encryption": {
+      "algorithm": "AES-256-GCM",
+      "key_rotation_interval": 2592000,
+      "at_rest": true,
+      "in_transit": true,
+      "pii_encryption": true
+    },
+    "audit": {
+      "log_level": "detailed",
+      "retention_period": 2592000,
+      "real_time_alerts": true,
+      "compliance_reporting": true
+    }
+  },
+  "feature_toggles": {
+    "social_login_providers": {
+      "google": {
+        "enabled": true,
+        "client_id": "google_client_12345.apps.googleusercontent.com",
+        "scopes": ["email", "profile"],
+        "button_theme": "dark"
+      },
+      "facebook": {
+        "enabled": true,
+        "app_id": "facebook_app_67890",
+        "scopes": ["email", "public_profile"],
+        "api_version": "v18.0"
+      },
+      "microsoft": {
+        "enabled": false,
+        "tenant_id": "microsoft_tenant_abc123",
+        "scopes": ["openid", "email", "profile"]
+      },
+      "apple": {
+        "enabled": true,
+        "client_id": "com.company.app",
+        "scopes": ["email", "name"]
+      },
+      "linkedin": {
+        "enabled": false,
+        "client_id": "linkedin_client_xyz789",
+        "scopes": ["r_liteprofile", "r_emailaddress"]
+      }
+    },
+    "passwordless": {
+      "email_magic_links": {
+        "enabled": true,
+        "expiry_minutes": 15,
+        "max_attempts": 3,
+        "custom_template": "magic_link_v2"
+      },
+      "sms_otp": {
+        "enabled": false,
+        "expiry_minutes": 5,
+        "code_length": 6,
+        "provider": "twilio"
+      },
+      "webauthn": {
+        "enabled": true,
+        "timeout": 300000,
+        "user_verification": "preferred",
+        "resident_key": "discouraged"
+      }
+    },
+    "progressive_profiling": {
+      "enabled": true,
+      "required_fields": ["email", "name"],
+      "optional_fields": ["phone", "company", "job_title"],
+      "collection_strategy": "gradual"
+    }
+  },
+  "ui_customization": {
+    "themes": {
+      "light": {
+        "primary_color": "#007bff",
+        "secondary_color": "#6c757d",
+        "success_color": "#28a745",
+        "danger_color": "#dc3545",
+        "warning_color": "#ffc107",
+        "info_color": "#17a2b8",
+        "background_color": "#ffffff",
+        "text_color": "#212529"
+      },
+      "dark": {
+        "primary_color": "#0d6efd",
+        "secondary_color": "#6c757d",
+        "success_color": "#198754",
+        "danger_color": "#dc3545",
+        "warning_color": "#fd7e14",
+        "info_color": "#0dcaf0",
+        "background_color": "#121212",
+        "text_color": "#ffffff"
+      }
+    },
+    "fonts": {
+      "primary": "Inter, system-ui, sans-serif",
+      "secondary": "Georgia, serif",
+      "monospace": "JetBrains Mono, monospace"
+    },
+    "layout": {
+      "container_width": "400px",
+      "border_radius": "8px",
+      "box_shadow": "0 4px 6px rgba(0, 0, 0, 0.1)",
+      "padding": "32px",
+      "logo_position": "top-center"
+    },
+    "components": {
+      "buttons": {
+        "height": "48px",
+        "border_radius": "6px",
+        "font_weight": "600",
+        "transition": "all 0.2s ease-in-out"
+      },
+      "inputs": {
+        "height": "44px",
+        "border_radius": "4px",
+        "border_width": "1px",
+        "focus_ring": true
+      }
+    }
+  },
+  "integrations": {
+    "analytics": {
+      "google_analytics": {
+        "enabled": true,
+        "tracking_id": "GA-XXXX-XXXX-X",
+        "track_pageviews": true,
+        "track_events": true,
+        "custom_dimensions": {
+          "user_type": "dimension1",
+          "subscription_tier": "dimension2"
+        }
+      },
+      "mixpanel": {
+        "enabled": false,
+        "project_token": "mixpanel_token_12345",
+        "track_all_events": true
+      },
+      "segment": {
+        "enabled": true,
+        "write_key": "segment_write_key_67890",
+        "destinations": ["google_analytics", "intercom", "salesforce"]
+      }
+    },
+    "marketing": {
+      "hubspot": {
+        "enabled": true,
+        "portal_id": "12345678",
+        "form_guid": "form_guid_abcd1234",
+        "track_code": "hubspot_track_code"
+      },
+      "mailchimp": {
+        "enabled": false,
+        "api_key": "mailchimp_api_key",
+        "audience_id": "audience_12345"
+      },
+      "salesforce": {
+        "enabled": true,
+        "org_id": "00D000000000000EAA",
+        "lead_source": "Web Form",
+        "campaign_id": "campaign_70130000001"
+      }
+    },
+    "customer_support": {
+      "intercom": {
+        "enabled": true,
+        "app_id": "intercom_app_12345",
+        "hide_default_launcher": false,
+        "custom_launcher_selector": "#support-chat"
+      },
+      "zendesk": {
+        "enabled": false,
+        "subdomain": "company-support",
+        "widget_key": "zendesk_widget_key"
+      }
+    }
+  },
+  "compliance": {
+    "gdpr": {
+      "enabled": true,
+      "consent_banner": true,
+      "cookie_categories": ["essential", "analytics", "marketing"],
+      "data_retention_days": 365,
+      "right_to_deletion": true,
+      "data_portability": true
+    },
+    "ccpa": {
+      "enabled": true,
+      "do_not_sell_link": true,
+      "opt_out_form": "https://privacy.company.com/opt-out"
+    },
+    "hipaa": {
+      "enabled": false,
+      "baa_required": true,
+      "audit_logging": "comprehensive"
+    },
+    "soc2": {
+      "type_1": true,
+      "type_2": true,
+      "annual_assessment": true
+    }
+  },
+  "localization": {
+    "default_locale": "en",
+    "supported_locales": [
+      "en", "es", "fr", "de", "it", "pt", "nl", "ja", "ko", "zh", "ar", "ru"
+    ],
+    "rtl_locales": ["ar", "he"],
+    "date_format": {
+      "en": "MM/dd/yyyy",
+      "es": "dd/MM/yyyy",
+      "fr": "dd/MM/yyyy",
+      "de": "dd.MM.yyyy"
+    },
+    "currency": {
+      "default": "USD",
+      "supported": ["USD", "EUR", "GBP", "JPY", "CAD", "AUD"]
+    },
+    "translations": {
+      "login_title": {
+        "en": "Welcome back",
+        "es": "Bienvenido de nuevo",
+        "fr": "Bienvenue",
+        "de": "Willkommen zurück",
+        "ja": "おかえりなさい"
+      },
+      "email_placeholder": {
+        "en": "Enter your email",
+        "es": "Ingresa tu email",
+        "fr": "Entrez votre email",
+        "de": "E-Mail eingeben",
+        "ja": "メールアドレスを入力"
+      },
+      "password_placeholder": {
+        "en": "Enter your password",
+        "es": "Ingresa tu contraseña",
+        "fr": "Entrez votre mot de passe",
+        "de": "Passwort eingeben",
+        "ja": "パスワードを入力"
+      }
+    }
+  },
+  "performance": {
+    "caching": {
+      "static_assets": {
+        "enabled": true,
+        "ttl": 86400,
+        "cdn_enabled": true,
+        "compression": "gzip"
+      },
+      "api_responses": {
+        "enabled": true,
+        "ttl": 300,
+        "vary_by": ["user_id", "locale"]
+      }
+    },
+    "monitoring": {
+      "apm": {
+        "enabled": true,
+        "service_name": "auth0-universal-login",
+        "environment": "production",
+        "sample_rate": 0.1
+      },
+      "real_user_monitoring": {
+        "enabled": true,
+        "track_core_vitals": true,
+        "performance_budget": {
+          "fcp": 1500,
+          "lcp": 2500,
+          "cls": 0.1
+        }
+      }
+    }
+  },
+  "api_configuration": {
+    "rate_limiting": {
+      "login_attempts": {
+        "window_minutes": 15,
+        "max_attempts": 10,
+        "block_duration_minutes": 30
+      },
+      "password_reset": {
+        "window_minutes": 60,
+        "max_attempts": 5,
+        "block_duration_minutes": 60
+      },
+      "api_calls": {
+        "requests_per_minute": 1000,
+        "burst_limit": 2000,
+        "throttle_response": true
+      }
+    },
+    "endpoints": {
+      "authentication": "/api/v2/authenticate",
+      "authorization": "/api/v2/authorize",
+      "user_profile": "/api/v2/users/profile",
+      "password_reset": "/api/v2/users/password-reset",
+      "mfa_challenge": "/api/v2/mfa/challenge",
+      "logout": "/api/v2/logout"
+    },
+    "cors": {
+      "allowed_origins": [
+        "https://app.company.com",
+        "https://admin.company.com",
+        "https://staging.company.com"
+      ],
+      "allowed_methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+      "allowed_headers": ["Authorization", "Content-Type", "X-Requested-With"],
+      "max_age": 86400
+    }
+  },
+  "notifications": {
+    "email": {
+      "smtp": {
+        "host": "smtp.company.com",
+        "port": 587,
+        "secure": true,
+        "auth_required": true
+      },
+      "templates": {
+        "welcome": {
+          "subject": "Welcome to Company!",
+          "template_id": "welcome_v3",
+          "personalization": true
+        },
+        "password_reset": {
+          "subject": "Reset your password",
+          "template_id": "password_reset_v2",
+          "expiry_hours": 24
+        },
+        "email_verification": {
+          "subject": "Verify your email address",
+          "template_id": "email_verify_v1",
+          "expiry_hours": 72
+        },
+        "login_alert": {
+          "subject": "New login detected",
+          "template_id": "login_alert_v1",
+          "trigger_conditions": ["new_device", "new_location"]
+        }
+      }
+    },
+    "push": {
+      "fcm": {
+        "enabled": true,
+        "server_key": "fcm_server_key_12345",
+        "sender_id": "firebase_sender_12345"
+      },
+      "apns": {
+        "enabled": true,
+        "certificate_path": "/certs/apns_cert.p12",
+        "sandbox": false
+      }
+    },
+    "sms": {
+      "provider": "twilio",
+      "account_sid": "twilio_account_sid",
+      "from_number": "+1234567890",
+      "templates": {
+        "verification": "Your verification code is: {code}",
+        "password_reset": "Reset code: {code}. Valid for 10 minutes."
+      }
+    }
+  },
+  "user_segments": {
+    "new_users": {
+      "definition": "registered_days <= 7",
+      "features": ["onboarding_flow", "welcome_tour"],
+      "messaging": "optimized_for_activation"
+    },
+    "power_users": {
+      "definition": "login_count >= 50 AND last_login <= 7_days",
+      "features": ["advanced_features", "beta_access"],
+      "messaging": "feature_focused"
+    },
+    "inactive_users": {
+      "definition": "last_login >= 30_days",
+      "features": ["re_engagement_campaign"],
+      "messaging": "win_back_focused"
+    },
+    "enterprise_users": {
+      "definition": "organization_plan == 'enterprise'",
+      "features": ["sso", "advanced_reporting", "priority_support"],
+      "messaging": "business_focused"
+    },
+    "trial_users": {
+      "definition": "subscription_status == 'trial'",
+      "features": ["trial_banner", "upgrade_prompts"],
+      "messaging": "conversion_focused"
+    }
+  },
+  "experiments": {
+    "active_tests": [
+      {
+        "id": "login_form_layout_v2",
+        "name": "Login Form Layout Optimization",
+        "status": "running",
+        "start_date": "2025-09-01T00:00:00.000Z",
+        "end_date": "2025-10-01T00:00:00.000Z",
+        "traffic_split": 0.5,
+        "variants": [
+          {
+            "id": "control",
+            "name": "Current Layout",
+            "allocation": 0.5
+          },
+          {
+            "id": "variant_a",
+            "name": "Centered Form",
+            "allocation": 0.5
+          }
+        ],
+        "success_metrics": ["conversion_rate", "time_to_login"],
+        "segment_targeting": ["new_users", "mobile_users"]
+      },
+      {
+        "id": "social_login_prominence",
+        "name": "Social Login Button Prominence",
+        "status": "running",
+        "start_date": "2025-08-15T00:00:00.000Z",
+        "end_date": "2025-09-30T00:00:00.000Z",
+        "traffic_split": 0.3,
+        "variants": [
+          {
+            "id": "control",
+            "name": "Standard Social Buttons",
+            "allocation": 0.5
+          },
+          {
+            "id": "variant_b",
+            "name": "Prominent Social Buttons",
+            "allocation": 0.5
+          }
+        ],
+        "success_metrics": ["social_login_usage", "overall_conversion"],
+        "segment_targeting": ["all_users"]
+      }
+    ],
+    "completed_tests": [
+      {
+        "id": "password_strength_indicator",
+        "name": "Real-time Password Strength",
+        "status": "completed",
+        "winner": "variant_a",
+        "lift": 0.15,
+        "confidence": 0.95,
+        "completion_date": "2025-08-30T00:00:00.000Z"
+      }
+    ]
+  },
+  "third_party_scripts": {
+    "analytics": [
+      {
+        "name": "Google Analytics 4",
+        "src": "https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID",
+        "async": true,
+        "position": "head"
+      },
+      {
+        "name": "Hotjar",
+        "src": "https://static.hotjar.com/c/hotjar-12345.js",
+        "async": true,
+        "position": "head"
+      }
+    ],
+    "marketing": [
+      {
+        "name": "Facebook Pixel",
+        "src": "https://connect.facebook.net/en_US/fbevents.js",
+        "async": true,
+        "position": "head"
+      },
+      {
+        "name": "LinkedIn Insight Tag",
+        "src": "https://snap.licdn.com/li.lms-analytics/insight.min.js",
+        "async": true,
+        "position": "head"
+      }
+    ],
+    "customer_support": [
+      {
+        "name": "Intercom Widget",
+        "src": "https://widget.intercom.io/widget/app_id",
+        "async": true,
+        "position": "body"
+      }
+    ]
+  },
+  "accessibility": {
+    "wcag_level": "AA",
+    "screen_reader_support": true,
+    "keyboard_navigation": true,
+    "high_contrast_mode": true,
+    "font_size_scaling": true,
+    "color_blind_friendly": true,
+    "focus_indicators": "enhanced",
+    "aria_labels": "comprehensive",
+    "skip_links": true,
+    "landmarks": true
+  },
+  "browser_support": {
+    "minimum_versions": {
+      "chrome": 90,
+      "firefox": 88,
+      "safari": 14,
+      "edge": 90,
+      "opera": 76
+    },
+    "polyfills": [
+      "es6-promise",
+      "fetch",
+      "intersection-observer",
+      "custom-elements"
+    ],
+    "graceful_degradation": true,
+    "legacy_browser_message": true
+  },
+  "content_security_policy": {
+    "default_src": ["'self'"],
+    "script_src": [
+      "'self'",
+      "'unsafe-inline'",
+      "https://www.googletagmanager.com",
+      "https://connect.facebook.net",
+      "https://widget.intercom.io"
+    ],
+    "style_src": [
+      "'self'",
+      "'unsafe-inline'",
+      "https://fonts.googleapis.com"
+    ],
+    "img_src": [
+      "'self'",
+      "data:",
+      "https:",
+      "blob:"
+    ],
+    "connect_src": [
+      "'self'",
+      "https://api.company.com",
+      "https://analytics.company.com"
+    ],
+    "font_src": [
+      "'self'",
+      "https://fonts.gstatic.com"
+    ],
+    "report_uri": "/api/csp-report"
+  },
+  "deployment": {
+    "environment": "production",
+    "version": "2.4.1",
+    "build_number": "20250925.143022",
+    "git_commit": "abc123def456789012345678901234567890abcd",
+    "deployment_date": "2025-09-25T14:30:22.123Z",
+    "deployment_region": "us-east-1",
+    "cdn": {
+      "provider": "CloudFront",
+      "distribution_id": "E1234567890ABC",
+      "cache_behaviors": [
+        {
+          "path": "/assets/*",
+          "ttl": 86400,
+          "compress": true
+        },
+        {
+          "path": "/api/*",
+          "ttl": 0,
+          "compress": false
+        }
+      ]
+    },
+    "health_checks": {
+      "endpoint": "/health",
+      "interval": 30,
+      "timeout": 5,
+      "healthy_threshold": 2,
+      "unhealthy_threshold": 3
+    }
+  },
+  "audit_logs": {
+    "authentication_events": [
+      {
+        "event_id": "evt_auth_001",
+        "timestamp": "2025-09-26T10:15:30.123Z",
+        "event_type": "login_success",
+        "user_id": "user_abc123def456",
+        "session_id": "sess_9f8e7d6c5b4a3e2d",
+        "ip_address": "192.168.1.45",
+        "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+        "location": {
+          "country": "United States",
+          "region": "California",
+          "city": "San Francisco"
+        },
+        "device_fingerprint": "fp_a1b2c3d4e5f6g7h8",
+        "auth_method": "password",
+        "risk_score": 0.15
+      },
+      {
+        "event_id": "evt_auth_002",
+        "timestamp": "2025-09-26T10:12:45.567Z",
+        "event_type": "login_failed",
+        "user_id": "user_def456ghi789",
+        "session_id": "sess_1a2b3c4d5e6f7g8h",
+        "ip_address": "203.0.113.42",
+        "user_agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X)",
+        "location": {
+          "country": "Canada",
+          "region": "Ontario",
+          "city": "Toronto"
+        },
+        "device_fingerprint": "fp_mobile_xyz789",
+        "auth_method": "password",
+        "failure_reason": "invalid_credentials",
+        "risk_score": 0.75
+      },
+      {
+        "event_id": "evt_auth_003",
+        "timestamp": "2025-09-26T10:08:12.890Z",
+        "event_type": "mfa_challenge",
+        "user_id": "user_ghi789jkl012",
+        "session_id": "sess_mfa_challenge_001",
+        "ip_address": "198.51.100.123",
+        "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)",
+        "location": {
+          "country": "United Kingdom",
+          "region": "England",
+          "city": "London"
+        },
+        "mfa_method": "totp",
+        "challenge_id": "chall_totp_001",
+        "risk_score": 0.35
+      }
+    ],
+    "admin_actions": [
+      {
+        "action_id": "admin_001",
+        "timestamp": "2025-09-26T09:30:15.456Z",
+        "admin_user_id": "admin_user_001",
+        "admin_email": "admin@company.com",
+        "action_type": "user_unlock",
+        "target_user_id": "user_locked_001",
+        "reason": "Customer support request #12345",
+        "ip_address": "10.0.1.100",
+        "success": true
+      },
+      {
+        "action_id": "admin_002",
+        "timestamp": "2025-09-26T09:15:22.789Z",
+        "admin_user_id": "admin_user_002",
+        "admin_email": "security@company.com",
+        "action_type": "role_assignment",
+        "target_user_id": "user_promote_001",
+        "details": {
+          "role_added": "premium_user",
+          "role_removed": "basic_user"
+        },
+        "ip_address": "10.0.1.101",
+        "success": true
+      }
+    ],
+    "system_events": [
+      {
+        "event_id": "sys_001",
+        "timestamp": "2025-09-26T08:00:00.000Z",
+        "event_type": "scheduled_maintenance",
+        "component": "authentication_service",
+        "status": "completed",
+        "duration_minutes": 15,
+        "affected_users": 0
+      },
+      {
+        "event_id": "sys_002",
+        "timestamp": "2025-09-26T07:45:30.123Z",
+        "event_type": "certificate_renewal",
+        "component": "ssl_certificate",
+        "certificate_subject": "*.company.com",
+        "expiry_date": "2026-09-26T00:00:00.000Z",
+        "status": "success"
+      }
+    ]
+  },
+  "risk_assessment": {
+    "threat_intelligence": {
+      "known_bad_ips": [
+        {
+          "ip": "192.0.2.100",
+          "threat_type": "brute_force",
+          "first_seen": "2025-09-20T00:00:00.000Z",
+          "last_seen": "2025-09-25T23:59:59.999Z",
+          "confidence": 0.95,
+          "source": "internal_detection"
+        },
+        {
+          "ip": "198.51.100.200",
+          "threat_type": "credential_stuffing",
+          "first_seen": "2025-09-18T00:00:00.000Z",
+          "last_seen": "2025-09-24T12:30:00.000Z",
+          "confidence": 0.88,
+          "source": "threat_feed"
+        }
+      ],
+      "suspicious_user_agents": [
+        "BadBot/1.0",
+        "AttackTool/2.1",
+        "CredentialStuffer/3.0"
+      ],
+      "geofencing": {
+        "blocked_countries": ["XX", "YY"],
+        "high_risk_countries": ["ZZ", "AA"],
+        "allow_list_enabled": false,
+        "allowed_countries": []
+      }
+    },
+    "behavioral_analysis": {
+      "login_patterns": {
+        "unusual_hours": {
+          "enabled": true,
+          "threshold_deviation": 3,
+          "user_baseline_days": 30
+        },
+        "velocity_checks": {
+          "enabled": true,
+          "max_locations_per_hour": 3,
+          "max_devices_per_day": 5
+        },
+        "impossible_travel": {
+          "enabled": true,
+          "min_travel_time_hours": 2,
+          "max_speed_kmh": 1000
+        }
+      },
+      "device_intelligence": {
+        "new_device_risk": 0.6,
+        "jailbroken_device_risk": 0.9,
+        "emulator_risk": 0.95,
+        "bot_detection_enabled": true
+      }
+    },
+    "scoring_model": {
+      "version": "2.1.0",
+      "last_updated": "2025-09-01T00:00:00.000Z",
+      "factors": [
+        {
+          "name": "ip_reputation",
+          "weight": 0.25,
+          "enabled": true
+        },
+        {
+          "name": "device_trust",
+          "weight": 0.20,
+          "enabled": true
+        },
+        {
+          "name": "behavioral_patterns",
+          "weight": 0.30,
+          "enabled": true
+        },
+        {
+          "name": "geolocation",
+          "weight": 0.15,
+          "enabled": true
+        },
+        {
+          "name": "time_of_day",
+          "weight": 0.10,
+          "enabled": true
+        }
+      ],
+      "thresholds": {
+        "low_risk": 0.3,
+        "medium_risk": 0.6,
+        "high_risk": 0.8
+      }
+    }
+  },
+  "reporting": {
+    "dashboards": [
+      {
+        "id": "auth_overview",
+        "name": "Authentication Overview",
+        "widgets": [
+          {
+            "id": "login_success_rate",
+            "type": "metric",
+            "title": "Login Success Rate",
+            "time_range": "24h",
+            "current_value": 94.2,
+            "target_value": 95.0,
+            "unit": "percentage"
+          },
+          {
+            "id": "active_sessions",
+            "type": "gauge",
+            "title": "Active Sessions",
+            "current_value": 12847,
+            "max_value": 50000,
+            "unit": "count"
+          },
+          {
+            "id": "login_attempts_timeline",
+            "type": "timeseries",
+            "title": "Login Attempts Over Time",
+            "time_range": "7d",
+            "metrics": ["successful_logins", "failed_logins", "blocked_attempts"]
+          },
+          {
+            "id": "geographic_distribution",
+            "type": "map",
+            "title": "Geographic Distribution",
+            "time_range": "24h",
+            "data_points": [
+              {"country": "US", "value": 5420},
+              {"country": "CA", "value": 892},
+              {"country": "GB", "value": 1156},
+              {"country": "DE", "value": 743},
+              {"country": "FR", "value": 634}
+            ]
+          }
+        ],
+        "refresh_interval": 300,
+        "access_permissions": ["admin", "security_analyst"]
+      },
+      {
+        "id": "security_incidents",
+        "name": "Security Incidents",
+        "widgets": [
+          {
+            "id": "threat_level",
+            "type": "status",
+            "title": "Current Threat Level",
+            "value": "LOW",
+            "color": "green",
+            "description": "No active threats detected"
+          },
+          {
+            "id": "blocked_ips",
+            "type": "counter",
+            "title": "Blocked IPs (24h)",
+            "current_value": 127,
+            "previous_value": 98,
+            "change_percentage": 29.6
+          },
+          {
+            "id": "suspicious_activities",
+            "type": "list",
+            "title": "Recent Suspicious Activities",
+            "items": [
+              {
+                "timestamp": "2025-09-26T09:45:00.000Z",
+                "type": "Multiple failed login attempts",
+                "ip": "203.0.113.50",
+                "severity": "medium"
+              },
+              {
+                "timestamp": "2025-09-26T09:30:00.000Z",
+                "type": "Login from new country",
+                "user": "user_***@example.com",
+                "severity": "low"
+              }
+            ]
+          }
+        ],
+        "refresh_interval": 60,
+        "access_permissions": ["admin", "security_team"]
+      }
+    ],
+    "scheduled_reports": [
+      {
+        "id": "weekly_auth_summary",
+        "name": "Weekly Authentication Summary",
+        "frequency": "weekly",
+        "day_of_week": "monday",
+        "time": "09:00",
+        "timezone": "UTC",
+        "recipients": [
+          "security@company.com",
+          "ops@company.com"
+        ],
+        "format": "pdf",
+        "content": [
+          "login_success_rates",
+          "top_failure_reasons",
+          "geographic_analysis",
+          "security_incidents"
+        ],
+        "last_sent": "2025-09-23T09:00:00.000Z",
+        "next_scheduled": "2025-09-30T09:00:00.000Z"
+      },
+      {
+        "id": "monthly_compliance_report",
+        "name": "Monthly Compliance Report",
+        "frequency": "monthly",
+        "day_of_month": 1,
+        "time": "08:00",
+        "timezone": "UTC",
+        "recipients": [
+          "compliance@company.com",
+          "legal@company.com"
+        ],
+        "format": "excel",
+        "content": [
+          "audit_trail",
+          "access_reviews",
+          "policy_violations",
+          "data_retention_summary"
+        ],
+        "last_sent": "2025-09-01T08:00:00.000Z",
+        "next_scheduled": "2025-10-01T08:00:00.000Z"
+      }
+    ],
+    "data_retention": {
+      "authentication_logs": "2_years",
+      "audit_trails": "7_years",
+      "user_activity": "1_year",
+      "security_events": "5_years",
+      "compliance_reports": "indefinite"
+    }
+  },
+  "backup_recovery": {
+    "backup_strategy": {
+      "full_backups": {
+        "frequency": "daily",
+        "time": "02:00",
+        "timezone": "UTC",
+        "retention_days": 30,
+        "storage_location": "s3://backups-primary/auth-service/"
+      },
+      "incremental_backups": {
+        "frequency": "hourly",
+        "retention_days": 7,
+        "storage_location": "s3://backups-incremental/auth-service/"
+      },
+      "configuration_backups": {
+        "frequency": "on_change",
+        "retention_days": 90,
+        "version_control": true,
+        "storage_location": "git://config-repo/auth-service-config"
+      }
+    },
+    "disaster_recovery": {
+      "rpo_target_minutes": 15,
+      "rto_target_minutes": 60,
+      "backup_regions": [
+        "us-west-2",
+        "eu-west-1"
+      ],
+      "failover_strategy": "automatic",
+      "last_dr_test": "2025-08-15T00:00:00.000Z",
+      "next_dr_test": "2025-11-15T00:00:00.000Z"
+    },
+    "backup_verification": {
+      "automated_testing": true,
+      "test_frequency": "weekly",
+      "last_successful_restore": "2025-09-20T03:00:00.000Z",
+      "backup_integrity_checks": true
+    }
+  },
+  "infrastructure": {
+    "load_balancing": {
+      "algorithm": "least_connections",
+      "health_check_interval": 30,
+      "health_check_timeout": 5,
+      "healthy_threshold": 3,
+      "unhealthy_threshold": 2,
+      "sticky_sessions": false,
+      "ssl_termination": "load_balancer"
+    },
+    "auto_scaling": {
+      "min_instances": 3,
+      "max_instances": 20,
+      "target_cpu_utilization": 70,
+      "scale_up_cooldown": 300,
+      "scale_down_cooldown": 600,
+      "scale_up_adjustment": 2,
+      "scale_down_adjustment": 1
+    },
+    "database": {
+      "primary": {
+        "engine": "postgresql",
+        "version": "15.4",
+        "instance_class": "db.r6g.xlarge",
+        "storage_type": "gp3",
+        "allocated_storage_gb": 500,
+        "backup_retention_days": 7,
+        "multi_az": true
+      },
+      "read_replicas": [
+        {
+          "identifier": "auth-db-read-1",
+          "instance_class": "db.r6g.large",
+          "region": "us-east-1a"
+        },
+        {
+          "identifier": "auth-db-read-2",
+          "instance_class": "db.r6g.large",
+          "region": "us-east-1b"
+        }
+      ],
+      "connection_pooling": {
+        "enabled": true,
+        "max_connections": 100,
+        "min_pool_size": 5,
+        "max_pool_size": 20,
+        "connection_timeout": 30
+      }
+    },
+    "caching": {
+      "redis_cluster": {
+        "node_type": "cache.r6g.large",
+        "num_cache_nodes": 3,
+        "parameter_group": "default.redis7",
+        "port": 6379,
+        "encryption_at_rest": true,
+        "encryption_in_transit": true
+      },
+      "cache_policies": [
+        {
+          "key_pattern": "user:*",
+          "ttl_seconds": 3600,
+          "eviction_policy": "allkeys-lru"
+        },
+        {
+          "key_pattern": "session:*",
+          "ttl_seconds": 1800,
+          "eviction_policy": "volatile-ttl"
+        },
+        {
+          "key_pattern": "rate_limit:*",
+          "ttl_seconds": 300,
+          "eviction_policy": "volatile-ttl"
+        }
+      ]
+    },
+    "cdn": {
+      "provider": "CloudFront",
+      "distribution_id": "E1234567890ABC",
+      "origins": [
+        {
+          "id": "primary-origin",
+          "domain": "auth.company.com",
+          "protocol": "https-only",
+          "ssl_protocols": ["TLSv1.2", "TLSv1.3"]
+        }
+      ],
+      "cache_behaviors": [
+        {
+          "path": "/assets/*",
+          "ttl": 31536000,
+          "compress": true,
+          "viewer_protocol_policy": "redirect-to-https"
+        },
+        {
+          "path": "/api/*",
+          "ttl": 0,
+          "compress": false,
+          "viewer_protocol_policy": "https-only",
+          "allowed_methods": ["GET", "HEAD", "OPTIONS", "PUT", "POST", "PATCH", "DELETE"]
+        }
+      ],
+      "geographic_restrictions": {
+        "restriction_type": "blacklist",
+        "locations": ["CN", "RU", "IR"]
+      }
+    }
+  },
+  "cost_optimization": {
+    "resource_usage": {
+      "compute_costs": {
+        "monthly_budget": 5000,
+        "current_spend": 3420,
+        "projected_spend": 4100,
+        "top_cost_drivers": [
+          {"service": "EC2 instances", "cost": 1850, "percentage": 54.1},
+          {"service": "RDS database", "cost": 890, "percentage": 26.0},
+          {"service": "ElastiCache", "cost": 320, "percentage": 9.4},
+          {"service": "Load balancers", "cost": 230, "percentage": 6.7},
+          {"service": "CloudFront CDN", "cost": 130, "percentage": 3.8}
+        ]
+      },
+      "storage_costs": {
+        "s3_buckets": [
+          {
+            "name": "auth-logs-primary",
+            "size_gb": 1250,
+            "storage_class": "standard",
+            "monthly_cost": 287
+          },
+          {
+            "name": "auth-backups",
+            "size_gb": 890,
+            "storage_class": "glacier",
+            "monthly_cost": 89
+          }
+        ]
+      }
+    },
+    "optimization_recommendations": [
+      {
+        "id": "rightsizing_001",
+        "type": "instance_rightsizing",
+        "resource": "auth-service-prod-1",
+        "current_type": "t3.xlarge",
+        "recommended_type": "t3.large",
+        "potential_savings": 420,
+        "confidence": 0.85,
+        "impact": "low"
+      },
+      {
+        "id": "reserved_instance_001",
+        "type": "reserved_instances",
+        "resource": "RDS primary instance",
+        "term": "1_year",
+        "payment_option": "partial_upfront",
+        "potential_savings": 1200,
+        "confidence": 0.95,
+        "impact": "none"
+      }
+    ]
   }
 }

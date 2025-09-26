@@ -7,6 +7,7 @@
   border-radius: var(--Border-Radius-Medium, 8px);
   width: 100%;
   height: 100%;
+  min-height: 0; /* allow flex children to shrink */
 }
 
 .uci-code-editor-toolbar {
@@ -42,4 +43,32 @@
 .uci-code-editor-area {
   display: flex;
   overflow-y: auto;
+  flex: 1; /* grow to take remianing soace */
+  min-height: 0; /* allow content to scroll */
+  max-height: calc(100vh - 200px); /* prevent overflow beyond vh */
+}
+
+/* JSON code editor highlighting colors */
+.uci-code-editor-area .token.punctuation {
+  color: #8ED2C5; /* brackets, commas, colons */
+}
+
+.uci-code-editor-area .token.property {
+  color: #99A7F1; /* JSON property names */
+}
+
+.uci-code-editor-area .token.string {
+  color: #8ED2C5; /* string values */
+}
+
+.uci-code-editor-area .token.number {
+  color: #8ED2C5; /* numbers */
+}
+
+.uci-code-editor-area .token.boolean {
+  color: #8ED2C5; /* true/false */
+}
+
+.uci-code-editor-area .token.null.keyword {
+  color: #569cd6; /* null */
 }
