@@ -28,6 +28,7 @@ const PanelCodeEditorContainer: React.FC<PanelCodeEditorContainerProps> = ({
     <div className="uci-code-editor-container">
       <div className="uci-code-editor-toolbar">
         <div className="uci-code-editor-toolbar-toggles uci-flex uci-items-center">
+          {/* TODO: implement code/tree toggle feature */}
           Code / Tree
 
           <Checkbox
@@ -81,14 +82,7 @@ const PanelCodeEditorContainer: React.FC<PanelCodeEditorContainerProps> = ({
       )}
 
       <div className="uci-code-editor-area">
-        {React.Children.map(children, (child) => {
-          if (React.isValidElement(child)) {
-            return React.cloneElement(child as React.ReactElement<Record<string, unknown>>, {
-              codeWrap
-            });
-          }
-          return child;
-        })}
+        {children(codeWrap)}
       </div>
     </div>
   );

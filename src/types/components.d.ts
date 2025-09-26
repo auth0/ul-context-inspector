@@ -40,8 +40,8 @@ export interface Option {
 export type OptionInput = Option | string;
 
 export interface PanelCodeEditorContainerProps {
-  children: React.ReactNode;
-  codeWrap: boolean;
+  children: (codeWrap: boolean) => React.ReactNode;
+  codeWrap?: boolean;
   isSearchVisible: boolean;
   onChangeSearch?: IFieldProps["onChange"];
   onCloseButtonClick: () => void;

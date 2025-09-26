@@ -45,7 +45,7 @@ const PanelSelectContext: React.FC<PanelSelectContextProps> = ({
         size="small"
         fullWidth={true}
         prefix="Screen: "
-        classes={{root: "uci-select-field"}}
+        classes={{ root: "uci-select-field" }}
         disabled={screenOptions?.length <= 1}
         onChange={onChangeSelectScreen}
         value={selectedScreen}

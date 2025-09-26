@@ -257,14 +257,17 @@ export const UniversalLoginContextPanel: React.FC<UniversalLoginContextPanelProp
         onCloseButtonClick={() => { setIsSearchVisible(false); setSearch(''); }}
         searchValue={search}
       >
-        <JsonCodeEditor
-          value={search ? filteredDisplay : raw}
-          onChange={setRaw}
-          readOnly={Boolean(search || !isConnected)}
-          isValid={isValid}
-          filtered={Boolean(search)}
-          textareaId="tenant-context-json-editor"
-        />
+        {(codeWrap) => (
+          <JsonCodeEditor
+            value={search ? filteredDisplay : raw}
+            onChange={setRaw}
+            readOnly={Boolean(search || !isConnected)}
+            isValid={isValid}
+            filtered={Boolean(search)}
+            textareaId="tenant-context-json-editor"
+            codeWrap={codeWrap}
+          />
+        )}
       </PanelCodeEditorContainer>
     </PanelContainer>
   );
