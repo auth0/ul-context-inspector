@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { QuantumProvider, CssBaseline, Code } from '@auth0/quantum-product';
 import { UniversalLoginContextPanel } from "../index";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../components/ui/select-field";
 
 // Universal login context (State 1 panel target)
 // if (!(window as any).universal_login_context) {

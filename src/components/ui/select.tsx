@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { Popover, PopoverContent, PopoverTrigger } from "@";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Check, ChevronDown, ChevronUp } from "lucide-react";
 import * as React from "react";
 import { cn } from "@/lib/utils";

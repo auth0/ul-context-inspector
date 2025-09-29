@@ -1,6 +1,6 @@
 import React from 'react';
 import { SelectField } from '@auth0/quantum-product';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select-field";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select";
 import type { PanelSelectContextProps, OptionInput } from '../types/components';
 
 const PanelSelectContext: React.FC<PanelSelectContextProps> = ({
