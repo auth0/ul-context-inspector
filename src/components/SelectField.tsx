@@ -2,16 +2,19 @@ import { Select, SelectContent, SelectItem, SelectTrigger } from "./ui/select";
 import type { FlexibleOption } from "./../types/components";
 
 interface SelectFieldProps {
+  className?: string;
+  disabled?: boolean;
   name: string;
   onChange: (event: { target: { value: string } }) => void;
   options: FlexibleOption[];
   placeholder?: string;
   prefix?: string;
   value?: string;
-  disabled?: boolean;
 }
 
+
 const SelectField = ({
+  className,
   name,
   onChange,
   options,
@@ -45,7 +48,7 @@ const SelectField = ({
     >
       <SelectTrigger
         prefix={prefix}
-        className="uci-w-full"
+        className={`uci-w-full ${className || ''}`}
         disabled={disabled}
       >
         {/* Custom SelectValue that uses our normalized options directly */}

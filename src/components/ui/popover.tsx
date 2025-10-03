@@ -256,7 +256,7 @@ function PopoverContent({
       data-align={align}
       tabIndex={-1}
       className={cn(
-        "uci-bg-[#171717] uci-text-white uci-border-solid uci-border-2 !uci-border-[#2A2A2A] uci-animate-in uci-fade-in-0 uci-zoom-in-95 uci-shadow-bevel-xl data-[state=open]:uci-animate-in data-[state=closed]:uci-animate-out data-[state=closed]:uci-fade-out-0 data-[state=open]:uci-fade-in-0 data-[state=closed]:uci-zoom-out-95 data-[state=open]:uci-zoom-in-95 data-[side=bottom]:uci-slide-in-from-top-2 data-[side=left]:uci-slide-in-from-right-2 data-[side=right]:uci-slide-in-from-left-2 data-[side=top]:uci-slide-in-from-bottom-2 uci-w-72 uci-overflow-hidden uci-rounded uci-ring-0 uci-outline-hidden uci-duration-150 uci-ease-in-out uci-outline-none focus:uci-outline-none",
+        "uci-bg-[#171717] uci-text-white uci-border-solid uci-border-2 !uci-border-[#2A2A2A] uci-animate-in uci-fade-in-0 uci-zoom-in-95 data-[state=open]:uci-animate-in data-[state=closed]:uci-animate-out data-[state=closed]:uci-fade-out-0 data-[state=open]:uci-fade-in-0 data-[state=closed]:uci-zoom-out-95 data-[state=open]:uci-zoom-in-95 data-[side=bottom]:uci-slide-in-from-top-2 data-[side=left]:uci-slide-in-from-right-2 data-[side=right]:uci-slide-in-from-left-2 data-[side=top]:uci-slide-in-from-bottom-2 uci-w-72 uci-overflow-hidden uci-rounded uci-ring-0 uci-outline-hidden uci-duration-150 uci-ease-in-out uci-outline-none focus:uci-outline-none",
         getPositionClasses(),
         getOriginClasses(),
         className

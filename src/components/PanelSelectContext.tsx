@@ -30,36 +30,36 @@ const PanelSelectContext: React.FC<PanelSelectContextProps> = ({
       {/* TODO NICE TO HAVE: build searchable select to replace base select */}
       <SelectField
         name="panel-select-screen"
-        prefix="Screen"
         options={screenOptions}
+        prefix="Screen"
         value={selectedScreen}
-        disabled={screenOptions?.length <= 1}
         placeholder={selectedScreen}
         onChange={onChangeSelectScreen}
+        disabled={screenOptions?.length <= 1}
       />
 
       {!isConnected && (
         <div>
           <SelectField
             name="panel-select-variant"
-            disabled={variantOptions?.length <= 1}
-            onChange={onChangeSelectVariant}
             options={variantOptions}
-            placeholder={selectedVariant}
             prefix="Variant"
             value={selectedVariant}
+            onChange={onChangeSelectVariant}
+            placeholder={selectedVariant}
+            disabled={variantOptions?.length <= 1}
           />
 
-          <div className="uci-flex uci-w-full">
+          <div className="uci-flex uci-w-full uci-gap-2">
             <SelectField
               name="panel-select-data-source"
-              prefix="Data source"
               options={dataSourceOptions}
+              prefix="Data source"
               value={selectedDataSource}
-              disabled={dataSourceOptions?.length <= 1}
-              placeholder={selectedDataSource}
               onChange={onChangeSelectDataSource}
-            />
+              placeholder={selectedDataSource}
+              disabled={dataSourceOptions?.length <= 1}
+              />
 
             {!isLocalDevelopment && (
               <SelectField
@@ -67,9 +67,9 @@ const PanelSelectContext: React.FC<PanelSelectContextProps> = ({
                 prefix="Data version"
                 options={dataVersionOptions}
                 value={selectedDataVersion}
-                disabled={dataVersionOptions?.length <= 1}
-                placeholder={selectedDataVersion}
                 onChange={onChangeSelectDataVersion}
+                placeholder={selectedDataVersion}
+                disabled={dataVersionOptions?.length <= 1}
               />
             )}
           </div>

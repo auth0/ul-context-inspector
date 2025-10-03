@@ -254,9 +254,9 @@ const SelectTrigger = ({
         data-slot="select-trigger"
         data-size={size}
         className={cn(
-          "uci-border-border/25 uci-text-[#FBFBFB] uci-shadow-input-resting hover:uci-shadow-input-hover hover:uci-border-border/0 focus-within:uci-outline-primary focus-within:uci-shadow-input-hover uci-flex uci-w-full uci-px-3 uci-ring-4 uci-ring-transparent uci-outline-4 uci-border-solid disabled:uci-cursor-not-allowed uci-mb-2 uci-justify-between",
-          context.isOpen && "focus-within:uci-outline-primary focus-within:uci-shadow-input-hover",
-          disabled ? "uci-justify-start !uci-bg-[#242424] uci-border-[#808080]" : "uci-justify-between !uci-bg-[#111111] uci-border-[#383838]",
+          "uci-border-[#383838] uci-text-[#FBFBFB] hover:uci-border-border/50 focus-within:uci-outline-primary uci-flex uci-w-full uci-px-3 uci-ring-4 uci-ring-transparent uci-outline-4 uci-border-solid disabled:uci-cursor-not-allowed uci-mb-2 uci-justify-between",
+          context.isOpen && "focus-within:uci-outline-primary",
+          disabled ? "uci-justify-start !uci-bg-[#242424] uci-border-border" : "uci-justify-between !uci-bg-[#111111]",
           className
         )}
         id={context.id}

@@ -8,7 +8,7 @@ const textFieldVariants = cva(
     variants: {
       variant: {
         default:
-          "border-border/50 text-input-foreground shadow-input-resting hover:shadow-input-hover hover:border-primary/25 focus-within:border-border focus-within:ring-ring focus-within:ring-4",
+          "border-border text-input-foreground shadow-input-resting hover:shadow-input-hover hover:border-primary focus-within:border-border focus-within:ring-ring focus-within:ring-4",
         error:
           "bg-destructive/25 border-destructive-border/50 text-destructive-foreground shadow-input-destructive-resting hover:shadow-input-destructive-hover hover:border-destructive-border/25 focus-within:ring-destructive-border/15 focus-within:ring-4",
       },

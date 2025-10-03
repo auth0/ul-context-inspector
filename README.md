@@ -1,4 +1,3 @@
-s
 ## ul-context-inspector
 
 Rich developer panel + subscription hook for inspecting and live‑editing an Auth0 Universal Login style JSON context (`window.universal_login_context`). Built with React + TypeScript, bundled via Vite (ESM + CJS + types + CSS). Safe to drop into any host app (styles are namespaced with a `uci-` prefix and no preflight/reset).

@@ -13,7 +13,7 @@ const buttonVariants = cva(
         destructive:
           "uci-bg-destructive uci-text-destructive-foreground hover:uci-bg-destructive/90",
         outline:
-          "uci-border uci-border-[#808080] uci-bg-background hover:uci-bg-accent hover:uci-text-white",
+          "uci-border uci-bg-background hover:uci-bg-accent hover:uci-text-white",
         secondary:
           "uci-bg-secondary uci-text-secondary-foreground hover:uci-bg-secondary/80",
         ghost: "hover:uci-bg-accent hover:uci-text-accent-foreground",

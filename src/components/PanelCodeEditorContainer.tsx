@@ -31,9 +31,7 @@ const PanelCodeEditorContainer: React.FC<PanelCodeEditorContainerProps> = ({
           {/* TODO: implement code/tree toggle feature */}
           Code / Tree
 
-          <Checkbox
-            onClick={event => setCodeWrap((event.target as HTMLInputElement).checked)}
-          >
+          <Checkbox onClick={event => setCodeWrap((event.target as HTMLInputElement).checked)}>
             Wrap
           </Checkbox>
         </div>
