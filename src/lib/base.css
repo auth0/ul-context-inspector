@@ -1,55 +1,100 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
-/* CSS Reset */
-*,
-*::before,
-*::after {
+/* 
+ * Production-grade component library styles
+ * All styles scoped to .uci-context-inspector-root to prevent global pollution
+ */
+
+.uci-context-inspector-root {
+  /* Component container styles */
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 400px;
+  z-index: 999999;
   box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-html {
-  margin: 0;
-  padding: 0;
-  font-size: 16px;
-  -webkit-text-size-adjust: 100%;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  height: 100%;
-}
-
-body {
-  margin: 0;
-  padding: 0;
-  height: 100%;
-  min-height: 100vh;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   font-size: 1rem;
   line-height: 1.5;
-  background: transparent;
-  color: inherit;
-  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  
+  /* Namespaced CSS variables - won't conflict with host app */
+  --uci-background: 0 0% 0%;
+  --uci-foreground: 0 0% 100%;
+  --uci-card: 0 0% 0%;
+  --uci-card-foreground: 0 0% 100%;
+  --uci-popover: 0 0% 0%;
+  --uci-popover-foreground: 0 0% 100%;
+  --uci-primary: 210 40% 96.1%;
+  --uci-primary-foreground: 222.2 47.4% 11.2%;
+  --uci-secondary: 210 40% 96.1%;
+  --uci-secondary-foreground: 222.2 47.4% 11.2%;
+  --uci-muted: 210 40% 96.1%;
+  --uci-muted-foreground: 215.4 16.3% 46.9%;
+  --uci-accent: 210 40% 96.1%;
+  --uci-accent-foreground: 222.2 47.4% 11.2%;
+  --uci-destructive: 0 84.2% 60.2%;
+  --uci-destructive-foreground: 0 0% 98%;
+  --uci-border: 214.3 31.8% 91.4%;
+  --uci-input: 214.3 31.8% 91.4%;
+  --uci-ring: 222.2 84% 4.9%;
+  --uci-radius: 0.5rem;
+  
+  /* Chart colors */
+  --uci-chart-1: 12 76% 61%;
+  --uci-chart-2: 173 58% 39%;
+  --uci-chart-3: 197 37% 24%;
+  --uci-chart-4: 43 74% 66%;
+  --uci-chart-5: 27 87% 67%;
+  
+  /* Shadow variables */
+  --uci-shadow-button-resting: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --uci-shadow-button-hover: 0 2px 4px rgba(0, 0, 0, 0.1);
+  --uci-shadow-input-resting: inset 0 1px 2px rgba(0, 0, 0, 0.05);
+  
+  /* Component background */
+  background-color: hsl(var(--uci-background));
+  color: hsl(var(--uci-foreground));
 }
 
-body {
-  background-color: black !important;
+/* Scoped reset for all children */
+.uci-context-inspector-root *,
+.uci-context-inspector-root *::before,
+.uci-context-inspector-root *::after {
+  box-sizing: inherit;
+  margin: 0;
+  padding: 0;
 }
 
-h1, h2, h3, h4, h5, h6 {
+/* Typography - scoped */
+.uci-context-inspector-root h1,
+.uci-context-inspector-root h2,
+.uci-context-inspector-root h3,
+.uci-context-inspector-root h4,
+.uci-context-inspector-root h5,
+.uci-context-inspector-root h6 {
   margin: 0;
   padding: 0;
   font-weight: inherit;
   font-size: inherit;
 }
 
-p, ul, ol, li {
+.uci-context-inspector-root p,
+.uci-context-inspector-root ul,
+.uci-context-inspector-root ol,
+.uci-context-inspector-root li {
   margin: 0;
   padding: 0;
   list-style: none;
 }
 
-button, input, textarea, select {
+/* Form elements - scoped */
+.uci-context-inspector-root button,
+.uci-context-inspector-root input,
+.uci-context-inspector-root textarea,
+.uci-context-inspector-root select {
   font: inherit;
   margin: 0;
   padding: 0;
@@ -58,22 +103,56 @@ button, input, textarea, select {
   outline: none;
 }
 
-h1 {
-  color: color_fg_bold;
-  font-variant-numeric: slashed-zero;
-  /* Heading/100 */
-  font-family: var(--Heading-100-Font-Family, Aeonik) !important;
-  font-size: var(--Heading-100-Font-Size, 20px) !important;
-  font-style: normal;
-  font-weight: var(--Heading-100-Font-Weight, 500) !important;
-  /* line-height: var(--Heading-100-Line-Height, 28px); 140% */
-  letter-spacing: var(--Heading-100-Letter-Spacing, 0.4px) !important;
-}
-
-button {
+.uci-context-inspector-root button {
   background-color: transparent;
+  cursor: pointer;
 }
 
-button:hover {
-  cursor: pointer;
+/* Separate class for portaled content (popovers, dropdowns, etc.) */
+/* This provides CSS variables without the fixed positioning */
+.uci-portal-scope {
+  /* CSS variables only - no layout styles */
+  --uci-background: 0 0% 0%;
+  --uci-foreground: 0 0% 100%;
+  --uci-card: 0 0% 0%;
+  --uci-card-foreground: 0 0% 100%;
+  --uci-popover: 0 0% 0%;
+  --uci-popover-foreground: 0 0% 100%;
+  --uci-primary: 210 40% 96.1%;
+  --uci-primary-foreground: 222.2 47.4% 11.2%;
+  --uci-secondary: 210 40% 96.1%;
+  --uci-secondary-foreground: 222.2 47.4% 11.2%;
+  --uci-muted: 210 40% 96.1%;
+  --uci-muted-foreground: 215.4 16.3% 46.9%;
+  --uci-accent: 210 40% 96.1%;
+  --uci-accent-foreground: 222.2 47.4% 11.2%;
+  --uci-destructive: 0 84.2% 60.2%;
+  --uci-destructive-foreground: 0 0% 98%;
+  --uci-border: 214.3 31.8% 91.4%;
+  --uci-input: 214.3 31.8% 91.4%;
+  --uci-ring: 222.2 84% 4.9%;
+  --uci-radius: 0.5rem;
+  
+  /* Chart colors */
+  --uci-chart-1: 12 76% 61%;
+  --uci-chart-2: 173 58% 39%;
+  --uci-chart-3: 197 37% 24%;
+  --uci-chart-4: 43 74% 66%;
+  --uci-chart-5: 27 87% 67%;
+  
+  /* Shadow variables */
+  --uci-shadow-button-resting: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --uci-shadow-button-hover: 0 2px 4px rgba(0, 0, 0, 0.1);
+  --uci-shadow-input-resting: inset 0 1px 2px rgba(0, 0, 0, 0.05);
+  
+  /* Typography */
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.uci-portal-scope *,
+.uci-portal-scope *::before,
+.uci-portal-scope *::after {
+  box-sizing: border-box;
 }

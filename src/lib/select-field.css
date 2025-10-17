@@ -1,66 +1,62 @@
-/* MAIN */
-.uci-select-field {
+/* Select field styles - all scoped to .uci-context-inspector-root */
+.uci-context-inspector-root .uci-select-field {
   padding-bottom: 8px !important;
 }
 
-/* SUB */
-.uci-select-field div {
-  color: #FBFBFB;
-  background: #111111;
-  /* color: color_fg_bold; */
-  /* Body/100 Emphasis */
-  font-family: var(--Body-100-Emphasis-Font-Family, Inter);
-  font-size: var(--Body-100-Emphasis-Font-Size, 14px);
+.uci-context-inspector-root .uci-select-field div {
+  color: hsl(var(--uci-foreground));
+  background: hsl(var(--uci-background));
+  font-family: Inter, -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 14px;
   font-style: normal;
-  font-weight: var(--Body-100-Emphasis-Font-Weight, 500);
-  line-height: var(--Body-100-Emphasis-Line-Height, 22px);
-  letter-spacing: var(--Body-100-Emphasis-Letter-Spacing, 0);
+  font-weight: 500;
+  line-height: 22px;
+  letter-spacing: 0;
 }
 
 /* DISABLED field */
-.uci-select-field .Mui-disabled.base-QuantumSelect-root {
-  background: #242424;
+.uci-context-inspector-root .uci-select-field .Mui-disabled.base-QuantumSelect-root {
+  background: hsl(var(--uci-muted));
 }
 
 /* BORDER */
-.uci-select-field .MuiOutlinedInput-notchedOutline {
-  border-color: #383838 !important;
+.uci-context-inspector-root .uci-select-field .MuiOutlinedInput-notchedOutline {
+  border-color: hsl(var(--uci-border)) !important;
 }
 
 /* BORDER DISABLED */
-.uci-select-field .Mui-disabled .MuiOutlinedInput-notchedOutline {
-  border-color: #808080 !important;
-  /* border-color: red !important; */
+.uci-context-inspector-root .uci-select-field .Mui-disabled .MuiOutlinedInput-notchedOutline {
+  border-color: hsl(var(--uci-muted-foreground)) !important;
 }
 
 /* TEXT COLOR */
-.Mui-disabled .MuiNativeSelect-select {
-  -webkit-text-fill-color: #FBFBFB !important;
+.uci-context-inspector-root .Mui-disabled .MuiNativeSelect-select {
+  -webkit-text-fill-color: hsl(var(--uci-foreground)) !important;
 }
 
 /* PREFIX */
-.uci-select-field .base-QuantumSelect-prefixText {
-  color: #ABABAB;
+.uci-context-inspector-root .uci-select-field .base-QuantumSelect-prefixText {
+  color: hsl(var(--uci-muted-foreground));
   text-decoration: none;
 }
 
 /* PREFIX DISABLED */
-.uci-select-field .Mui-disabled .base-QuantumSelect-prefixText {
-  color: #ABABAB; /* color_fg_default; */
-  background: #242424;
+.uci-context-inspector-root .uci-select-field .Mui-disabled .base-QuantumSelect-prefixText {
+  color: hsl(var(--uci-muted-foreground));
+  background: hsl(var(--uci-muted));
   text-decoration: none;
 }
 
 /* DROPDOWN ICON STYLING */
 /* hide default MUI dropdown icon and replace with custom SVG */
-.MuiNativeSelect-icon,
-.MuiSvgIcon-root.MuiSvgIcon-fontSizeMedium.MuiNativeSelect-icon {
+.uci-context-inspector-root .MuiNativeSelect-icon,
+.uci-context-inspector-root .MuiSvgIcon-root.MuiSvgIcon-fontSizeMedium.MuiNativeSelect-icon {
   display: none !important;
 }
 
 /* add custom dropdown icon as bg */
-.uci-select-field .MuiNativeSelect-select,
-.uci-select-field .base-QuantumFormField-root .MuiOutlinedInput-root .MuiNativeSelect-select {
+.uci-context-inspector-root .uci-select-field .MuiNativeSelect-select,
+.uci-context-inspector-root .uci-select-field .base-QuantumFormField-root .MuiOutlinedInput-root .MuiNativeSelect-select {
   background-image: url("data:image/svg+xml,%3csvg width='16' height='16' viewBox='0 0 16 16' fill='none' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M12.8047 6.47168L8.75391 10.5225C8.33744 10.9384 7.66254 10.9385 7.24609 10.5225L3.19531 6.47168L4.1377 5.52832L8 9.39062L11.8623 5.52832L12.8047 6.47168Z' fill='%23FBFBFB'/%3e%3c/svg%3e");
   background-repeat: no-repeat;
   background-position: right 12px center;
@@ -68,8 +64,9 @@
   padding-right: 40px !important;
 }
 
-/* DISABLED - hide drown down icon */
-.uci-select-field .Mui-disabled .MuiNativeSelect-select,
-.uci-select-field .Mui-disabled .base-QuantumFormField-root .MuiOutlinedInput-root .MuiNativeSelect-select {
+/* DISABLED - hide dropdown icon */
+.uci-context-inspector-root .uci-select-field .Mui-disabled .MuiNativeSelect-select,
+.uci-context-inspector-root .uci-select-field .Mui-disabled .base-QuantumFormField-root .MuiOutlinedInput-root .MuiNativeSelect-select {
   background-image: none;
 }
+

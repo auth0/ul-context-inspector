@@ -1,73 +1,75 @@
-.uci-code-editor-container {
+/* Monaco Editor styles - all scoped to .uci-context-inspector-root */
+.uci-context-inspector-root .uci-code-editor-container {
   display: flex;
   flex-direction: column;
-  border: 1px solid #383838;
-  border-radius: var(--Border-Radius-Medium, 8px);
+  border: 1px solid hsl(var(--uci-border));
+  border-radius: var(--uci-radius);
   width: 100%;
   height: 100%;
-  min-height: 0; /* allow flex children to shrink */
-  scrollbar-color: #717273 #181818;
+  min-height: 0;
+  scrollbar-color: hsl(var(--uci-muted)) hsl(var(--uci-background));
 }
 
-.uci-code-editor-toolbar {
+.uci-context-inspector-root .uci-code-editor-toolbar {
   display: flex;
   justify-content: space-between;
-  border-top-right-radius: var(--Border-Radius-Medium, 8px);
-  border-top-left-radius: var(--Border-Radius-Medium, 8px);
+  border-top-right-radius: var(--uci-radius);
+  border-top-left-radius: var(--uci-radius);
   padding: 8px;
-  background-color: #1E1E1E;
+  background-color: hsl(var(--uci-card));
 }
 
-.uci-code-editor-toolbar-toggles label {
- padding: 0 0 0 8px;
- margin-left: 8px;
+.uci-context-inspector-root .uci-code-editor-toolbar-toggles label {
+  padding: 0 0 0 8px;
+  margin-left: 8px;
 }
 
-.uci-code-editor-toolbar-buttons {
+.uci-context-inspector-root .uci-code-editor-toolbar-buttons {
   display: flex;
 }
 
-.uci-code-editor-search-area {
+.uci-context-inspector-root .uci-code-editor-search-area {
   display: flex;
   align-items: center;
   padding: 8px;
 }
 
-.uci-code-editor-search-area #editor-search-control {
+.uci-context-inspector-root .uci-code-editor-search-area #editor-search-control {
   height: 16px;
-  background-color: #111111;
-  color: white;
+  background-color: hsl(var(--uci-background));
+  color: hsl(var(--uci-foreground));
 }
 
-.uci-code-editor-area {
+.uci-context-inspector-root .uci-code-editor-area {
   display: flex;
   overflow: auto;
-  flex: 1; /* grow to take remianing soace */
-  min-height: 0; /* allow content to scroll */
-  max-height: calc(100vh - 200px); /* prevent overflow beyond vh */
+  flex: 1;
+  min-height: 0;
+  max-height: calc(100vh - 200px);
 }
 
 /* JSON code editor highlighting colors */
-.uci-code-editor-area .token.punctuation {
-  color: #8ED2C5; /* brackets, commas, colons */
+.uci-context-inspector-root .uci-code-editor-area .token.punctuation {
+  color: #8ED2C5;
 }
 
-.uci-code-editor-area .token.property {
-  color: #99A7F1; /* JSON property names */
+.uci-context-inspector-root .uci-code-editor-area .token.property {
+  color: #99A7F1;
 }
 
-.uci-code-editor-area .token.string {
-  color: #8ED2C5; /* string values */
+.uci-context-inspector-root .uci-code-editor-area .token.string {
+  color: #8ED2C5;
 }
 
-.uci-code-editor-area .token.number {
-  color: #8ED2C5; /* numbers */
+.uci-context-inspector-root .uci-code-editor-area .token.number {
+  color: #8ED2C5;
 }
 
-.uci-code-editor-area .token.boolean {
-  color: #8ED2C5; /* true/false */
+.uci-context-inspector-root .uci-code-editor-area .token.boolean {
+  color: #8ED2C5;
 }
 
-.uci-code-editor-area .token.null.keyword {
-  color: #569cd6; /* null */
+.uci-context-inspector-root .uci-code-editor-area .token.null.keyword {
+  color: #569cd6;
 }
+
