@@ -11,7 +11,6 @@ export interface JsonCodeEditorProps {
   onChange: (v: string) => void;
   readOnly?: boolean;
   isValid?: boolean;
-  filtered?: boolean; // indicates filtered view overlay
   textareaId?: string;
   codeWrap?: boolean; // controls text wrapping
 }
@@ -21,13 +20,10 @@ export const JsonCodeEditor: React.FC<JsonCodeEditorProps> = ({
   onChange,
   readOnly = false,
   isValid = true,
-  filtered = false,
   textareaId = 'json-editor',
   codeWrap = false
 }) => {
   // Derive line count for gutter; simple split is fine (no perf issues at our expected sizes).
-  // TODO: currently does not handle wrapping correctly (assign new line for wrapped segment and breaks line count at the end of snippet)
-  // To fix, switch to a better react editor like Monaco Editor https://www.npmjs.com/package/@monaco-editor/react
   const lineCount = useMemo(() => value.split('\n').length, [value]);
   return (
     <div
@@ -57,13 +53,6 @@ export const JsonCodeEditor: React.FC<JsonCodeEditorProps> = ({
           minHeight: '100%',
         }}
       />
-
-      {/* TODO: implement better UI for readonly filtered view */}
-      {filtered && (
-        <div className="uci-absolute uci-inset-0 uci-bg-black/40 uci-text-[11px] uci-text-gray-300 uci-flex uci-items-center uci-justify-center uci-pointer-events-none">
-          <span>Filtered view (hidden lines not shown)</span>
-        </div>
-      )}
     </div>
   );
 };

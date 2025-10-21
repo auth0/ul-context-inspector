@@ -101,7 +101,7 @@ export const UniversalLoginContextPanel: React.FC<UniversalLoginContextPanelProp
   const panelTitle = isConnected ? "Tenant context data" : "Mock context data";
 
   // Manifest (only loaded while disconnected & panel open)
-  const { screenOptions, getVariantInfo, loadVariantJson, loading: manifestLoading, error: manifestError } = useUlManifest({
+  const { manifest, screenOptions, getVariantInfo, loadVariantJson, loading: manifestLoading, error: manifestError } = useUlManifest({
     root: root as Record<string, unknown>,
     dataSource,
     version,
@@ -119,6 +119,18 @@ export const UniversalLoginContextPanel: React.FC<UniversalLoginContextPanelProp
     const info = getVariantInfo(selectedScreen);
     return info ? info.variants : variants;
   }, [selectedScreen, getVariantInfo, variants]);
+
+  // Derive version options from manifest (fallback to provided versions prop).
+  const versionOptions = useMemo(() => {
+    return manifest?.versions && manifest.versions.length > 0 ? manifest.versions : versions;
+  }, [manifest, versions]);
+
+  // Auto-select latest version when manifest loads
+  useEffect(() => {
+    if (manifest?.versions && manifest.versions.length > 0 && !manifest.versions.includes(version)) {
+      setVersion(manifest.versions[0]);
+    }
+  }, [manifest, version]);
 
   // Ensure selected variant remains valid when options change.
   useEffect(() => {
@@ -190,15 +202,51 @@ export const UniversalLoginContextPanel: React.FC<UniversalLoginContextPanelProp
     }
   }, [raw, variant, selectedScreen]);
 
-  // Line-level filtering for lightweight search UX (non-destructive view layer only).
-  const filteredDisplay = useMemo(() => {
-    if (!search) return raw;
+  // Line-level filtering for search - tracks line indices for editable filtered view
+  const { filteredDisplay, filteredLineIndices } = useMemo(() => {
+    if (!search) return { filteredDisplay: raw, filteredLineIndices: null };
     const lower = search.toLowerCase();
-    return raw
-      .split(/\n/)
-      .filter((line) => line.toLowerCase().includes(lower))
-      .join("\n");
+    const lines = raw.split('\n');
+    const matchedIndices: number[] = [];
+    const matchedLines: string[] = [];
+    
+    lines.forEach((line, index) => {
+      if (line.toLowerCase().includes(lower)) {
+        matchedIndices.push(index);
+        matchedLines.push(line);
+      }
+    });
+    
+    return {
+      filteredDisplay: matchedLines.join('\n'),
+      filteredLineIndices: matchedIndices
+    };
   }, [raw, search]);
+
+  // Handle edits to filtered content by mapping back to original lines
+  const handleFilteredEdit = useCallback((editedFiltered: string) => {
+    if (!search || !filteredLineIndices) {
+      // No filter active, direct edit
+      setUserEdited(true);
+      setRaw(editedFiltered);
+      return;
+    }
+
+    // Map edited filtered lines back to original content
+    const originalLines = raw.split('\n');
+    const editedLines = editedFiltered.split('\n');
+    
+    // Update only the filtered lines in the original content
+    editedLines.forEach((editedLine, filterIndex) => {
+      const originalIndex = filteredLineIndices[filterIndex];
+      if (originalIndex !== undefined && originalIndex < originalLines.length) {
+        originalLines[originalIndex] = editedLine;
+      }
+    });
+    
+    setUserEdited(true);
+    setRaw(originalLines.join('\n'));
+  }, [raw, search, filteredLineIndices]);
 
   // Panel fully hidden when closed (no persistent handle)
   if (!open) {
@@ -223,7 +271,7 @@ export const UniversalLoginContextPanel: React.FC<UniversalLoginContextPanelProp
 
         <PanelSelectContext
           dataSourceOptions={dataSources}
-          dataVersionOptions={versions}
+          dataVersionOptions={versionOptions}
           isConnected={isConnected}
           onChangeSelectDataSource={(event) => handleDataSource(event.target.value as string)}
           onChangeSelectDataVersion={(event) => handleVersion(event.target.value as string)}
@@ -259,17 +307,9 @@ export const UniversalLoginContextPanel: React.FC<UniversalLoginContextPanelProp
         {(codeWrap) => (
           <JsonCodeEditor
             value={search ? filteredDisplay : raw}
-            onChange={(val) => {
-              // If user begins editing while a filter is active we clear the filter
-              // so they are always editing the canonical full buffer, avoiding
-              // accidental truncation of hidden lines.
-              if (search) setSearch('');
-              setUserEdited(true);
-              setRaw(val);
-            }}
+            onChange={handleFilteredEdit}
             readOnly={false}
             isValid={isValid}
-            filtered={Boolean(search)}
             textareaId="tenant-context-json-editor"
             codeWrap={codeWrap}
           />

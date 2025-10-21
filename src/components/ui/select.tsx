@@ -345,14 +345,14 @@ const SelectContent = ({
   };
 
   return (
-    <PopoverContent className={cn("uci-w-[var(--trigger-width)] uci-p-1 uci-outline-none", className)}>
+    <PopoverContent className={cn("uci-w-[var(--trigger-width)] uci-p-1 uci-outline-none !uci-overflow-visible", className)}>
       <div
         ref={contentRef}
         data-slot="select-content"
         tabIndex={0}
         role="listbox"
         onKeyDown={handleKeyDown}
-        className="uci-outline-none"
+        className="uci-outline-none uci-max-h-[calc(100vh-var(--trigger-top)-var(--trigger-height)-2rem)] uci-overflow-y-auto"
         {...props}
       >
         {children}
@@ -380,6 +380,8 @@ const SelectItem = ({
   const context = React.useContext(SelectContext);
   if (!context) throw new Error("SelectItem must be used within Select");
 
+  const itemRef = React.useRef<HTMLButtonElement>(null);
+
   React.useEffect(() => {
     const label = typeof children === "string" ? children : value;
     context.registerOption?.(value, label);
@@ -394,6 +396,13 @@ const SelectItem = ({
   const itemIndex = options.findIndex((opt) => opt.value === value);
   const isFocused = itemIndex === context.focusedIndex;
 
+  // Scroll focused item into view
+  React.useEffect(() => {
+    if (isFocused && itemRef.current) {
+      itemRef.current.scrollIntoView({ block: "nearest", behavior: "smooth" });
+    }
+  }, [isFocused]);
+
   const handleKeyDown = (event: React.KeyboardEvent) => {
     if (event.key === "Enter") {
       event.preventDefault();
@@ -403,6 +412,7 @@ const SelectItem = ({
 
   return (
     <button
+      ref={itemRef}
       type="button"
       onClick={() => context.onChange?.(value)}
       onKeyDown={handleKeyDown}
