@@ -14,31 +14,30 @@
   "author": "",
   "license": "MIT",
   "type": "module",
-  "main": "dist/ul-context-inspector.cjs.js",
+  "main": "dist/ul-context-inspector.umd.js",
   "module": "dist/ul-context-inspector.es.js",
   "types": "dist/index.d.ts",
-  "style": "dist/style.css",
+  "style": "dist/ul-context-inspector.css",
   "files": [
     "dist"
   ],
   "sideEffects": [
     "**/*.css",
-    "dist/style.css",
-    "dist/assets/*.css"
+    "dist/ul-context-inspector.css"
   ],
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
       "import": "./dist/ul-context-inspector.es.js",
-      "require": "./dist/ul-context-inspector.cjs.js"
+      "require": "./dist/ul-context-inspector.umd.js"
     },
     "./style.css": {
-      "default": "./dist/style.css"
+      "default": "./dist/ul-context-inspector.css"
     }
   },
   "scripts": {
     "dev": "vite",
-    "build": "vite build && ls -1 dist",
+    "build": "vite build && cp index.d.ts.template dist/index.d.ts && ls -1 dist",
     "watch": "vite build --watch",
     "prepare": "npm run build",
     "lint": "eslint 'src/**/*.{ts,tsx}'",
