@@ -11,7 +11,7 @@ import "../lib/styles.css";
 import "prismjs/themes/prism-tomorrow.css";
 
 import { useWindowJsonContext } from '../hooks/useWindowJsonContext';
-import { useUlManifest } from '../hooks/useUlManifest';
+import { useUlManifest, type UlManifest } from '../hooks/useUlManifest';
 
 import { JsonCodeEditor } from './JsonCodeEditor';
 import PanelHeader from './PanelHeader';
@@ -73,6 +73,7 @@ export const UniversalLoginContextPanel: React.FC<UniversalLoginContextPanelProp
   const [variant, setVariant] = useState(() => defaultVariant || variants[0]);
   const [dataSource, setDataSource] = useState(() => defaultDataSource || dataSources[0]);
   const [version, setVersion] = useState(() => defaultVersion || versions[0]);
+  const [localManifestData, setLocalManifestData] = useState<UlManifest | null>(null);
   // Tracks if the user has manually edited the JSON buffer while disconnected.
   // If true we avoid clobbering their edits when selection changes trigger
   // manifest fetches. Selecting a new variant/data source/version resets it.
@@ -101,7 +102,7 @@ export const UniversalLoginContextPanel: React.FC<UniversalLoginContextPanelProp
   const panelTitle = isConnected ? "Tenant context data" : "Mock context data";
 
   // Manifest (only loaded while disconnected & panel open)
-  const { screenOptions, getVariantInfo, loadVariantJson, loading: manifestLoading, error: manifestError } = useUlManifest({
+  const { manifest, screenOptions, getVariantInfo, loadVariantJson, loading: manifestLoading, error: manifestError } = useUlManifest({
     root: root as Record<string, unknown>,
     dataSource,
     version,
@@ -113,12 +114,108 @@ export const UniversalLoginContextPanel: React.FC<UniversalLoginContextPanelProp
     if (!selectedScreen && screenOptions.length) setSelectedScreen(screenOptions[0].value);
   }, [screenOptions, selectedScreen]);
 
+  // Fetch local manifest to check if current screen exists locally
+  useEffect(() => {
+    if (!open || isConnected) return;
+    
+    let cancelled = false;
+    
+    (async () => {
+      try {
+        const res = await fetch('/manifest.json', { cache: 'no-store' });
+        if (res.ok && !cancelled) {
+          const data = await res.json();
+          setLocalManifestData(data);
+        }
+      } catch {
+        // If local manifest doesn't exist or fails to load, that's fine
+        if (!cancelled) setLocalManifestData(null);
+      }
+    })();
+    
+    return () => { cancelled = true; };
+  }, [open, isConnected]);
+
   // Derive variant options from manifest (fallback to provided variants prop).
   const variantOptions = useMemo(() => {
     if (!selectedScreen) return variants;
     const info = getVariantInfo(selectedScreen);
     return info ? info.variants : variants;
-  }, [selectedScreen, getVariantInfo, variants]);
+  }, [selectedScreen, getVariantInfo, variants, manifest]);
+
+  // Derive version options from manifest (fallback to provided versions prop).
+  const versionOptions = useMemo(() => {
+    const allVersions = manifest?.versions && manifest.versions.length > 0 ? manifest.versions : versions;
+    
+    // Sort versions in descending order
+    const sortedVersions = [...allVersions].sort((a, b) => {
+      // Extract version numbers for comparison (e.g., "v1.2032032.0" -> [1, 2032032, 0])
+      const aVersion = a.replace(/^v/, '').split('.').map(Number);
+      const bVersion = b.replace(/^v/, '').split('.').map(Number);
+      
+      // Compare each part
+      for (let i = 0; i < Math.max(aVersion.length, bVersion.length); i++) {
+        const aPart = aVersion[i] || 0;
+        const bPart = bVersion[i] || 0;
+        if (aPart !== bPart) {
+          return bPart - aPart; // Descending order
+        }
+      }
+      return 0;
+    });
+    
+    // Add "(latest)" suffix to the first (newest) version
+    if (sortedVersions.length > 0) {
+      sortedVersions[0] = `${sortedVersions[0]} (latest)`;
+    }
+    
+    return sortedVersions;
+  }, [manifest, versions]);
+
+  // Get the display version with "(latest)" suffix if applicable
+  const displayVersion = useMemo(() => {
+    const rawVersions = manifest?.versions && manifest.versions.length > 0 ? manifest.versions : versions;
+    const sortedVersions = [...rawVersions].sort((a, b) => {
+      const aVersion = a.replace(/^v/, '').split('.').map(Number);
+      const bVersion = b.replace(/^v/, '').split('.').map(Number);
+      for (let i = 0; i < Math.max(aVersion.length, bVersion.length); i++) {
+        const aPart = aVersion[i] || 0;
+        const bPart = bVersion[i] || 0;
+        if (aPart !== bPart) return bPart - aPart;
+      }
+      return 0;
+    });
+    
+    // If current version is the latest, add "(latest)" suffix
+    if (sortedVersions.length > 0 && version === sortedVersions[0]) {
+      return `${version} (latest)`;
+    }
+    return version;
+  }, [version, manifest, versions]);
+
+  // Check if current screen exists in local manifest
+  const screenExistsLocally = useMemo(() => {
+    if (!selectedScreen || !localManifestData?.screens) return false;
+    
+    const [topKey, childKey] = selectedScreen.split(':');
+    return localManifestData.screens.some(entry => entry[topKey]?.[childKey]);
+  }, [selectedScreen, localManifestData]);
+
+  // Filter data source options - only show "Local development" if current screen exists locally
+  const filteredDataSourceOptions = useMemo(() => {
+    if (!selectedScreen || !localManifestData) return dataSources;
+    
+    return screenExistsLocally 
+      ? dataSources 
+      : dataSources.filter(ds => !ds.toLowerCase().includes('local'));
+  }, [selectedScreen, localManifestData, dataSources, screenExistsLocally]);
+
+  // Auto-select latest version when manifest loads
+  useEffect(() => {
+    if (manifest?.versions && manifest.versions.length > 0 && !manifest.versions.includes(version)) {
+      setVersion(manifest.versions[0]);
+    }
+  }, [manifest, version]);
 
   // Ensure selected variant remains valid when options change.
   useEffect(() => {
@@ -158,9 +255,11 @@ export const UniversalLoginContextPanel: React.FC<UniversalLoginContextPanelProp
   }, [onDataSourceChange]);
 
   const handleVersion = useCallback((v: string) => {
-    setVersion(v);
+    // Strip "(latest)" suffix if present
+    const cleanVersion = v.replace(/ \(latest\)$/, '');
+    setVersion(cleanVersion);
     setUserEdited(false);
-    onVersionChange?.(v);
+    onVersionChange?.(cleanVersion);
   }, [onVersionChange]);
 
   // (Manifest fetch handled by useUlManifest)
@@ -190,15 +289,51 @@ export const UniversalLoginContextPanel: React.FC<UniversalLoginContextPanelProp
     }
   }, [raw, variant, selectedScreen]);
 
-  // Line-level filtering for lightweight search UX (non-destructive view layer only).
-  const filteredDisplay = useMemo(() => {
-    if (!search) return raw;
+  // Line-level filtering for search - tracks line indices for editable filtered view
+  const { filteredDisplay, filteredLineIndices } = useMemo(() => {
+    if (!search) return { filteredDisplay: raw, filteredLineIndices: null };
     const lower = search.toLowerCase();
-    return raw
-      .split(/\n/)
-      .filter((line) => line.toLowerCase().includes(lower))
-      .join("\n");
+    const lines = raw.split('\n');
+    const matchedIndices: number[] = [];
+    const matchedLines: string[] = [];
+    
+    lines.forEach((line, index) => {
+      if (line.toLowerCase().includes(lower)) {
+        matchedIndices.push(index);
+        matchedLines.push(line);
+      }
+    });
+    
+    return {
+      filteredDisplay: matchedLines.join('\n'),
+      filteredLineIndices: matchedIndices
+    };
   }, [raw, search]);
+
+  // Handle edits to filtered content by mapping back to original lines
+  const handleFilteredEdit = useCallback((editedFiltered: string) => {
+    if (!search || !filteredLineIndices) {
+      // No filter active, direct edit
+      setUserEdited(true);
+      setRaw(editedFiltered);
+      return;
+    }
+
+    // Map edited filtered lines back to original content
+    const originalLines = raw.split('\n');
+    const editedLines = editedFiltered.split('\n');
+    
+    // Update only the filtered lines in the original content
+    editedLines.forEach((editedLine, filterIndex) => {
+      const originalIndex = filteredLineIndices[filterIndex];
+      if (originalIndex !== undefined && originalIndex < originalLines.length) {
+        originalLines[originalIndex] = editedLine;
+      }
+    });
+    
+    setUserEdited(true);
+    setRaw(originalLines.join('\n'));
+  }, [raw, search, filteredLineIndices]);
 
   // Panel fully hidden when closed (no persistent handle)
   if (!open) {
@@ -222,8 +357,8 @@ export const UniversalLoginContextPanel: React.FC<UniversalLoginContextPanelProp
         />
 
         <PanelSelectContext
-          dataSourceOptions={dataSources}
-          dataVersionOptions={versions}
+          dataSourceOptions={filteredDataSourceOptions}
+          dataVersionOptions={versionOptions}
           isConnected={isConnected}
           onChangeSelectDataSource={(event) => handleDataSource(event.target.value as string)}
           onChangeSelectDataVersion={(event) => handleVersion(event.target.value as string)}
@@ -231,14 +366,13 @@ export const UniversalLoginContextPanel: React.FC<UniversalLoginContextPanelProp
           onChangeSelectVariant={(event) => handleVariant(event.target.value as string)}
           screenOptions={screenOptions}
           selectedDataSource={dataSource}
-          selectedDataVersion={version}
+          selectedDataVersion={displayVersion}
           selectedScreen={selectedScreen}
           selectedVariant={variant}
           setSelectedScreen={setSelectedScreen}
           variantOptions={variantOptions}
         />
 
-        {/* TODO: should be displayed? in console or elsewhere? */}
         {manifestLoading && (
           <div className="uci-py-2 uci-text-[11px] uci-text-gray-400 uci-border-b uci-border-gray-800">Loading manifest…</div>
         )}
@@ -259,17 +393,9 @@ export const UniversalLoginContextPanel: React.FC<UniversalLoginContextPanelProp
         {(codeWrap) => (
           <JsonCodeEditor
             value={search ? filteredDisplay : raw}
-            onChange={(val) => {
-              // If user begins editing while a filter is active we clear the filter
-              // so they are always editing the canonical full buffer, avoiding
-              // accidental truncation of hidden lines.
-              if (search) setSearch('');
-              setUserEdited(true);
-              setRaw(val);
-            }}
+            onChange={handleFilteredEdit}
             readOnly={false}
             isValid={isValid}
-            filtered={Boolean(search)}
             textareaId="tenant-context-json-editor"
             codeWrap={codeWrap}
           />

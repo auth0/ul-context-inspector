@@ -1,8 +1,15 @@
-// TODO: export all the components inside `ui` folder from here
+/**
+ * UI Components Index
+ * Export all reusable UI components for clean imports
+ * Usage: import { Button, Label, Select } from './ui'
+ */
 
-// Imports should look like:
-// import { Checkbox, Label } from './ui';
-
+export { Button } from './button';
+export { default as InlineCode } from './inline-code';
+export { Label } from './label';
+export { Popover } from './popover';
+export { Select } from './select';
+export { TextField } from './text-field';
 // instead of
 
 // import { Checkbox } from './ui/checkbox';

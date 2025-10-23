@@ -23,7 +23,7 @@ const SelectField = ({
   value,
   disabled
 }: SelectFieldProps) => {
-  // convert options to normalized format
+  // Convert options to normalized format
   const normalizedOptions = options.map(option => {
     if (typeof option === 'object') {
       return { value: option.value, text: option.text || option.label || option.value };
@@ -32,7 +32,6 @@ const SelectField = ({
     }
   });
 
-  console.log('SelectField props:', { name, value, options, normalizedOptions, onChange: typeof onChange });
   return (
     <Select
       name={name}

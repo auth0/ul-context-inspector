@@ -14,31 +14,30 @@
   "author": "",
   "license": "MIT",
   "type": "module",
-  "main": "dist/ul-context-inspector.cjs.js",
+  "main": "dist/ul-context-inspector.umd.js",
   "module": "dist/ul-context-inspector.es.js",
   "types": "dist/index.d.ts",
-  "style": "dist/style.css",
+  "style": "dist/ul-context-inspector.css",
   "files": [
     "dist"
   ],
   "sideEffects": [
     "**/*.css",
-    "dist/style.css",
-    "dist/assets/*.css"
+    "dist/ul-context-inspector.css"
   ],
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
       "import": "./dist/ul-context-inspector.es.js",
-      "require": "./dist/ul-context-inspector.cjs.js"
+      "require": "./dist/ul-context-inspector.umd.js"
     },
     "./style.css": {
-      "default": "./dist/style.css"
+      "default": "./dist/ul-context-inspector.css"
     }
   },
   "scripts": {
     "dev": "vite",
-    "build": "vite build && ls -1 dist",
+    "build": "vite build && cp index.d.ts.template dist/index.d.ts && ls -1 dist",
     "watch": "vite build --watch",
     "prepare": "npm run build",
     "lint": "eslint 'src/**/*.{ts,tsx}'",
@@ -52,7 +51,6 @@
     "react-dom": "^18.3.1"
   },
   "devDependencies": {
-    "@tailwindcss/postcss": "^4.0.0",
     "@types/node": "^24.5.2",
     "@types/prismjs": "^1.26.5",
     "@types/react": "^18.2.0",
@@ -68,9 +66,9 @@
     "rimraf": "^5.0.5",
     "tailwindcss": "^3.4.14",
     "typescript": "^5.4.0",
-    "vite": "^5.0.0",
-    "vite-plugin-dts": "^3.7.3",
-    "vitest": "^1.6.0"
+    "vite": "^6.0.3",
+    "vite-plugin-dts": "^4.3.0",
+    "vitest": "^2.1.8"
   },
   "peerDependenciesMeta": {
     "react": {
@@ -88,7 +86,6 @@
     }
   },
   "dependencies": {
-    "@auth0/quantum-product": "^2.8.1",
     "@base-ui-components/react": "^1.0.0-beta.3",
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.1",
@@ -98,7 +95,6 @@
     "lucide-react": "^0.544.0",
     "prismjs": "^1.30.0",
     "react-simple-code-editor": "^0.13.1",
-    "tailwind-merge": "^3.3.1",
-    "tailwindcss-animate": "^1.0.7"
+    "tailwind-merge": "^3.3.1"
   }
 }

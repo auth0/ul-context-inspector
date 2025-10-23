@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from "react";
 
 /**
  * Hook: useUlManifest
@@ -21,7 +21,10 @@ export interface UlManifestVariantNode {
   [k: string]: unknown; // future fields
 }
 
-export type UlManifestScreenEntry = Record<string, Record<string, UlManifestVariantNode>>;
+export type UlManifestScreenEntry = Record<
+  string,
+  Record<string, UlManifestVariantNode>
+>;
 
 export interface UlManifest {
   screens: UlManifestScreenEntry[];
@@ -41,15 +44,24 @@ export interface UseUlManifestResult {
   loading: boolean;
   error: string | null;
   screenOptions: { value: string; label: string }[];
-  getVariantInfo: (screenValue: string) => { basePath: string; variants: string[] } | null;
+  getVariantInfo: (
+    screenValue: string
+  ) => { basePath: string; variants: string[] } | null;
   loadVariantJson: (screenValue: string, variant: string) => Promise<unknown | null>;
 }
 
 const isUlManifest = (m: unknown): m is UlManifest => {
-  return !!m && typeof m === 'object' && Array.isArray((m as UlManifest).screens);
+  return (
+    !!m && typeof m === "object" && Array.isArray((m as UlManifest).screens)
+  );
 };
 
-export function useUlManifest({ root, dataSource, version, enabled }: UseUlManifestOptions): UseUlManifestResult {
+export function useUlManifest({
+  root,
+  dataSource,
+  version,
+  enabled
+}: UseUlManifestOptions): UseUlManifestResult {
   const [manifest, setManifest] = useState<UlManifest | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -59,13 +71,14 @@ export function useUlManifest({ root, dataSource, version, enabled }: UseUlManif
     if (!enabled) return;
     let cancelled = false;
     (async () => {
-      setLoading(true); setError(null);
+      setLoading(true);
+      setError(null);
       try {
-        const local = dataSource.toLowerCase().includes('local');
+        const local = dataSource.toLowerCase().includes("local");
         const url = local
-          ? '/manifest.json'
-          : 'https://assets.us.auth0.com/auth0-acul/manifest.json'; // placeholder CDN path
-        const res = await fetch(url, { cache: 'no-store' });
+          ? "/manifest.json"
+          : "https://cdn.auth0.com/auth0-acul/manifest.json";
+        const res = await fetch(url, { cache: "no-store" });
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         const json = await res.json();
         if (cancelled) return;
@@ -73,62 +86,103 @@ export function useUlManifest({ root, dataSource, version, enabled }: UseUlManif
           (root as Record<string, unknown>).__ul_manifest = json;
           setManifest(json);
         } else {
-          throw new Error('Invalid manifest shape');
+          throw new Error("Invalid manifest shape");
         }
       } catch (e: unknown) {
-        if (!cancelled) setError(e instanceof Error ? e.message : 'Failed to load manifest');
+        if (!cancelled)
+          setError(e instanceof Error ? e.message : "Failed to load manifest");
       } finally {
         if (!cancelled) setLoading(false);
       }
     })();
-    return () => { cancelled = true; };
+    return () => {
+      cancelled = true;
+    };
   }, [enabled, dataSource, version, root]);
 
   const screenOptions = useMemo(() => {
     if (!manifest) return [];
     const opts: { value: string; label: string }[] = [];
     for (const entry of manifest.screens) {
-      if (entry && typeof entry === 'object' && !Array.isArray(entry)) {
+      if (entry && typeof entry === "object" && !Array.isArray(entry)) {
         for (const topKey of Object.keys(entry)) {
-          const container = (entry as Record<string, Record<string, UlManifestVariantNode>>)[topKey];
-          if (container && typeof container === 'object') {
+          const container = (
+            entry as Record<string, Record<string, UlManifestVariantNode>>
+          )[topKey];
+          if (container && typeof container === "object") {
             for (const childKey of Object.keys(container)) {
-              // TODO: Can the label be changed to 'text' here or transofrm later?
-              opts.push({ value: `${topKey}:${childKey}`, label: `${topKey} / ${childKey}` });
+              opts.push({
+                value: `${topKey}:${childKey}`,
+                label: `${topKey} / ${childKey}`
+              });
             }
           }
         }
       }
     }
-    return opts;
+    // Sort alphabetically by label
+    return opts.sort((a, b) => a.label.localeCompare(b.label));
   }, [manifest]);
 
-  const getVariantInfo = useCallback((screenValue: string) => {
-    if (!manifest) return null;
-    const [topKey, childKey] = screenValue.split(':');
-    for (const entry of manifest.screens) {
-      if (entry[topKey] && entry[topKey][childKey]) {
-        const node = entry[topKey][childKey];
-        const basePath = (node.path || `/screens/${topKey}/${childKey}`).replace(/\/$/, '');
-        const variants = Array.isArray(node.variants) ? node.variants.filter(v => typeof v === 'string') as string[] : [];
-        return { basePath, variants: variants.length ? variants : ['default'] };
+  const getVariantInfo = useCallback(
+    (screenValue: string) => {
+      if (!manifest) return null;
+      const [topKey, childKey] = screenValue.split(":");
+      for (const entry of manifest.screens) {
+        if (entry[topKey] && entry[topKey][childKey]) {
+          const node = entry[topKey][childKey];
+          const basePath = (
+            node.path || `/screens/${topKey}/${childKey}`
+          ).replace(/\/$/, "");
+          const variants = Array.isArray(node.variants)
+            ? (node.variants.filter((v) => typeof v === "string") as string[])
+            : [];
+          return {
+            basePath,
+            variants: variants.length ? variants : ["default"]
+          };
+        }
       }
-    }
-    return null;
-  }, [manifest]);
+      return null;
+    },
+    [manifest]
+  );
 
-  const loadVariantJson = useCallback(async (screenValue: string, variant: string) => {
-    const info = getVariantInfo(screenValue);
-    if (!info) return null;
-    const { basePath } = info;
-    const filePath = `${basePath}/${variant}.json`; // TO DO THIS SHOULD LOAD FROM PUBLIC of the other repo
-    const local = dataSource.toLowerCase().includes('local');
-  const url = local ? (filePath.startsWith('/') ? filePath : '/' + filePath)
-      : `https://assets.us.auth0.com/auth0-acul/${filePath.startsWith('/') ? filePath : '/' + filePath}`;
-    const res = await fetch(url, { cache: 'no-store' });
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    return res.json();
-  }, [getVariantInfo, dataSource]);
+  const loadVariantJson = useCallback(
+    async (screenValue: string, variant: string) => {
+      const info = getVariantInfo(screenValue);
+      if (!info) return null;
+      const { basePath } = info;
+      const local = dataSource.toLowerCase().includes("local");
 
-  return { manifest, loading, error, screenOptions, getVariantInfo, loadVariantJson };
+      let url: string;
+      if (local) {
+        // Local: use the path as-is from the manifest
+        const filePath = `${basePath}/${variant}.json`;
+        url = filePath.startsWith("/") ? filePath : "/" + filePath;
+      } else {
+        // CDN: construct URL using version and path from manifest
+        // Pattern: https://assets.us.auth0.com/auth0-acul/{version}/{path}/{variant}.json
+        const currentVersion = version || manifest?.versions?.[0] || "1.0.0";
+        const pathWithoutLeadingSlash = basePath.startsWith("/")
+          ? basePath.slice(1)
+          : basePath;
+        url = `https://cdn.auth0.com/auth0-acul/${currentVersion}/${pathWithoutLeadingSlash}/${variant}.json`;
+      }
+
+      const res = await fetch(url, { cache: "no-store" });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      return res.json();
+    },
+    [getVariantInfo, dataSource, version, manifest]
+  );
+
+  return {
+    manifest,
+    loading,
+    error,
+    screenOptions,
+    getVariantInfo,
+    loadVariantJson
+  };
 }

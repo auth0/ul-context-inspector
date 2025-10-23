@@ -113,6 +113,3 @@ npm run test     # Run tests
 
 ---
 
-## 📄 License
-
-MIT

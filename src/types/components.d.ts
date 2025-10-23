@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import type { IFieldProps } from "@auth0/quantum-product";
 
 export interface PanelHeaderProps {
   isConnected: boolean;
@@ -50,7 +49,7 @@ export interface PanelCodeEditorContainerProps {
   children: (codeWrap: boolean) => React.ReactNode;
   codeWrap?: boolean;
   isSearchVisible: boolean;
-  onChangeSearch?: IFieldProps["onChange"];
+  onChangeSearch?: (event: { target: { value: string } }) => void;
   onCloseButtonClick: () => void;
   onCopyButtonClick: () => void;
   onDownloadButtonClick: () => void;

@@ -18,7 +18,7 @@ const PanelSelectContext: React.FC<PanelSelectContextProps> = ({
     selectedVariant,
     variantOptions,
   }) => {
-  {/* TODO: when connected to tenant, pass current screen name */}
+  // When connected to tenant, show current screen name if no options available
   if (screenOptions?.length === 0) {
     screenOptions = [selectedScreen || 'Current screen'];
   }
@@ -27,7 +27,6 @@ const PanelSelectContext: React.FC<PanelSelectContextProps> = ({
 
   return (
     <div className="uci-flex uci-flex-col">
-      {/* TODO NICE TO HAVE: build searchable select to replace base select */}
       <SelectField
         name="panel-select-screen"
         options={screenOptions}
