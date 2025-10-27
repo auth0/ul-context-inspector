@@ -10,24 +10,27 @@
   scrollbar-color: hsl(var(--uci-muted)) hsl(var(--uci-background));
 }
 
-.uci-context-inspector-root .uci-code-editor-toolbar {
+.uci-code-editor-toolbar {
   display: flex;
   justify-content: space-between;
-  border-top-right-radius: var(--uci-radius);
-  border-top-left-radius: var(--uci-radius);
-  padding: 8px;
+  padding: 8px 0;
   background-color: hsl(var(--uci-card));
 }
 
-.uci-context-inspector-root .uci-code-editor-toolbar-toggles label {
-  padding: 0 0 0 8px;
+.uci-code-editor-toolbar-toggles label {
   margin-left: 8px;
 }
 
-.uci-context-inspector-root .uci-code-editor-toolbar-buttons {
+.uci-code-editor-toolbar-buttons {
   display: flex;
 }
 
+.uci-code-editor-toolbar-buttons button {
+  background: none;
+  border: none;
+  margin-left: 8px;
+  cursor: pointer;
+}
 .uci-context-inspector-root .uci-code-editor-search-area {
   display: flex;
   align-items: center;
