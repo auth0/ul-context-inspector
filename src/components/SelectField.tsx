@@ -50,7 +50,7 @@ const SelectField = ({
         className={`uci-w-full ${className || ''}`}
         disabled={disabled}
       >
-        <span>
+        <span className="uci-text-left uci-overflow-hidden uci-text-ellipsis uci-whitespace-nowrap">
           {value ? normalizedOptions.find(opt => opt.value === value)?.text || placeholder : placeholder}
         </span>
       </SelectTrigger>

@@ -263,16 +263,19 @@ const SelectTrigger = ({
         {...props}
       >
         {icon && <div className="uci-text-primary uci-absolute uci-top-1/2 uci-left-3 uci--translate-y-1/2">{icon}</div>}
-        <span>
-          {prefix && <span className="uci-text-[#ABABAB] uci-mr-2">{prefix}:</span>}
+        <span className="uci-flex-1 uci-min-w-0 uci-flex uci-items-center uci-overflow-hidden">
+          {prefix && <span className="uci-text-[#ABABAB] uci-mr-2 uci-flex-shrink-0">{prefix}:</span>}
           {children ||
-          <span className={cn("uci-text-[#FBFBFB] uci-block uci-truncate")}>
+          <span className={cn("uci-text-[#FBFBFB] uci-truncate uci-whitespace-nowrap uci-overflow-hidden")}>
             {selectedLabel || placeholder}
           </span>}
         </span>
         {!disabled &&
           <ChevronDown
-            className={cn("uci-text-primary uci-size-4 uci-transition-transform uci-duration-200 uci-text-white", context.isOpen && "uci-rotate-180")}
+            className="uci-text-white uci-size-4 uci-flex-shrink-0 uci-transition-transform uci-duration-200"
+            style={{
+              transform: context.isOpen ? 'rotate(180deg)' : 'rotate(0deg)'
+            }}
           />
         }
       </Button>
