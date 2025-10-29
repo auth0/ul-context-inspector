@@ -50,6 +50,7 @@ export const UniversalLoginContextPanel: React.FC<UniversalLoginContextPanelProp
   root = typeof window !== "undefined"
     ? (window as unknown as WindowLike)
     : ({} as WindowLike),
+  defaultScreen,
   variants = ["default"],
   dataSources = ["Auth0 CDN", "Local development"],
   versions = ["1.0.0"],
@@ -62,6 +63,16 @@ export const UniversalLoginContextPanel: React.FC<UniversalLoginContextPanelProp
 }) => {
   const [open, setOpen] = useState(defaultOpen);
 
+  // Session storage keys (scoped to component)
+  const OLD_PREFIX = 'ulcp:'; // legacy (previous name)
+  const NEW_PREFIX = 'ulci:'; // current (context inspector)
+  const SESSION_KEYS = {
+    screen: NEW_PREFIX + 'selectedScreen',
+    variant: NEW_PREFIX + 'selectedVariant',
+    dataSource: NEW_PREFIX + 'selectedDataSource',
+    version: NEW_PREFIX + 'selectedVersion'
+  } as const;
+
   // Immutable flag: did a context exist when we mounted? Defines true connectivity.
   const initialHadContextRef = useRef<boolean>(
     Object.prototype.hasOwnProperty.call(root, 'universal_login_context') &&
@@ -69,10 +80,37 @@ export const UniversalLoginContextPanel: React.FC<UniversalLoginContextPanelProp
   );
 
   // Selection state for disconnected preview UX.
-  const [selectedScreen, setSelectedScreen] = useState<string | undefined>(undefined);
-  const [variant, setVariant] = useState(() => defaultVariant || variants[0]);
-  const [dataSource, setDataSource] = useState(() => defaultDataSource || dataSources[0]);
-  const [version, setVersion] = useState(() => defaultVersion || versions[0]);
+  const getSessionValue = (key: string): string | undefined => {
+    if (typeof window === 'undefined') return undefined;
+    try {
+      const existing = sessionStorage.getItem(key);
+      if (existing) return existing || undefined;
+      // Migration: if new key empty, attempt old prefix equivalent
+      if (key.startsWith(NEW_PREFIX)) {
+        const oldKey = key.replace(NEW_PREFIX, OLD_PREFIX);
+        const legacy = sessionStorage.getItem(oldKey);
+        if (legacy) {
+          // Promote to new key
+            try { sessionStorage.setItem(key, legacy); } catch { /* ignore */ }
+          return legacy || undefined;
+        }
+      }
+      return undefined;
+    } catch { return undefined; }
+  };
+
+  const [selectedScreen, setSelectedScreen] = useState<string | undefined>(() => {
+    return getSessionValue(SESSION_KEYS.screen) || defaultScreen;
+  });
+  const [variant, setVariant] = useState(() => {
+    return getSessionValue(SESSION_KEYS.variant) || defaultVariant || variants[0];
+  });
+  const [dataSource, setDataSource] = useState(() => {
+    return getSessionValue(SESSION_KEYS.dataSource) || defaultDataSource || dataSources[0];
+  });
+  const [version, setVersion] = useState(() => {
+    return getSessionValue(SESSION_KEYS.version) || defaultVersion || versions[0];
+  });
   const [localManifestData, setLocalManifestData] = useState<UlManifest | null>(null);
   // Tracks if the user has manually edited the JSON buffer while disconnected.
   // If true we avoid clobbering their edits when selection changes trigger
@@ -109,10 +147,39 @@ export const UniversalLoginContextPanel: React.FC<UniversalLoginContextPanelProp
     enabled: open && !isConnected
   });
 
-  // Auto-select first screen once manifest arrives.
+  // Auto-select logic once manifest screen options arrive.
   useEffect(() => {
-    if (!selectedScreen && screenOptions.length) setSelectedScreen(screenOptions[0].value);
+    if (!screenOptions.length) return;
+    // If a defaultScreen was provided, verify it exists; if not, fall back to first option.
+    if (selectedScreen) {
+      const exists = screenOptions.some(o => (typeof o === 'string' ? o === selectedScreen : o.value === selectedScreen));
+      if (!exists) {
+        const first = screenOptions[0];
+        setSelectedScreen(typeof first === 'string' ? first : first.value);
+      }
+    } else {
+      const first = screenOptions[0];
+      setSelectedScreen(typeof first === 'string' ? first : first.value);
+    }
   }, [screenOptions, selectedScreen]);
+
+  // Persist selections to sessionStorage
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    try { selectedScreen && sessionStorage.setItem(SESSION_KEYS.screen, selectedScreen); } catch { /* ignore */ }
+  }, [selectedScreen]);
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    try { variant && sessionStorage.setItem(SESSION_KEYS.variant, variant); } catch { /* ignore */ }
+  }, [variant]);
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    try { dataSource && sessionStorage.setItem(SESSION_KEYS.dataSource, dataSource); } catch { /* ignore */ }
+  }, [dataSource]);
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    try { version && sessionStorage.setItem(SESSION_KEYS.version, version); } catch { /* ignore */ }
+  }, [version]);
 
   // Fetch local manifest to check if current screen exists locally
   useEffect(() => {
@@ -223,6 +290,21 @@ export const UniversalLoginContextPanel: React.FC<UniversalLoginContextPanelProp
       setVariant(variantOptions[0]);
     }
   }, [variantOptions, variant]);
+
+  // Ensure data source remains valid after filtering (e.g., local removed)
+  useEffect(() => {
+    if (!filteredDataSourceOptions.includes(dataSource)) {
+      setDataSource(filteredDataSourceOptions[0] as string);
+    }
+  }, [filteredDataSourceOptions, dataSource]);
+
+  // Ensure version remains valid (manifest may change available versions)
+  useEffect(() => {
+    const rawVersionOptions = (manifest?.versions && manifest.versions.length > 0) ? manifest.versions : versions;
+    if (!rawVersionOptions.includes(version)) {
+      setVersion(rawVersionOptions[0]);
+    }
+  }, [manifest, version, versions]);
 
   // Load variant JSON while disconnected to populate preview buffer only.
   useEffect(() => {
