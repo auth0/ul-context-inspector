@@ -32,8 +32,8 @@ export const UniversalLoginContextPanel: React.FC<
   const width = 560;
   const variants: string[] = ["default"]; // mutable for type compatibility
   const dataSources: string[] = ["Auth0 CDN", "Local development"]; // mutable
-  const versions: string[] = ["1.0.0"]; // mutable
-  const defaultVariant = variants[0];
+  const versions: string[] = ["0"]; // mutable
+const defaultVariant = variants[0];
   const defaultDataSource = dataSources[0];
   const defaultVersion = versions[0];
   const root: WindowLike =
@@ -359,6 +359,27 @@ export const UniversalLoginContextPanel: React.FC<
       setVersion(manifest.versions[0]);
     }
   }, [manifest, version]);
+
+  // Always default to latest available version in CDN mode (override any stored session value)
+  useEffect(() => {
+    if (dataSource === 'Auth0 CDN' && manifest?.versions && manifest.versions.length > 0) {
+      // Sort descending (same logic used elsewhere)
+      const sorted = [...manifest.versions].sort((a, b) => {
+        const aParts = a.replace(/^v/, '').split('.').map(Number);
+        const bParts = b.replace(/^v/, '').split('.').map(Number);
+        for (let i = 0; i < Math.max(aParts.length, bParts.length); i++) {
+          const av = aParts[i] || 0;
+          const bv = bParts[i] || 0;
+          if (av !== bv) return bv - av; // descending
+        }
+        return 0;
+      });
+      const latest = sorted[0];
+      if (latest && version !== latest) {
+        setVersion(latest);
+      }
+    }
+  }, [dataSource, manifest, version]);
 
   // Ensure selected variant remains valid when options change.
   useEffect(() => {

@@ -47,7 +47,10 @@ export interface UseUlManifestResult {
   getVariantInfo: (
     screenValue: string
   ) => { basePath: string; variants: string[] } | null;
-  loadVariantJson: (screenValue: string, variant: string) => Promise<unknown | null>;
+  loadVariantJson: (
+    screenValue: string,
+    variant: string
+  ) => Promise<unknown | null>;
 }
 
 const isUlManifest = (m: unknown): m is UlManifest => {
@@ -163,7 +166,7 @@ export function useUlManifest({
       } else {
         // CDN: construct URL using version and path from manifest
         // Pattern: https://assets.us.auth0.com/auth0-acul/{version}/{path}/{variant}.json
-        const currentVersion = version || manifest?.versions?.[0] || "1.0.0";
+        const currentVersion = version || manifest?.versions?.[0];
         const pathWithoutLeadingSlash = basePath.startsWith("/")
           ? basePath.slice(1)
           : basePath;

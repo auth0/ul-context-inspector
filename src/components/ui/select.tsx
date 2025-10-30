@@ -27,7 +27,8 @@ const Select = ({
   children,
   name,
   id,
-  ...props
+  suppressInitialScroll,
+  ...rest
 }: {
   value?: string;
   onValueChange?: (value: string) => void;
@@ -64,7 +65,7 @@ const Select = ({
 
   React.useEffect(() => {
     if (isOpen) {
-      if (!openedOnceRef.current && props.suppressInitialScroll) {
+      if (!openedOnceRef.current && suppressInitialScroll) {
         // Skip focusing any item so list remains scrolled to top (search field visible).
         setFocusedIndex(-1);
       } else if (optionsRef.current.length > 0) {
@@ -75,7 +76,7 @@ const Select = ({
     } else {
       setFocusedIndex(-1);
     }
-  }, [isOpen, currentValue, props.suppressInitialScroll]);
+  }, [isOpen, currentValue, suppressInitialScroll]);
 
   const handleTypeahead = React.useCallback(
     (key: string) => {
@@ -127,11 +128,11 @@ const Select = ({
         unregisterOption,
         getOptions,
   id,
-  suppressInitialScroll: props.suppressInitialScroll,
+  suppressInitialScroll,
       }}
     >
       <Popover open={isOpen} onOpenChange={setIsOpen}>
-        <div className="uci-relative uci-w-full" data-slot="select" {...props}>
+        <div className="uci-relative uci-w-full" data-slot="select" {...rest}>
           {children}
         </div>
       </Popover>
