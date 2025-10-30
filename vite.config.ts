@@ -19,6 +19,9 @@ export default defineConfig({
     })
   ],
   build: {
+  sourcemap: true,
+  cssCodeSplit: false, // ship a single CSS bundle for library consumers
+  minify: 'esbuild',
     lib: {
       entry: "src/index.ts",
       name: "UlContextInspector",

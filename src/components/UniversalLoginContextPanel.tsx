@@ -146,23 +146,16 @@ export const UniversalLoginContextPanel: React.FC<UniversalLoginContextPanelProp
     }
   }, [screenOptions, selectedScreen]);
 
-  // Persist selections to sessionStorage
+  // Persist selections to sessionStorage (single effect)
   useEffect(() => {
     if (typeof window === 'undefined') return;
-    try { selectedScreen && sessionStorage.setItem(SESSION_KEYS.screen, selectedScreen); } catch { /* ignore */ }
-  }, [selectedScreen]);
-  useEffect(() => {
-    if (typeof window === 'undefined') return;
-    try { variant && sessionStorage.setItem(SESSION_KEYS.variant, variant); } catch { /* ignore */ }
-  }, [variant]);
-  useEffect(() => {
-    if (typeof window === 'undefined') return;
-    try { dataSource && sessionStorage.setItem(SESSION_KEYS.dataSource, dataSource); } catch { /* ignore */ }
-  }, [dataSource]);
-  useEffect(() => {
-    if (typeof window === 'undefined') return;
-    try { version && sessionStorage.setItem(SESSION_KEYS.version, version); } catch { /* ignore */ }
-  }, [version]);
+    try {
+      if (selectedScreen) sessionStorage.setItem(SESSION_KEYS.screen, selectedScreen);
+      if (variant) sessionStorage.setItem(SESSION_KEYS.variant, variant);
+      if (dataSource) sessionStorage.setItem(SESSION_KEYS.dataSource, dataSource);
+      if (version) sessionStorage.setItem(SESSION_KEYS.version, version);
+    } catch { /* ignore */ }
+  }, [selectedScreen, variant, dataSource, version]);
 
   // Fetch local manifest to check if current screen exists locally
   useEffect(() => {
@@ -309,28 +302,21 @@ export const UniversalLoginContextPanel: React.FC<UniversalLoginContextPanelProp
 
   const handleVariant = useCallback((v: string) => {
     setVariant(v);
-    setUserEdited(false); // new selection should allow fresh manifest load
-    if (typeof window !== 'undefined') {
-      window.location.reload();
-    }
+    setUserEdited(false);
+    if (typeof window !== 'undefined') window.location.reload();
   }, []);
 
   const handleDataSource = useCallback((v: string) => {
     setDataSource(v);
     setUserEdited(false);
-    if (typeof window !== 'undefined') {
-      window.location.reload();
-    }
+    if (typeof window !== 'undefined') window.location.reload();
   }, []);
 
   const handleVersion = useCallback((v: string) => {
-    // Strip "(latest)" suffix if present
     const cleanVersion = v.replace(/ \(latest\)$/,'');
     setVersion(cleanVersion);
     setUserEdited(false);
-    if (typeof window !== 'undefined') {
-      window.location.reload();
-    }
+    if (typeof window !== 'undefined') window.location.reload();
   }, []);
 
   // (Manifest fetch handled by useUlManifest)
@@ -436,7 +422,7 @@ export const UniversalLoginContextPanel: React.FC<UniversalLoginContextPanelProp
             isConnected={isConnected}
             onChangeSelectDataSource={(event) => handleDataSource(event.target.value as string)}
             onChangeSelectDataVersion={(event) => handleVersion(event.target.value as string)}
-            onChangeSelectScreen={(event) => { setSelectedScreen(event.target.value as string); if (typeof window !== 'undefined') { window.location.reload(); } }}
+            onChangeSelectScreen={(event) => { setSelectedScreen(event.target.value as string); if (typeof window !== 'undefined') window.location.reload(); }}
             onChangeSelectVariant={(event) => handleVariant(event.target.value as string)}
             screenOptions={screenOptions}
             selectedDataSource={dataSource}

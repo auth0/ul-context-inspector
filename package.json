@@ -2,17 +2,8 @@
   "name": "ul-context-inspector",
   "version": "0.1.0",
   "description": "React UI component to inspect context data exposed on the window object.",
-  "keywords": [
-    "react",
-    "inspector",
-    "context",
-    "window",
-    "debug",
-    "vite",
-    "typescript"
-  ],
   "author": "",
-  "license": "MIT",
+  "license": "ISC",
   "type": "module",
   "main": "dist/ul-context-inspector.umd.js",
   "module": "dist/ul-context-inspector.es.js",
@@ -38,6 +29,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build && cp index.d.ts.template dist/index.d.ts && ls -1 dist",
+  "build:report": "npm run build && node -e \"const fs=require('fs'),z=require('zlib');const p='dist';console.log('File Size Raw Gzip');for(const f of fs.readdirSync(p)){const b=fs.readFileSync(p+'/'+f);const g=z.gzipSync(b);console.log(f,(b.length/1024).toFixed(1)+'KB',(g.length/1024).toFixed(1)+'KB');}\"",
     "watch": "vite build --watch",
     "prepare": "npm run build",
     "lint": "eslint 'src/**/*.{ts,tsx}'",
