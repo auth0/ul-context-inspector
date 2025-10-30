@@ -1,6 +1,6 @@
 # ul-context-inspector 🔍
 
-Minimal developer panel for inspecting the Universal Login JSON context on `window.universal_login_context`.
+Developer panel for inspecting the Universal Login JSON context on `window.universal_login_context` for the Advanced Customizations for Universal Login feature.
 
 ## 📦 Install
 
