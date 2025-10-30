@@ -8,7 +8,7 @@ const PanelHeader: React.FC<PanelHeaderProps> = ({ title, isConnected, isConnect
   return (
     <div className="uci-flex uci-items-center uci-justify-between uci-mb-4">
         <div className="uci-flex uci-items-center uci-gap-2">
-          <h1 className="uci-tracking-wide">
+          <h1 className="uci-tracking-wide uci-text-[20px] uci-leading-[28px] uci-font-medium">
             {title}
           </h1>
           <div
@@ -22,7 +22,7 @@ const PanelHeader: React.FC<PanelHeaderProps> = ({ title, isConnected, isConnect
               }`}
             />
             <span
-              className={`uci-text-[11px] uci-uppercase uci-tracking-wide ${
+              className={`uci-text-[11px] uci-uppercase uci-tracking-wide uci-font-semibold ${
                 isConnected ? 'uci-text-[#98D2B2]' : 'uci-text-[#E3C423]'
               }`}
             >

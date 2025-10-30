@@ -21,7 +21,7 @@
   -moz-osx-font-smoothing: grayscale;
   
   /* Namespaced CSS variables - won't conflict with host app */
-  --uci-background: 0 0% 0%;
+  --uci-background: transparent;
   --uci-foreground: 0 0% 100%;
   --uci-card: 0 0% 0%;
   --uci-card-foreground: 0 0% 100%;
@@ -91,8 +91,6 @@
 .uci-context-inspector-root h6 {
   margin: 0;
   padding: 0;
-  font-weight: inherit;
-  font-size: inherit;
 }
 
 .uci-context-inspector-root p,
@@ -105,7 +103,6 @@
 }
 
 /* Form elements - scoped */
-.uci-context-inspector-root button,
 .uci-context-inspector-root input,
 .uci-context-inspector-root textarea,
 .uci-context-inspector-root select {
@@ -114,18 +111,17 @@
 }
 
 .uci-context-inspector-root button {
-  background-color: transparent;
-  cursor: pointer;
-}
-
-.uci-context-inspector-root button {
-  background-color: transparent;
   cursor: pointer;
 }
 
 .uci-context-inspector-root button[data-slot="popover-trigger"],
 button[data-slot="select-item"] {
+  background-color: transparent;
   border: none
+}
+
+.uci-context-inspector-root button[data-slot="popover-trigger"] {
+  padding: 0;
 }
 
 /* Separate class for portaled content (popovers, dropdowns, etc.) */

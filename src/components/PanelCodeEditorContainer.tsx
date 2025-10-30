@@ -27,7 +27,7 @@ const PanelCodeEditorContainer: React.FC<PanelCodeEditorContainerProps> = ({
   const [codeWrap, setCodeWrap] = useState(initialCodeWrap);
 
   return (
-    <div className="uci-code-editor-container">
+    <div className="uci-code-editor-container uci-editor-custom-styles">
       <div className="uci-code-editor-toolbar">
         <div className="uci-code-editor-toolbar-toggles uci-flex uci-items-center uci-gap-2">
           <div className="uci-flex uci-items-center uci-gap-[2px]">
@@ -35,7 +35,7 @@ const PanelCodeEditorContainer: React.FC<PanelCodeEditorContainerProps> = ({
               id="code-wrap"
               checked={codeWrap}
               onCheckedChange={(checked) => setCodeWrap(checked === true)}
-              className="!uci-w-[18px] !uci-h-[18px] !uci-p-[2px] !uci-rounded-[4px] !uci-border-[1px] !uci-border-solid !uci-border-white !uci-bg-[#383838] data-[state=checked]:!uci-bg-[#99A7F1] data-[state=checked]:!uci-border-[#99A7F1] hover:!uci-border-white focus-visible:!uci-border-white [&_span]:data-[state=unchecked]:!uci-text-white [&_span]:data-[state=unchecked]:!uci-stroke-white [&_span]:data-[state=checked]:!uci-text-black [&_span]:data-[state=checked]:!uci-stroke-black"
+              className="uci-custom-checkbox"
             />
             <Label htmlFor="code-wrap" className="uci-text-sm uci-font-medium uci-cursor-pointer">
               Wrap JSON
@@ -75,10 +75,10 @@ const PanelCodeEditorContainer: React.FC<PanelCodeEditorContainerProps> = ({
             placeholder="Search keys and values..."
             onChange={onChangeSearch}
             value={searchValue}
-            className="uci-flex-1 !uci-bg-[#111111] !uci-text-white !uci-border-[#383838] !uci-border-solid !uci-border-[1px] !uci-rounded !uci-h-10 !uci-text-sm focus-within:!uci-border-[#99A7F1] focus-within:!uci-ring-0 [&_input]:!uci-text-white [&_input]:!uci-text-sm [&_input]:!uci-py-0 [&_input]:!uci-px-4 [&_input]:!uci-h-full [&_input]:!uci-flex [&_input]:!uci-items-center [&_input::placeholder]:!uci-text-gray-400"
+            className="uci-custom-search-field"
           />
           <IconButton
-            classNames="!uci-border-[#383838] !uci-border-solid !uci-border-[1px] uci-rounded uci-p-[8px] uci-bg-[#111111] uci-w-[40px] uci-h-[40px] uci-flex uci-items-center uci-justify-center"
+            classNames="uci-custom-close-button uci-border-[#383838] uci-border-solid uci-border-[1px] uci-rounded uci-p-[8px] uci-bg-[#111111] uci-w-[40px] uci-h-[40px] uci-flex uci-items-center uci-justify-center"
             label="Close search"
             onClick={onCloseButtonClick}
           >

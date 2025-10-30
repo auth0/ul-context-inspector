@@ -134,7 +134,7 @@ function PopoverTrigger({ className, onClick, asChild, children, ...props }: Pop
       data-slot="popover-trigger"
       data-state={open ? "open" : "closed"}
       className={cn(
-        "uci-inline-flex",
+        "uci-inline-flex uci-mb-2",
         props.disabled && "uci-pointer-events-none",
         className
       )}
