@@ -33,7 +33,7 @@ export const UniversalLoginContextPanel: React.FC<
   const variants: string[] = ["default"]; // mutable for type compatibility
   const dataSources: string[] = ["Auth0 CDN", "Local development"]; // mutable
   const versions: string[] = ["0"]; // mutable
-const defaultVariant = variants[0];
+  const defaultVariant = variants[0];
   const defaultDataSource = dataSources[0];
   const defaultVersion = versions[0];
   const root: WindowLike =
@@ -70,8 +70,8 @@ const defaultVariant = variants[0];
 
   const [selectedScreen, setSelectedScreen] = useState<string | undefined>(
     () => {
-  const sessionVal = getSessionValue(SESSION_KEYS.screen);
-  // Only use defaultScreen if no prior session value exists.
+      const sessionVal = getSessionValue(SESSION_KEYS.screen);
+      // Only use defaultScreen if no prior session value exists.
       if (sessionVal) return sessionVal;
       // If no defaultScreen provided and we're in CDN mode on first load, prefer 'login-id:login-id'.
       const initialDataSource =
@@ -107,7 +107,6 @@ const defaultVariant = variants[0];
   // If true we avoid clobbering their edits when selection changes trigger
   // manifest fetches. Selecting a new variant/data source/version resets it.
   const [userEdited, setUserEdited] = useState(false);
-
 
   const { raw, setRaw, isValid, contextObj } = useWindowJsonContext({
     root,
@@ -200,74 +199,85 @@ const defaultVariant = variants[0];
     if (!initReady) return;
     if (typeof window === "undefined") return;
     try {
-      if (selectedScreen) sessionStorage.setItem(SESSION_KEYS.screen, selectedScreen);
+      if (selectedScreen)
+        sessionStorage.setItem(SESSION_KEYS.screen, selectedScreen);
       if (variant) sessionStorage.setItem(SESSION_KEYS.variant, variant);
-      if (dataSource) sessionStorage.setItem(SESSION_KEYS.dataSource, dataSource);
+      if (dataSource)
+        sessionStorage.setItem(SESSION_KEYS.dataSource, dataSource);
       if (version) sessionStorage.setItem(SESSION_KEYS.version, version);
-    } catch { /* ignore */ }
+    } catch {
+      /* ignore */
+    }
   }, [selectedScreen, variant, dataSource, version, initReady]);
 
+  const [disableDataSourceSelect, setdisableDataSourceSelect] = useState(false);
   // Early local manifest detection (runs once). Prefer local dev if a local manifest exists and no prior session choice.
-  useEffect(() => {
-    let cancelled = false;
-    (async () => {
-      // Respect any existing session-stored dataSource (user already chose).
-      const existing = getSessionValue(SESSION_KEYS.dataSource);
-      if (existing) {
-        setInitReady(true);
-        return;
-      }
-      // If we're connected to a tenant context, skip auto-promotion.
-      if (isConnected) {
-        setInitReady(true);
-        return;
-      }
-      try {
-        const res = await fetch('/manifest.json', { cache: 'no-store' });
-        if (!res.ok) {
-          // No local manifest: proceed with CDN.
+    useEffect(() => {
+      let cancelled = false;
+      (async () => {
+        // Single attempt to fetch local manifest; any failure disables local selection.
+        const fetchManifest = async (): Promise<UlManifest | null> => {
+          try {
+            const res = await fetch("/manifest.json", { cache: "no-store" });
+            if (!res.ok) {
+              setdisableDataSourceSelect(true);
+              return null;
+            }
+            return (await res.json()) as UlManifest;
+          } catch {
+            setdisableDataSourceSelect(true);
+            return null;
+          }
+        };
+
+        const existing = getSessionValue(SESSION_KEYS.dataSource);
+        if (existing || isConnected) {
+          // Still probe once to decide if selector should be disabled.
+          await fetchManifest();
           setInitReady(true);
           return;
         }
-        const manifestJson: UlManifest = await res.json();
+
+        const manifestJson = await fetchManifest();
         if (cancelled) return;
-        if (manifestJson && Array.isArray(manifestJson.screens)) {
+        if (!manifestJson) {
+          // No local manifest available; initialization still completes.
+          setInitReady(true);
+          return;
+        }
+        if (Array.isArray(manifestJson.screens)) {
           setLocalManifestData(manifestJson);
-          // Pick screen: valid defaultScreen or first manifest screen.
-          let firstLocal: string | undefined;
-          for (const entry of manifestJson.screens) {
-            for (const topKey of Object.keys(entry)) {
-              const container = entry[topKey];
-              if (container && typeof container === 'object') {
-                for (const childKey of Object.keys(container)) {
-                  firstLocal = `${topKey}:${childKey}`;
-                  break;
+          // Efficient first local screen discovery.
+          const firstLocal = (() => {
+            for (const entry of manifestJson.screens) {
+              for (const [top, children] of Object.entries(entry)) {
+                if (children && typeof children === "object") {
+                  const firstChild = Object.keys(children)[0];
+                  if (firstChild) return `${top}:${firstChild}`;
                 }
               }
-              if (firstLocal) break;
             }
-            if (firstLocal) break;
-          }
-          const defaultValid = defaultScreen ? (() => {
-            const [dTop, dChild] = defaultScreen.split(':');
-            return manifestJson.screens.some(e => e[dTop]?.[dChild]);
-          })() : false;
+            return undefined;
+          })();
+          const defaultValid = !!defaultScreen && (() => {
+            const [dTop, dChild] = defaultScreen.split(":");
+              const container = (manifestJson.screens.find(e => e[dTop]) || {})[dTop] as Record<string, unknown> | undefined;
+              return !!(container && typeof container === 'object' && (container as Record<string, unknown>)[dChild]);
+          })();
           const target = defaultValid ? defaultScreen! : firstLocal;
-          // Set selected screen only if not already set (preserve connected context value).
-          if (target) setSelectedScreen(prev => prev || target);
-          // Switch data source to Local development if needed.
-          if (dataSource !== 'Local development') setDataSource('Local development');
+          if (target && target !== selectedScreen) {
+            setSelectedScreen(prev => prev || target);
+          }
+          if (dataSource !== "Local development") {
+            setDataSource("Local development");
+          }
         }
-      } catch {
-        // On error: fall back to CDN.
-      } finally {
-        // Initialization complete.
         if (!cancelled) setInitReady(true);
-      }
-    })();
-    return () => { cancelled = true; };
-  }, []); // run once
-
+      })();
+      return () => {
+        cancelled = true;
+      };
+    }, []); // run once
 
   // Derive variant options from manifest (fallback to provided variants prop).
   const variantOptions = useMemo(() => {
@@ -362,11 +372,15 @@ const defaultVariant = variants[0];
 
   // Always default to latest available version in CDN mode (override any stored session value)
   useEffect(() => {
-    if (dataSource === 'Auth0 CDN' && manifest?.versions && manifest.versions.length > 0) {
+    if (
+      dataSource === "Auth0 CDN" &&
+      manifest?.versions &&
+      manifest.versions.length > 0
+    ) {
       // Sort descending (same logic used elsewhere)
       const sorted = [...manifest.versions].sort((a, b) => {
-        const aParts = a.replace(/^v/, '').split('.').map(Number);
-        const bParts = b.replace(/^v/, '').split('.').map(Number);
+        const aParts = a.replace(/^v/, "").split(".").map(Number);
+        const bParts = b.replace(/^v/, "").split(".").map(Number);
         for (let i = 0; i < Math.max(aParts.length, bParts.length); i++) {
           const av = aParts[i] || 0;
           const bv = bParts[i] || 0;
@@ -590,6 +604,7 @@ const defaultVariant = variants[0];
             selectedVariant={variant}
             setSelectedScreen={setSelectedScreen}
             variantOptions={variantOptions}
+            disableDataSourceSelect={disableDataSourceSelect}
           />
 
           {manifestLoading && (

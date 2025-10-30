@@ -1,42 +1,45 @@
-import React from 'react';
+import React from "react";
 import SelectField from "./SelectField";
 
-import type { PanelSelectContextProps } from '../types/components';
+import type { PanelSelectContextProps } from "../types/components";
 
 const PanelSelectContext: React.FC<PanelSelectContextProps> = ({
-    dataSourceOptions,
-    dataVersionOptions,
-    isConnected,
-    onChangeSelectDataSource,
-    onChangeSelectDataVersion,
-    onChangeSelectScreen,
-    onChangeSelectVariant,
-    screenOptions,
-    selectedDataSource,
-    selectedDataVersion,
-    selectedScreen,
-    selectedVariant,
-    variantOptions,
-  }) => {
+  dataSourceOptions,
+  dataVersionOptions,
+  isConnected,
+  onChangeSelectDataSource,
+  onChangeSelectDataVersion,
+  onChangeSelectScreen,
+  onChangeSelectVariant,
+  screenOptions,
+  selectedDataSource,
+  selectedDataVersion,
+  selectedScreen,
+  selectedVariant,
+  variantOptions,
+  disableDataSourceSelect
+}) => {
   // When connected to tenant, show current screen name if no options available
   if (screenOptions?.length === 0) {
-    screenOptions = [selectedScreen || 'Current screen'];
+    screenOptions = [selectedScreen || "Current screen"];
   }
 
-  const isLocalDevelopment = selectedDataSource?.toLowerCase().includes('local');
+  const isLocalDevelopment = selectedDataSource
+    ?.toLowerCase()
+    .includes("local");
 
-
+  console.log({ disableDataSourceSelect });
   return (
-  <div className="uci-flex uci-flex-col">
+    <div className="uci-flex uci-flex-col">
       <SelectField
         name="panel-select-screen"
-    options={screenOptions}
+        options={screenOptions}
         prefix="Screen"
         value={selectedScreen}
         placeholder={selectedScreen}
         onChange={onChangeSelectScreen}
-    disabled={screenOptions?.length <= 1}
-    searchable
+        disabled={screenOptions?.length <= 1}
+        searchable
       />
 
       {!isConnected && (
@@ -59,8 +62,10 @@ const PanelSelectContext: React.FC<PanelSelectContextProps> = ({
               value={selectedDataSource}
               onChange={onChangeSelectDataSource}
               placeholder={selectedDataSource}
-              disabled={dataSourceOptions?.length <= 1}
-              />
+              disabled={
+                disableDataSourceSelect || dataSourceOptions?.length <= 1
+              }
+            />
 
             {!isLocalDevelopment && (
               <SelectField

@@ -82,6 +82,7 @@ export function useUlManifest({
           ? "/manifest.json"
           : "https://cdn.auth0.com/auth0-acul/manifest.json";
         const res = await fetch(url, { cache: "no-store" });
+
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         const json = await res.json();
         if (cancelled) return;

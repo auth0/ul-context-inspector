@@ -43,6 +43,7 @@ export interface PanelSelectContextProps {
   selectedVariant: string;
   setSelectedScreen: (screen: string) => void;
   variantOptions: FlexibleOption[];
+  disableDataSourceSelect: boolean;
 }
 
 export interface PanelCodeEditorContainerProps {
