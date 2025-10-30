@@ -80,7 +80,7 @@ const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(
         >
           <span
             data-slot="checkbox-indicator"
-            className="group-data-[state=checked]:uci-animate-in group-data-[state=unchecked]:uci-animate-out group-data-[state=unchecked]:uci-fade-out-0 group-data-[state=checked]:uci-fade-in-0 group-data-[state=unchecked]:uci-slide-out-to-bottom-5 group-data-[state=unchecked]:uci-zoom-out-75 group-data-[state=checked]:uci-zoom-in-75 group-data-[state=checked]:uci-slide-in-from-bottom-5 uci-text-primary-foreground uci-stroke-primary-foreground uci-absolute uci-duration-150 uci-ease-in-out uci-hidden group-data-[state=checked]:uci-block group-data-[state=indeterminate]:uci-block"
+            className="group-data-[state=checked]:uci-animate-in group-data-[state=unchecked]:uci-animate-out group-data-[state=unchecked]:uci-fade-out-0 group-data-[state=checked]:uci-fade-in-0 group-data-[state=unchecked]:uci-slide-out-to-bottom-5 group-data-[state=unchecked]:uci-zoom-out-75 group-data-[state=checked]:uci-zoom-in-75 group-data-[state=checked]:uci-slide-in-from-bottom-5 uci-text-primary-foreground uci-stroke-primary-foreground uci-absolute uci-duration-150 uci-ease-in-out uci-hidden group-data-[state=checked]:uci-flex group-data-[state=indeterminate]:uci-flex"
           >
             {isIndeterminate ? (
               <Minus className="uci-size-3 uci-stroke-[4px]" absoluteStrokeWidth />

@@ -6,12 +6,16 @@
   height: 100%;
   min-height: 0;
   scrollbar-color: hsl(var(--uci-muted)) hsl(var(--uci-background));
+  border: 1px solid #383838;
+  border-radius: 8px;
 }
 
 .uci-code-editor-toolbar {
   display: flex;
   justify-content: space-between;
-  padding: 8px 0;
+  padding: 8px;
+  background-color: #1E1E1E;
+  border-radius: 8px 8px 0 0;
 }
 
 .uci-code-editor-toolbar-toggles label {
@@ -26,6 +30,7 @@
   background: none;
   border: none;
   margin-left: 8px;
+  margin-right: 0;
   cursor: pointer;
 }
 .uci-code-editor-search-area {
@@ -52,11 +57,10 @@
   flex: 1;
   min-height: 0;
   max-height: calc(100vh - 200px);
-  border-radius: 4px;
 }
 
 .uci-context-inspector-root .uci-code-editor-digits {
-  border-right: 1px solid rgb(55 65 81 / var(--tw-border-opacity, 1));
+  border-right: none;
 }
 
 /* JSON code editor highlighting colors */
@@ -84,3 +88,82 @@
   color: #569cd6;
 }
 
+/* Custom styles for editor components with higher specificity */
+.uci-editor-custom-styles .uci-custom-checkbox {
+  width: 18px;
+  height: 18px;
+  padding: 2px;
+  border-radius: 4px;
+  border: 2px solid #808080;
+  background-color: #111111;
+}
+
+.uci-editor-custom-styles .uci-custom-checkbox:hover {
+  border-color: #808080;
+}
+
+.uci-editor-custom-styles .uci-custom-checkbox:focus-visible {
+  border-color: #808080;
+}
+
+.uci-editor-custom-styles .uci-custom-checkbox[data-state="checked"] {
+  background-color: #99A7F1;
+  border-color: #99A7F1;
+}
+
+.uci-editor-custom-styles .uci-custom-checkbox[data-state="unchecked"] span {
+  color: #111111;
+  stroke: #111111;
+}
+
+.uci-editor-custom-styles .uci-custom-checkbox[data-state="checked"] span {
+  color: #111111;
+  stroke: #111111;
+}
+
+/* Custom search field styles */
+.uci-editor-custom-styles .uci-custom-search-field {
+  flex: 1;
+  background-color: #111111;
+  color: white;
+  border: 1px solid #383838;
+  border-radius: 4px;
+  height: 34px;
+  font-size: 0.875rem;
+}
+
+.uci-editor-custom-styles .uci-custom-search-field:focus-within {
+  border-color: #808080;
+  box-shadow: none;
+  --tw-ring-offset-shadow: 0 0 #0000;
+  --tw-ring-shadow: 0 0 #0000;
+}
+
+.uci-editor-custom-styles .uci-custom-search-field input {
+  color: white;
+  font-size: 0.875rem;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.uci-editor-custom-styles .uci-custom-search-field input::placeholder {
+  color: rgb(156 163 175);
+}
+
+/* Custom close button styles */
+.uci-editor-custom-styles .uci-custom-close-button {
+  border: 1px solid #383838;
+  border-radius: 4px;
+  padding: 8px;
+  background-color: #111111;
+  width: 34px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
