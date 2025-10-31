@@ -64,6 +64,14 @@ import 'ul-context-inspector/style.css';
 ```
 Tailwind prefix: `uci-` (safelist with `/uci-/`).
 
+
+## 🔧 Development
+```
+npm install
+npm run dev      # Start dev server
+npm run build    # Build for production
+```
+
 ## 📜 License
 
 ISC
