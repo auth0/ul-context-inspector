@@ -1,7 +1,7 @@
-import React from 'react';
+import React from "react";
 import { Select, SelectContent, SelectItem, SelectTrigger } from "./ui/select";
 import type { FlexibleOption } from "./../types/components";
-import { SelectSearchInput } from './SelectSearchInput';
+import SelectSearchInput from "./SelectSearchInput";
 
 interface SelectFieldProps {
   className?: string;
@@ -24,7 +24,7 @@ const SelectField = ({
   placeholder,
   value,
   disabled,
-  searchable,
+  searchable
 }: SelectFieldProps) => {
   // Convert options to normalized format
   const normalizedOptions = options.map((option) => {
@@ -73,11 +73,7 @@ const SelectField = ({
       </SelectTrigger>
       <SelectContent>
         {enableSearch && (
-          <SelectSearchInput
-            value={searchTerm}
-            onChange={setSearchTerm}
-            placeholder={name === 'panel-select-screen' ? 'Search by screen name...' : 'Search...'}
-          />
+          <SelectSearchInput value={searchTerm} onChange={setSearchTerm} />
         )}
         {filteredOptions?.map((option) => (
           <SelectItem key={option.value} value={option.value}>

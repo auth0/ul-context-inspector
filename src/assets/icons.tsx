@@ -19,16 +19,22 @@ export const IconButton: React.FC<
   </button>
 );
 
-export const SearchIcon = () => (
+export const SearchIcon: React.FC<React.SVGProps<SVGSVGElement>> = ({
+  width = 16,
+  height = 16,
+  stroke = 'currentColor',
+  ...rest
+}) => (
   <svg
-    width="16"
-    height="16"
+    width={width}
+    height={height}
     viewBox="0 0 24 24"
     fill="none"
-    stroke="currentColor"
+    stroke={stroke}
     strokeWidth="2"
     strokeLinecap="round"
     strokeLinejoin="round"
+    {...rest}
   >
     <circle cx="11" cy="11" r="7" />
     <line x1="21" y1="21" x2="16.65" y2="16.65" />

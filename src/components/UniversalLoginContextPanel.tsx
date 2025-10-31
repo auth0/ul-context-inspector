@@ -11,6 +11,7 @@ import "../lib/styles.css";
 import "prismjs/themes/prism-tomorrow.css";
 
 import { useWindowJsonContext } from "../hooks/useWindowJsonContext";
+import { sortDescVersions } from "../lib/utils";
 import { useUlManifest, type UlManifest } from "../hooks/useUlManifest";
 
 import { JsonCodeEditor } from "./JsonCodeEditor";
@@ -210,7 +211,7 @@ export const UniversalLoginContextPanel: React.FC<
     }
   }, [selectedScreen, variant, dataSource, version, initReady]);
 
-  const [disableDataSourceSelect, setdisableDataSourceSelect] = useState(false);
+  const [disableDataSourceSelect, setDisableDataSourceSelect] = useState(false);
   // Early local manifest detection (runs once). Prefer local dev if a local manifest exists and no prior session choice.
   useEffect(() => {
     let cancelled = false;
@@ -220,12 +221,12 @@ export const UniversalLoginContextPanel: React.FC<
         try {
           const res = await fetch("/manifest.json", { cache: "no-store" });
           if (!res.ok) {
-            setdisableDataSourceSelect(true);
+            setDisableDataSourceSelect(true);
             return null;
           }
           return (await res.json()) as UlManifest;
         } catch {
-          setdisableDataSourceSelect(true);
+          setDisableDataSourceSelect(true);
           return null;
         }
       };
@@ -294,61 +295,26 @@ export const UniversalLoginContextPanel: React.FC<
     return info ? info.variants : variants;
   }, [selectedScreen, getVariantInfo, variants, manifest]);
 
+
   // Derive version options from manifest (fallback to provided versions prop).
   const versionOptions = useMemo(() => {
-    const allVersions =
-      manifest?.versions && manifest.versions.length > 0
-        ? manifest.versions
-        : versions;
-
-    // Sort versions in descending order
-    const sortedVersions = [...allVersions].sort((a, b) => {
-      // Extract version numbers for comparison (e.g., "v1.2032032.0" -> [1, 2032032, 0])
-      const aVersion = a.replace(/^v/, "").split(".").map(Number);
-      const bVersion = b.replace(/^v/, "").split(".").map(Number);
-
-      // Compare each part
-      for (let i = 0; i < Math.max(aVersion.length, bVersion.length); i++) {
-        const aPart = aVersion[i] || 0;
-        const bPart = bVersion[i] || 0;
-        if (aPart !== bPart) {
-          return bPart - aPart; // Descending order
-        }
-      }
-      return 0;
-    });
-
-    // Add "(latest)" suffix to the first (newest) version
-    if (sortedVersions.length > 0) {
+    const allVersions = manifest?.versions?.length ? manifest.versions : versions;
+    const sortedVersions = sortDescVersions(allVersions);
+    if (sortedVersions.length) {
       sortedVersions[0] = `${sortedVersions[0]} (latest)`;
     }
-
     return sortedVersions;
-  }, [manifest, versions]);
+  }, [manifest, versions, sortDescVersions]);
 
   // Get the display version with "(latest)" suffix if applicable
   const displayVersion = useMemo(() => {
-    const rawVersions =
-      manifest?.versions && manifest.versions.length > 0
-        ? manifest.versions
-        : versions;
-    const sortedVersions = [...rawVersions].sort((a, b) => {
-      const aVersion = a.replace(/^v/, "").split(".").map(Number);
-      const bVersion = b.replace(/^v/, "").split(".").map(Number);
-      for (let i = 0; i < Math.max(aVersion.length, bVersion.length); i++) {
-        const aPart = aVersion[i] || 0;
-        const bPart = bVersion[i] || 0;
-        if (aPart !== bPart) return bPart - aPart;
-      }
-      return 0;
-    });
-
-    // If current version is the latest, add "(latest)" suffix
-    if (sortedVersions.length > 0 && version === sortedVersions[0]) {
+    const rawVersions = manifest?.versions?.length ? manifest.versions : versions;
+    const sortedVersions = sortDescVersions(rawVersions);
+    if (sortedVersions.length && version === sortedVersions[0]) {
       return `${version} (latest)`;
     }
     return version;
-  }, [version, manifest, versions]);
+  }, [version, manifest, versions, sortDescVersions]);
 
   // Check if current screen exists in local manifest
   const screenExistsLocally = useMemo(() => {
@@ -368,7 +334,6 @@ export const UniversalLoginContextPanel: React.FC<
   }, [selectedScreen, localManifestData, dataSources, screenExistsLocally]);
 
   // Auto-select latest version when manifest loads
-  console.log("here i am");
 
   useEffect(() => {
     if (
@@ -382,28 +347,11 @@ export const UniversalLoginContextPanel: React.FC<
 
   // Always default to latest available version in CDN mode (override any stored session value)
   useEffect(() => {
-    if (
-      dataSource === "Auth0 CDN" &&
-      manifest?.versions &&
-      manifest.versions.length > 0
-    ) {
-      // Sort descending (same logic used elsewhere)
-      const sorted = [...manifest.versions].sort((a, b) => {
-        const aParts = a.replace(/^v/, "").split(".").map(Number);
-        const bParts = b.replace(/^v/, "").split(".").map(Number);
-        for (let i = 0; i < Math.max(aParts.length, bParts.length); i++) {
-          const av = aParts[i] || 0;
-          const bv = bParts[i] || 0;
-          if (av !== bv) return bv - av; // descending
-        }
-        return 0;
-      });
-      const latest = sorted[0];
-      if (latest && version !== latest) {
-        setVersion(latest);
-      }
+    if (dataSource === "Auth0 CDN" && manifest?.versions?.length) {
+      const latest = sortDescVersions(manifest.versions)[0];
+      if (latest && version !== latest) setVersion(latest);
     }
-  }, [dataSource, manifest, version]);
+  }, [dataSource, manifest, version, sortDescVersions]);
 
   // Ensure selected variant remains valid when options change.
   useEffect(() => {
@@ -644,7 +592,7 @@ export const UniversalLoginContextPanel: React.FC<
           {(codeWrap) => (
             <JsonCodeEditor
               value={search ? filteredDisplay : raw}
-              onChange={handleFilteredEdit}
+              onChange={handleFilteredEdit} // This onChange is currently not used as editor is read only
               readOnly={true}
               isValid={isValid}
               textareaId="tenant-context-json-editor"

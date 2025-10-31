@@ -88,16 +88,6 @@
   color: #569cd6;
 }
 
-/* Read-only editor: hide caret & disable interactions */
-.uci-context-inspector-root .uci-code-editor-readonly textarea,
-.uci-context-inspector-root .uci-code-editor-readonly pre,
-.uci-context-inspector-root .uci-code-editor-readonly code {
-  caret-color: transparent !important;
-}
-.uci-context-inspector-root .uci-code-editor-readonly textarea {
-  pointer-events: none;
-}
-
 /* Custom styles for editor components with higher specificity */
 .uci-editor-custom-styles .uci-custom-checkbox {
   width: 18px;

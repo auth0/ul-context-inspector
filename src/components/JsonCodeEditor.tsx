@@ -29,9 +29,7 @@ export const JsonCodeEditor: React.FC<JsonCodeEditorProps> = ({
     <div
       className={`uci-flex uci-min-h-full uci-h-fit uci-w-full uci-rounded uci-border uci-border-solid ${
         isValid ? "uci-border-[#171717]" : "uci-border-red-500"
-      } uci-bg-[#171717] uci-rounded-b-lg ${
-        readOnly ? "uci-code-editor-readonly" : ""
-      }`}
+      } uci-bg-[#171717] uci-rounded-b-lg`}
     >
       {/* editor line digits */}
       <div
@@ -54,15 +52,14 @@ export const JsonCodeEditor: React.FC<JsonCodeEditorProps> = ({
         highlight={(code) =>
           Prism.highlight(code, Prism.languages.json, "json")
         }
+        readOnly={readOnly}
         padding={8}
         textareaId={textareaId}
         preClassName={codeWrap ? "" : "!uci-whitespace-pre"}
         className="uci-font-mono !uci-overflow-visible uci-text-[11px] uci-leading-4 uci-text-gray-100 focus:uci-outline-none uci-bg-[#17171]"
         style={{
           outline: "none",
-          minHeight: "100%",
-          caretColor: readOnly ? "transparent" : undefined,
-          cursor: readOnly ? "default" : "text"
+          minHeight: "100%"
         }}
       />
     </div>

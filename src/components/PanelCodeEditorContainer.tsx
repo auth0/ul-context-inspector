@@ -55,7 +55,7 @@ const PanelCodeEditorContainer: React.FC<PanelCodeEditorContainerProps> = ({
             onClick={onSearchButtonClick}
             active={isSearchVisible}
           >
-            <SearchIcon />
+            <SearchIcon style={{ color: "#fff" }} />
           </IconButton>
 
           <IconButton label="Copy JSON" onClick={onCopyButtonClick}>
