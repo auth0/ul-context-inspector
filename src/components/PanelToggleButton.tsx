@@ -1,6 +1,6 @@
 import React from 'react';
 import { OpenIcon } from '../assets/icons';
-import { PanelToggleButtonProps } from '../types/components';
+import type { PanelToggleButtonProps } from '../types/components';
 
 const PanelToggleButton: React.FC<PanelToggleButtonProps> = ({ panelTitle, onClick }) => {
   return (

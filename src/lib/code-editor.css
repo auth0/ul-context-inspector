@@ -14,7 +14,7 @@
   display: flex;
   justify-content: space-between;
   padding: 8px;
-  background-color: #1E1E1E;
+  background-color: #1e1e1e;
   border-radius: 8px 8px 0 0;
 }
 
@@ -65,23 +65,23 @@
 
 /* JSON code editor highlighting colors */
 .uci-context-inspector-root .uci-code-editor-area .token.punctuation {
-  color: #8ED2C5;
+  color: #8ed2c5;
 }
 
 .uci-context-inspector-root .uci-code-editor-area .token.property {
-  color: #99A7F1;
+  color: #99a7f1;
 }
 
 .uci-context-inspector-root .uci-code-editor-area .token.string {
-  color: #8ED2C5;
+  color: #8ed2c5;
 }
 
 .uci-context-inspector-root .uci-code-editor-area .token.number {
-  color: #8ED2C5;
+  color: #8ed2c5;
 }
 
 .uci-context-inspector-root .uci-code-editor-area .token.boolean {
-  color: #8ED2C5;
+  color: #8ed2c5;
 }
 
 .uci-context-inspector-root .uci-code-editor-area .token.null.keyword {
@@ -107,8 +107,8 @@
 }
 
 .uci-editor-custom-styles .uci-custom-checkbox[data-state="checked"] {
-  background-color: #99A7F1;
-  border-color: #99A7F1;
+  background-color: #99a7f1;
+  border-color: #99a7f1;
 }
 
 .uci-editor-custom-styles .uci-custom-checkbox[data-state="unchecked"] span {

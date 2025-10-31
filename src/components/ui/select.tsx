@@ -17,6 +17,7 @@ const SelectContext = React.createContext<{
   unregisterOption?: (value: string) => void;
   getOptions?: () => Array<{ label: string; value: string }>;
   id?: string;
+  suppressInitialScroll?: boolean;
 } | null>(null);
 
 const Select = ({
@@ -26,7 +27,8 @@ const Select = ({
   children,
   name,
   id,
-  ...props
+  suppressInitialScroll,
+  ...rest
 }: {
   value?: string;
   onValueChange?: (value: string) => void;
@@ -34,11 +36,13 @@ const Select = ({
   children: React.ReactNode;
   name?: string;
   id?: string;
+  suppressInitialScroll?: boolean;
 } & React.HTMLAttributes<HTMLDivElement>) => {
   const [isOpen, setIsOpen] = React.useState(false);
   const [internalValue, setInternalValue] = React.useState(defaultValue);
   const [focusedIndex, setFocusedIndex] = React.useState(-1);
   const [typeahead, setTypeahead] = React.useState("");
+  const openedOnceRef = React.useRef(false);
 
   const optionsRef = React.useRef<Array<{ label: string; value: string }>>([]);
   const typeaheadTimeoutRef = React.useRef<number>();
@@ -60,13 +64,19 @@ const Select = ({
   const getOptions = React.useCallback(() => optionsRef.current, []);
 
   React.useEffect(() => {
-    if (isOpen && optionsRef.current.length > 0) {
-      const selectedIndex = optionsRef.current.findIndex((option) => option.value === currentValue);
-      setFocusedIndex(selectedIndex >= 0 ? selectedIndex : 0);
-    } else if (!isOpen) {
+    if (isOpen) {
+      if (!openedOnceRef.current && suppressInitialScroll) {
+        // Skip focusing any item so list remains scrolled to top (search field visible).
+        setFocusedIndex(-1);
+      } else if (optionsRef.current.length > 0) {
+        const selectedIndex = optionsRef.current.findIndex((option) => option.value === currentValue);
+        setFocusedIndex(selectedIndex >= 0 ? selectedIndex : 0);
+      }
+      openedOnceRef.current = true;
+    } else {
       setFocusedIndex(-1);
     }
-  }, [isOpen, currentValue]);
+  }, [isOpen, currentValue, suppressInitialScroll]);
 
   const handleTypeahead = React.useCallback(
     (key: string) => {
@@ -117,11 +127,12 @@ const Select = ({
         registerOption,
         unregisterOption,
         getOptions,
-        id,
+  id,
+  suppressInitialScroll,
       }}
     >
       <Popover open={isOpen} onOpenChange={setIsOpen}>
-        <div className="uci-relative uci-w-full" data-slot="select" {...props}>
+        <div className="uci-relative uci-w-full" data-slot="select" {...rest}>
           {children}
         </div>
       </Popover>
@@ -286,12 +297,10 @@ const SelectTrigger = ({
 const SelectContent = ({
   className,
   children,
-  position = "popper",
   ...props
 }: {
   className?: string;
   children: React.ReactNode;
-  position?: "popper" | "item-aligned";
 } & React.HTMLAttributes<HTMLDivElement>) => {
   const context = React.useContext(SelectContext);
   if (!context) throw new Error("SelectContent must be used within Select");
@@ -301,8 +310,15 @@ const SelectContent = ({
   React.useEffect(() => {
     if (context.isOpen && contentRef.current) {
       contentRef.current.focus();
+      if (context.suppressInitialScroll) {
+        // Ensure we start at top so search input visible.
+        contentRef.current.scrollTop = 0;
+        // Focus search input if present.
+        const searchInput = contentRef.current.querySelector<HTMLInputElement>("input[data-slot='select-search']");
+        if (searchInput) searchInput.focus();
+      }
     }
-  }, [context.isOpen]);
+  }, [context.isOpen, context.suppressInitialScroll]);
 
   const handleKeyDown = (event: React.KeyboardEvent) => {
     const { key } = event;
@@ -312,38 +328,39 @@ const SelectContent = ({
     if (!options || options.length === 0) return;
 
     switch (key) {
-      case "ArrowDown":
+      case "ArrowDown": {
         event.preventDefault();
         const currentIndex = focusedIndex ?? -1;
         const nextIndex = currentIndex < options.length - 1 ? currentIndex + 1 : 0;
         setFocusedIndex?.(nextIndex);
         break;
-
-      case "ArrowUp":
+      }
+      case "ArrowUp": {
         event.preventDefault();
         const prevCurrentIndex = focusedIndex ?? -1;
         const prevIndex = prevCurrentIndex > 0 ? prevCurrentIndex - 1 : options.length - 1;
         setFocusedIndex?.(prevIndex);
         break;
-
-      case "Enter":
+      }
+      case "Enter": {
         event.preventDefault();
         if (focusedIndex !== undefined && focusedIndex >= 0 && focusedIndex < options.length) {
           onChange?.(options[focusedIndex].value);
         }
         break;
-
-      case "Escape":
+      }
+      case "Escape": {
         event.preventDefault();
         onOpenChange?.(false);
         break;
-
-      default:
+      }
+      default: {
         if (key.length === 1 && !event.ctrlKey && !event.altKey && !event.metaKey) {
           event.preventDefault();
           handleTypeahead?.(key);
         }
         break;
+      }
     }
   };
 
@@ -407,6 +424,7 @@ const SelectItem = ({
   // Scroll focused item into view
   React.useEffect(() => {
     if (isFocused && itemRef.current) {
+      if (context.suppressInitialScroll && context.focusedIndex === -1) return; // skip scroll for initial open when suppressed
       itemRef.current.scrollIntoView({ block: "nearest", behavior: "smooth" });
     }
   }, [isFocused]);

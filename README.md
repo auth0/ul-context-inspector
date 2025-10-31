@@ -1,115 +1,78 @@
-# 🔍 ul-context-inspector
+# ul-context-inspector 🔍
 
-A developer panel for inspecting and live-editing JSON context on `window.universal_login_context`.
+Developer panel for inspecting the Universal Login JSON context on `window.universal_login_context` for the Advanced Customizations for Universal Login feature.
 
-Built for Auth0 Universal Login development — iterate quickly on screens and variants with real-time JSON editing, syntax highlighting, and event broadcasting.
-
-## ✨ Features
-
-- 📝 **Always-on editing** — Edit JSON in any mode (connected, disconnected, or preview)
-- 🎨 **Syntax highlighting** — Prism-powered with line numbers and validation
-- 🔄 **Live subscription hook** — Other components re-render on changes
-- 🎯 **Manifest-driven** — Load screen/variant combinations from CDN or local
-- 🔍 **Search & filter** — Non-destructive line filtering
-- 📦 **Self-contained** — No external design system needed
-- 🎭 **Namespaced styles** — `uci-` prefix prevents conflicts
-- 📤 **Export & copy** — Download or copy JSON with one click
-
----
-
-## 📦 Installation
+## 📦 Install
 
 ```bash
 npm install ul-context-inspector
 ```
 
-**Requirements:** React 18+ and React-DOM 18+ (peer dependencies)
+Peer deps: React 18+, ReactDOM 18+.
 
----
+## 🚀 Usage
 
-## 🚀 Quick Start
-
+Basic mount:
 ```tsx
 import { UniversalLoginContextPanel } from 'ul-context-inspector';
 
 export function App() {
-  return <UniversalLoginContextPanel defaultOpen={true} />;
+  return <UniversalLoginContextPanel defaultScreen="login:login" />;
 }
 ```
 
-That's it! Styles are automatically included.
-
----
-
-## 🪝 Live Subscription Hook
-
-Subscribe to context changes in other components:
-
+Host example with dynamic screen component:
 ```tsx
-import { useUniversalLoginContextSubscription } from 'ul-context-inspector';
+import { Suspense } from 'react';
+import {
+  UniversalLoginContextPanel,
+  useUniversalLoginContextSubscription,
+} from 'ul-context-inspector';
+import { getScreenComponent } from '@/utils/screen/screenLoader';
 
-export function PreviewConsumer() {
-  const ctx = useUniversalLoginContextSubscription();
-  return <pre>{JSON.stringify(ctx, null, 2)}</pre>;
-}
+const App = () => {
+  const context = useUniversalLoginContextSubscription(); // Subscribe to context which will determine the screen and rehydrate props with new state
+  const screenName = context?.screen?.name;
+  const ScreenComponent = screenName ? getScreenComponent(screenName) : null;
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <UniversalLoginContextPanel defaultScreen="login-password:login-password" /> // Add comment for component
+      {ScreenComponent ? <ScreenComponent key={screenName} /> : <div>Select a screen...</div>}
+    </Suspense>
+  );
+};
 ```
 
-The hook listens for `universal-login-context:updated` events and triggers re-renders.
+## ⚙️ Prop
 
----
+| Name | Type | Description |
+|------|------|-------------|
+| `defaultScreen` | `string` | Initial screen (colon format `prompt:screen`) for disconnected preview. |
 
-## ⚙️ Props
+## 🧠 Behavior
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `defaultOpen` | `boolean` | `true` | Panel starts open/closed |
-| `width` | `number \| string` | `560` | Panel width in pixels |
-| `variants` | `string[]` | `["default"]` | Available variants |
-| `dataSources` | `string[]` | `["Auth0 CDN", "Local development"]` | Data source options |
-| `versions` | `string[]` | `["1.0.0"]` | Version options |
-| `onVariantChange` | `(v: string) => void` | — | Variant change callback |
-| `onDataSourceChange` | `(v: string) => void` | — | Data source change callback |
-| `onVersionChange` | `(v: string) => void` | — | Version change callback |
-
----
+- 🔌 Connected if context existed at mount; otherwise preview mode.
+- 💾 Screen, variant, data source, version persisted in `sessionStorage` (`ulci:*`).
+- 🔁 Selection changes trigger `window.location.reload()` (forces host SDK remount).
+- 🛰 JSON editor is read-only; updates broadcast `universal-login-context:updated`.
 
 ## 🎨 Styling
 
-All classes are prefixed with `uci-` to prevent conflicts. The component uses a dark theme by default.
-
-If your bundler tree-shakes CSS:
+Implicit CSS included; optional explicit import:
 ```ts
 import 'ul-context-inspector/style.css';
 ```
+Tailwind prefix: `uci-` (safelist with `/uci-/`).
 
-For Tailwind JIT users, safelist the prefix:
-```js
-// tailwind.config.js
-module.exports = {
-  safelist: [{ pattern: /uci-/ }]
-}
-```
-
----
 
 ## 🔧 Development
-
-```bash
+```
 npm install
 npm run dev      # Start dev server
 npm run build    # Build for production
-npm run test     # Run tests
 ```
 
----
+## 📜 License
 
-## 🐛 Troubleshooting
-
-| Issue | Solution |
-|-------|----------|
-| Styles missing | Import `'ul-context-inspector/style.css'` explicitly |
-| Hook not re-rendering | Ensure panel is mounted and broadcasting |
-| Duplicate React error | Run `npm ls react` and dedupe dependencies |
-
----
+ISC
 

@@ -1,18 +1,9 @@
 {
   "name": "ul-context-inspector",
   "version": "0.1.0",
-  "description": "React UI component to inspect context data exposed on the window object.",
-  "keywords": [
-    "react",
-    "inspector",
-    "context",
-    "window",
-    "debug",
-    "vite",
-    "typescript"
-  ],
+  "description": "Universal Login Inspector tool to inspect Auth0 ACUL context data.",
   "author": "",
-  "license": "MIT",
+  "license": "ISC",
   "type": "module",
   "main": "dist/ul-context-inspector.umd.js",
   "module": "dist/ul-context-inspector.es.js",
@@ -37,7 +28,7 @@
   },
   "scripts": {
     "dev": "vite",
-    "build": "vite build && cp index.d.ts.template dist/index.d.ts && ls -1 dist",
+    "build": "vite build",
     "watch": "vite build --watch",
     "prepare": "npm run build",
     "lint": "eslint 'src/**/*.{ts,tsx}'",

@@ -22,7 +22,7 @@ const PanelCodeEditorContainer: React.FC<PanelCodeEditorContainerProps> = ({
   onCopyButtonClick,
   onDownloadButtonClick,
   onSearchButtonClick,
-  searchValue,
+  searchValue
 }) => {
   const [codeWrap, setCodeWrap] = useState(initialCodeWrap);
 
@@ -30,6 +30,9 @@ const PanelCodeEditorContainer: React.FC<PanelCodeEditorContainerProps> = ({
     <div className="uci-code-editor-container uci-editor-custom-styles">
       <div className="uci-code-editor-toolbar">
         <div className="uci-code-editor-toolbar-toggles uci-flex uci-items-center uci-gap-2">
+          <div className="uci-flex uci-items-center uci-px-2  uci-text-[11px] uci-uppercase uci-tracking-wide uci-font-semibold uci-text-[#C5C5C5]">
+            Read Only
+          </div>
           <div className="uci-flex uci-items-center uci-gap-[2px]">
             <Checkbox
               id="code-wrap"
@@ -37,8 +40,11 @@ const PanelCodeEditorContainer: React.FC<PanelCodeEditorContainerProps> = ({
               onCheckedChange={(checked) => setCodeWrap(checked === true)}
               className="uci-custom-checkbox"
             />
-            <Label htmlFor="code-wrap" className="uci-text-sm uci-font-medium uci-cursor-pointer">
-              Wrap JSON
+            <Label
+              htmlFor="code-wrap"
+              className="uci-text-sm uci-font-medium uci-cursor-pointer"
+            >
+              Wrap
             </Label>
           </div>
         </div>
@@ -87,9 +93,7 @@ const PanelCodeEditorContainer: React.FC<PanelCodeEditorContainerProps> = ({
         </div>
       )}
 
-      <div className="uci-code-editor-area">
-        {children(codeWrap)}
-      </div>
+      <div className="uci-code-editor-area">{children(codeWrap)}</div>
     </div>
   );
 };
