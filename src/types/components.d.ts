@@ -30,15 +30,12 @@ export type FlexibleOption = string | { value: string; text?: string; label?: st
 
 export interface PanelSelectContextProps {
   dataSourceOptions: FlexibleOption[];
-  dataVersionOptions: FlexibleOption[];
   isConnected: boolean;
   onChangeSelectDataSource: (event: { target: { value: string } }) => void;
-  onChangeSelectDataVersion: (event: { target: { value: string } }) => void;
   onChangeSelectScreen: (event: { target: { value: string } }) => void;
   onChangeSelectVariant: (event: { target: { value: string } }) => void;
   screenOptions: FlexibleOption[];
   selectedDataSource: string;
-  selectedDataVersion: string;
   selectedScreen: string | undefined;
   selectedVariant: string;
   setSelectedScreen: (screen: string) => void;

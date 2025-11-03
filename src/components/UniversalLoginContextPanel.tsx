@@ -295,29 +295,6 @@ export const UniversalLoginContextPanel: React.FC<
     return info ? info.variants : variants;
   }, [selectedScreen, getVariantInfo, variants, manifest]);
 
-  // Derive version options from manifest (fallback to provided versions prop).
-  const versionOptions = useMemo(() => {
-    const allVersions = manifest?.versions?.length
-      ? manifest.versions
-      : versions;
-    const sortedVersions = sortDescVersions(allVersions);
-    if (sortedVersions.length) {
-      sortedVersions[0] = `${sortedVersions[0]} (latest)`;
-    }
-    return sortedVersions;
-  }, [manifest, versions, sortDescVersions]);
-
-  // Get the display version with "(latest)" suffix if applicable
-  const displayVersion = useMemo(() => {
-    const rawVersions = manifest?.versions?.length
-      ? manifest.versions
-      : versions;
-    const sortedVersions = sortDescVersions(rawVersions);
-    if (sortedVersions.length && version === sortedVersions[0]) {
-      return `${version} (latest)`;
-    }
-    return version;
-  }, [version, manifest, versions, sortDescVersions]);
 
   // Check if current screen exists in local manifest
   const screenExistsLocally = useMemo(() => {
@@ -437,19 +414,7 @@ export const UniversalLoginContextPanel: React.FC<
     window.location.reload();
   }, []);
 
-  const handleVersion = useCallback((v: string) => {
-    const cleanVersion = v.replace(/ \(latest\)$/, "");
-    setVersion(cleanVersion);
-    setUserEdited(false);
-    if (typeof window !== "undefined") {
-      try {
-        sessionStorage.setItem(SESSION_KEYS.version, cleanVersion);
-      } catch {
-        /* ignore */
-      }
-      window.location.reload();
-    }
-  }, []);
+  // Version handler removed
 
   // (Manifest fetch handled by useUlManifest)
 
@@ -563,13 +528,9 @@ export const UniversalLoginContextPanel: React.FC<
 
           <PanelSelectContext
             dataSourceOptions={filteredDataSourceOptions}
-            dataVersionOptions={versionOptions}
             isConnected={isConnected}
             onChangeSelectDataSource={(event) =>
               handleDataSource(event.target.value as string)
-            }
-            onChangeSelectDataVersion={(event) =>
-              handleVersion(event.target.value as string)
             }
             onChangeSelectScreen={(event) => {
               if (!isConnected) {
@@ -600,7 +561,6 @@ export const UniversalLoginContextPanel: React.FC<
             }
             screenOptions={screenOptions}
             selectedDataSource={dataSource}
-            selectedDataVersion={displayVersion}
             selectedScreen={selectedScreen}
             selectedVariant={variant}
             setSelectedScreen={setSelectedScreen}

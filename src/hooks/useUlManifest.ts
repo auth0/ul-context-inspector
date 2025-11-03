@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { sortDescVersions } from "../lib/utils";
 
 /**
  * Hook: useUlManifest
@@ -35,7 +36,6 @@ export interface UlManifest {
 export interface UseUlManifestOptions {
   root: Record<string, unknown>;
   dataSource: string; // e.g. 'Auth0 CDN' | 'Local'
-  version?: string;
   enabled: boolean; // only fetch when enabled (panel open + disconnected)
 }
 
@@ -62,12 +62,17 @@ const isUlManifest = (m: unknown): m is UlManifest => {
 export function useUlManifest({
   root,
   dataSource,
-  version,
   enabled
 }: UseUlManifestOptions): UseUlManifestResult {
   const [manifest, setManifest] = useState<UlManifest | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  // Highest (latest) version for CDN mode (descending sort: first is highest)
+  const latestVersion = useMemo(() => {
+    if (!manifest?.versions?.length) return undefined;
+    return sortDescVersions(manifest.versions)[0];
+  }, [manifest]);
 
   // Fetch manifest when toggled enabled (panel open + disconnected)
   useEffect(() => {
@@ -102,7 +107,7 @@ export function useUlManifest({
     return () => {
       cancelled = true;
     };
-  }, [enabled, dataSource, version, root]);
+  }, [enabled, dataSource, root]);
 
   const screenOptions = useMemo(() => {
     if (!manifest) return [];
@@ -153,7 +158,7 @@ export function useUlManifest({
   );
 
   const loadVariantJson = useCallback(
-    async (screenValue: string, variant: string) => {
+  async (screenValue: string, variant: string) => {
       const info = getVariantInfo(screenValue);
       if (!info) return null;
       const { basePath } = info;
@@ -165,9 +170,9 @@ export function useUlManifest({
         const filePath = `${basePath}/${variant}.json`;
         url = filePath.startsWith("/") ? filePath : "/" + filePath;
       } else {
-        // CDN: construct URL using version and path from manifest
-        // Pattern: https://assets.us.auth0.com/auth0-acul/{version}/{path}/{variant}.json
-        const currentVersion = version || manifest?.versions?.[0];
+        // CDN: always use highest semantic version from manifest versions
+        // Pattern: https://cdn.auth0.com/auth0-acul/{version}/{path}/{variant}.json
+        const currentVersion = latestVersion;
         const pathWithoutLeadingSlash = basePath.startsWith("/")
           ? basePath.slice(1)
           : basePath;
@@ -178,7 +183,7 @@ export function useUlManifest({
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       return res.json();
     },
-    [getVariantInfo, dataSource, version, manifest]
+  [getVariantInfo, dataSource, manifest, latestVersion]
   );
 
   return {
