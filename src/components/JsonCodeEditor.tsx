@@ -8,7 +8,6 @@ import "prismjs/components/prism-json";
 // Lightweight JSON editor wrapper with Prism highlighting and a fixed line number gutter.
 export interface JsonCodeEditorProps {
   value: string;
-  onChange: (v: string) => void;
   readOnly?: boolean;
   isValid?: boolean;
   textareaId?: string;
@@ -17,7 +16,6 @@ export interface JsonCodeEditorProps {
 
 export const JsonCodeEditor: React.FC<JsonCodeEditorProps> = ({
   value,
-  onChange,
   readOnly = false,
   isValid = true,
   textareaId = "json-editor",
@@ -46,9 +44,7 @@ export const JsonCodeEditor: React.FC<JsonCodeEditorProps> = ({
       {/* editor */}
       <Editor
         value={value}
-        onValueChange={(code: string) => {
-          if (!readOnly) onChange(code);
-        }}
+        onValueChange={() => {}}
         highlight={(code) =>
           Prism.highlight(code, Prism.languages.json, "json")
         }

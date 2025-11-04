@@ -5,15 +5,12 @@ import type { PanelSelectContextProps } from "../types/components";
 
 const PanelSelectContext: React.FC<PanelSelectContextProps> = ({
   dataSourceOptions,
-  dataVersionOptions,
   isConnected,
   onChangeSelectDataSource,
-  onChangeSelectDataVersion,
   onChangeSelectScreen,
   onChangeSelectVariant,
   screenOptions,
   selectedDataSource,
-  selectedDataVersion,
   selectedScreen,
   selectedVariant,
   variantOptions,
@@ -23,10 +20,6 @@ const PanelSelectContext: React.FC<PanelSelectContextProps> = ({
   if (screenOptions?.length === 0) {
     screenOptions = [selectedScreen || "Current screen"];
   }
-
-  const isLocalDevelopment = selectedDataSource
-    ?.toLowerCase()
-    .includes("local");
 
   return (
     <div className="uci-flex uci-flex-col">
@@ -65,18 +58,6 @@ const PanelSelectContext: React.FC<PanelSelectContextProps> = ({
                 disableDataSourceSelect || dataSourceOptions?.length <= 1
               }
             />
-
-            {!isLocalDevelopment && (
-              <SelectField
-                name="panel-select-data-version"
-                prefix="Data version"
-                options={dataVersionOptions}
-                value={selectedDataVersion}
-                onChange={onChangeSelectDataVersion}
-                placeholder={selectedDataVersion}
-                disabled={dataVersionOptions?.length <= 1}
-              />
-            )}
           </div>
         </div>
       )}
