@@ -74,5 +74,5 @@ npm run build    # Build for production
 
 ## 📜 License
 
-ISC
+Apache 2.0
 
