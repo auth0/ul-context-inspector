@@ -1,7 +1,11 @@
 {
-  "name": "ul-context-inspector",
-  "version": "0.1.0",
+  "name": "@auth0/ul-context-inspector",
+  "version": "1.0.0",
   "description": "Universal Login Inspector tool to inspect Auth0 ACUL context data.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/auth0/ul-context-inspector"
+  },
   "license": "Apache-2.0",
   "type": "module",
   "main": "dist/ul-context-inspector.umd.js",
@@ -87,5 +91,8 @@
     "prismjs": "^1.30.0",
     "react-simple-code-editor": "^0.13.1",
     "tailwind-merge": "^3.3.1"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }
