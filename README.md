@@ -1,6 +1,9 @@
 # Auth0 Universal Login Context Inspector
+<p align="center">
+  <img src="docs/ul-context-inspector.png" alt="Universal Login Context Inspector screenshot" width="900" />
+</p>
 
-<p align="left">
+<p align="center">
   <a href="https://www.npmjs.com/package/@auth0/ul-context-inspector"><img alt="npm" src="https://img.shields.io/npm/v/@auth0/ul-context-inspector" /></a>
   <a href="https://www.npmjs.com/package/@auth0/ul-context-inspector"><img alt="downloads" src="https://img.shields.io/npm/dm/@auth0/ul-context-inspector" /></a>
   <a href="https://bundlephobia.com/package/@auth0/ul-context-inspector"><img alt="bundle size" src="https://img.shields.io/bundlephobia/minzip/@auth0/ul-context-inspector" /></a>
@@ -11,7 +14,7 @@
   <img alt="vite" src="https://img.shields.io/badge/Built%20with-Vite-646cff?logo=vite" />
   <img alt="PRs welcome" src="https://img.shields.io/badge/PRs-welcome-brightgreen" />
 </p>
----
+
 
 Developer panel for inspecting and previewing the Universal Login JSON context (`window.universal_login_context`) for the Advanced Customizations for Universal Login (ACUL) feature.
 
@@ -35,7 +38,6 @@ Peer dependencies (install if you don’t already have them):
 ```bash
 npm install react react-dom
 ```
-Supported: React 18 or 19.
 ---
 
 ## 🗂 2. Local Manifest & Variant Files
