@@ -102,7 +102,7 @@ export function App() {
 
 ---
 
-## 4. Subscribe to Context Updates (Optional)
+## 🔄 4. Subscribe to Context Updates (Optional)
 
 Use the subscription hook if your host needs to re-render on context changes:
 
