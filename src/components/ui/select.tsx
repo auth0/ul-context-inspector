@@ -256,7 +256,7 @@ const SelectTrigger = ({
   };
 
   return (
-    <PopoverTrigger className={className} disabled={disabled}>
+    <PopoverTrigger asChild>
       <Button
         variant={error ? "destructive" : "outline"}
         disabled={disabled}
