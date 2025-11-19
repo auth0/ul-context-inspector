@@ -75,11 +75,21 @@ const SelectField = ({
         {enableSearch && (
           <SelectSearchInput value={searchTerm} onChange={setSearchTerm} />
         )}
-        {filteredOptions?.map((option) => (
-          <SelectItem key={option.value} value={option.value}>
-            {option.text}
-          </SelectItem>
-        ))}
+        {filteredOptions?.length === 0 && searchTerm ? (
+          <div className="uci-flex uci-flex-col uci-min-h-[calc(100vh-var(--trigger-top)-var(--trigger-height)-80px)]">
+            <div className="uci-m-[4px] uci-bg-[#242424] uci-px-2 uci-py-6 uci-text-center uci-text-sm uci-text-[#C5C5C5]">
+              No matches found
+              <div className="uci-text-xs uci-mt-1">We couldn't find any results for "{searchTerm}"</div>
+            </div>
+            <div className="uci-flex-1" />
+          </div>
+        ) : (
+          filteredOptions?.map((option) => (
+            <SelectItem key={option.value} value={option.value}>
+              {option.text}
+            </SelectItem>
+          ))
+        )}
       </SelectContent>
     </Select>
   );

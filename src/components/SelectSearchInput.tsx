@@ -16,13 +16,13 @@ export const ScreenSelectSearch: React.FC<ScreenSelectSearchProps> = ({
   onChange
 }) => {
   return (
-    <div className="uci-p-1 uci-mb-1">
+    <div className="uci-p-1 uci-sticky uci-top-0 uci-bg-[#171717] uci-z-10">
       <div className="uci-relative">
         <span
           className="uci-absolute uci-inset-y-0 uci-left-2 uci-text-[#666] uci-flex uci-items-center"
           aria-hidden="true"
         >
-          <SearchIcon />
+          <SearchIcon stroke="#ABABAB" />
         </span>
         <input
           type="text"

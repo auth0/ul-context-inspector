@@ -19,13 +19,13 @@ export const IconButton: React.FC<
   </button>
 );
 
-export const SearchIcon = () => (
+export const SearchIcon = ({ stroke = "white" }: { stroke?: string }) => (
   <svg
     width={16}
     height={16}
     viewBox="0 0 24 24"
     fill="none"
-    stroke="white"
+    stroke={stroke}
     strokeWidth="2"
     strokeLinecap="round"
     strokeLinejoin="round"
