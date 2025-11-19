@@ -87,4 +87,4 @@ function TextField({
   );
 }
 
-export { TextField, textFieldVariants };
+export { TextField };

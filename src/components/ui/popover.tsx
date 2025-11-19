@@ -102,15 +102,17 @@ function PopoverTrigger({ className, onClick, asChild, children, ...props }: Pop
     setOpen(!open);
   };
 
-  const isChildButton =
-    React.isValidElement(children) &&
-    (children.type === "button" ||
-      (typeof children.type === "function" &&
-        (children.type.name === "Button" ||
-          (children.type as any).displayName === "Button" ||
-          children.type.name?.toLowerCase().includes("button"))) ||
-      children.props?.role === "button" ||
-      children.props?.type === "button");
+  const isChildButton = (() => {
+    if (!React.isValidElement(children)) return false;
+    const t: unknown = children.type;
+    if (t === "button") return true;
+    if (typeof t === "function") {
+      const fn = t as { name?: string; displayName?: string };
+      const name = fn.name?.toLowerCase() || fn.displayName?.toLowerCase();
+      if (name && name.includes("button")) return true;
+    }
+    return Boolean(children.props?.role === "button" || children.props?.type === "button");
+  })();
 
   const shouldUseAsChild = asChild || isChildButton;
 
