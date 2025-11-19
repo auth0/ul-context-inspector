@@ -102,7 +102,7 @@ export function App() {
 
 ---
 
-## � 4. Subscribe to Context Updates (Optional)
+## 🔄 4. Subscribe to Context Updates (Optional)
 
 Use the subscription hook if your host needs to re-render on context changes:
 
@@ -116,7 +116,7 @@ function Host() {
 ```
 
 
-## �🕹 5. Interactive Behavior
+## 🕹 5. Interactive Behavior
 
 - Connected mode: If `window.universal_login_context` existed at mount, selections do not override real tenant context screen/variant.
 - Disconnected mode: Screen & variant selection reloads the page to simulate host SDK remount.
