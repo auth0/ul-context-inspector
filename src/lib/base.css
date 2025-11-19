@@ -114,14 +114,10 @@
   cursor: pointer;
 }
 
-.uci-context-inspector-root button[data-slot="popover-trigger"],
 button[data-slot="select-item"] {
   background-color: transparent;
-  border: none
-}
-
-.uci-context-inspector-root button[data-slot="popover-trigger"] {
-  padding: 0;
+  border: none;
+  cursor: pointer;
 }
 
 /* Separate class for portaled content (popovers, dropdowns, etc.) */

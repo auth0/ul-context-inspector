@@ -124,7 +124,12 @@ function PopoverTrigger({ className, onClick, asChild, children, ...props }: Pop
       "data-slot": "popover-trigger",
       "data-state": open ? "open" : "closed",
       onClick: handleClick,
-      className: cn((children as React.ReactElement).props.className),
+      className: cn(
+        "uci-inline-flex uci-mb-2",
+        props.disabled && "uci-pointer-events-none",
+        className,
+        (children as React.ReactElement).props.className
+      ),
     });
   }
 
