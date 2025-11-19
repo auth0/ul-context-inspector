@@ -1,14 +1,18 @@
 ![UL Context Inspector Banner](https://cdn.auth0.com/website/sdks/banners/auth0-acul-sdk-banner.png)
 
-[![NPM Version](https://img.shields.io/npm/v/@auth0/ul-context-inspector?label=Inspector)](https://www.npmjs.com/package/@auth0/ul-context-inspector)
-[![Downloads](https://img.shields.io/npm/dw/@auth0/ul-context-inspector?label=Downloads)](https://www.npmjs.com/package/@auth0/ul-context-inspector)
-![React Versions](https://img.shields.io/badge/react-18%20|%2019-61dafb?logo=react)
-![Node](https://img.shields.io/badge/node-%3E=20.19.0-43853d?logo=node.js)
-![TypeScript](https://img.shields.io/badge/TypeScript-ready-3178c6?logo=typescript)
-![License](https://img.shields.io/badge/License-Apache--2.0-blue.svg)
-![Vite](https://img.shields.io/badge/Built%20with-Vite-646cff?logo=vite)
+<p align="center">
+  <a href="https://www.npmjs.com/package/@auth0/ul-context-inspector"><img alt="NPM Version" src="https://img.shields.io/npm/v/@auth0/ul-context-inspector?label=Inspector" /></a>
+  <a href="https://www.npmjs.com/package/@auth0/ul-context-inspector"><img alt="Downloads" src="https://img.shields.io/npm/dw/@auth0/ul-context-inspector?label=Downloads" /></a>
+  <img alt="React Versions" src="https://img.shields.io/badge/react-18%20|%2019-61dafb?logo=react" />
+  <img alt="Node" src="https://img.shields.io/badge/node-%3E=20.19.0-43853d?logo=node.js" />
+  <img alt="TypeScript" src="https://img.shields.io/badge/TypeScript-ready-3178c6?logo=typescript" />
+  <img alt="License" src="https://img.shields.io/badge/License-Apache--2.0-blue.svg" />
+  <img alt="Vite" src="https://img.shields.io/badge/Built%20with-Vite-646cff?logo=vite" />
+</p>
 
-📚 [Documentation](#documentation) · 🚀 [Getting Started](#getting-started) · 🧩 [API Reference](#api-reference) · 💬 [Feedback](#feedback)
+<p align="center">
+  📚 <a href="#documentation">Documentation</a> · 🚀 <a href="#getting-started">Getting Started</a> · 🧩 <a href="#api-reference">API Reference</a> · 💬 <a href="#feedback">Feedback</a>
+</p>
 
 The **Universal Login Context Inspector** accelerates Advanced Customizations for Universal Login (ACUL) development by letting you:
 
