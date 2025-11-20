@@ -1,0 +1,4 @@
+#!/bin/sh
+set -e
+echo "[husky] commit-msg: commitlint" >&2
+npx --no-install commitlint --edit "$1"

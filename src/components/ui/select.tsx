@@ -45,7 +45,7 @@ const Select = ({
   const openedOnceRef = React.useRef(false);
 
   const optionsRef = React.useRef<Array<{ label: string; value: string }>>([]);
-  const typeaheadTimeoutRef = React.useRef<number>();
+  const typeaheadTimeoutRef = React.useRef<ReturnType<typeof setTimeout>>();
   const currentValue = value ?? internalValue;
 
   const registerOption = React.useCallback((value: string, label: string) => {

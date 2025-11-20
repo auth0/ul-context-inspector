@@ -1,0 +1,9 @@
+#!/bin/sh
+set -e
+
+echo "[husky] pre-commit: typecheck" >&2
+npm run typecheck
+echo "[husky] pre-commit: lint" >&2
+npm run lint
+echo "[husky] pre-commit: lint-staged" >&2
+npx --no-install lint-staged
