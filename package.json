@@ -43,7 +43,6 @@
     "build": "vite build",
     "watch": "vite build --watch",
     "prepare": "npm run build",
-  "commitlint": "commitlint --edit $GIT_PARAMS",
     "lint": "eslint 'src/**/*.{ts,tsx}'",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
