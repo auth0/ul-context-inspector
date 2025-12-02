@@ -1,6 +1,24 @@
 # Auth0 Universal Login Context Inspector
 <p align="center">
-  <img src="docs/ul-context-inspector.png" alt="Universal Login Context Inspector screenshot" width="900" />
+  <img src="docs/ul-context-inspector.png" alt="Universal Login Context Inspector scree
+---
+
+## ❓ FAQ
+
+**Why is my local manifest ignoredCommits are validated using commitlint. Invalid commit messages will be rejected by the pre-commit hook.
+
+---
+
+## 🧾 License
+
+Apache-2.0lic/manifest.json` returns 200 and matches the shape above; check dev tools Network panel.
+
+**How do I force CDN mode?**  
+Delete/rename local `manifest.json` or manually switch data source in the panel.
+
+---
+
+## 🤝 Contributingt" width="900" />
 </p>
 
 <p align="center">
@@ -102,7 +120,7 @@ export function App() {
 
 ---
 
-## � 4. Subscribe to Context Updates (Optional)
+## 🔔 4. Subscribe to Context Updates (Optional)
 
 Use the subscription hook if your host needs to re-render on context changes:
 
@@ -116,7 +134,7 @@ function Host() {
 ```
 
 
-## �🕹 5. Interactive Behavior
+## 🕹 5. Interactive Behavior
 
 - Connected mode: If `window.universal_login_context` existed at mount, selections do not override real tenant context screen/variant.
 - Disconnected mode: Screen & variant selection reloads the page to simulate host SDK remount.
@@ -149,9 +167,41 @@ npm run build    # Produce dist (JS, types, CSS)
 
 ---
 
-## 🧾 License
+## 🤝 Contributing
 
-Apache-2.0
+### Commit Message Convention
+
+This project follows [Conventional Commits](https://www.conventionalcommits.org/) specification. All commit messages must be structured as follows:
+
+```
+<type>: <description>
+
+[optional body]
+
+[optional footer]
+```
+
+#### Commit Types
+
+- **feat**: A new feature
+- **fix**: A bug fix
+- **docs**: Documentation only changes
+- **style**: Changes that don't affect code meaning (whitespace, formatting)
+- **refactor**: Code change that neither fixes a bug nor adds a feature
+- **perf**: Performance improvements
+- **test**: Adding or updating tests
+- **chore**: Changes to build process or auxiliary tools
+
+#### Examples
+
+```bash
+feat: add search functionality to context inspector
+fix: resolve memory leak in subscription hook
+docs: update installation instructions
+refactor: simplify manifest loading logic
+```
+
+Commits are validated using commitlint. Invalid commit messages will be rejected by the pre-commit hook.
 
 ---
 
@@ -162,3 +212,9 @@ Ensure `public/manifest.json` returns 200 and matches the shape above; check dev
 
 **How do I force CDN mode?**  
 Delete/rename local `manifest.json` or manually switch data source in the panel.
+
+---
+
+## �🧾 License
+
+Apache-2.0
